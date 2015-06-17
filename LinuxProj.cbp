@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="OpenGLEngineProject" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/EngineOpenGL" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="bin/Debug/" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-std=c++11" />
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/EngineOpenGL" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="bin/Release/" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-std=c++11" />
+					<Add option="-fno-strict-aliasing" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-std=c++11" />
+			<Add option="-Wall" />
+			<Add option="-fopenmp -Wno-comment" />
+			<Add option="-D__NO_INLINE__" />
+			<Add directory="include" />
+			<Add directory="include/freetype2" />
+		</Compiler>
+		<Linker>
+			<Add library="glfw3" />
+			<Add library="GLEW" />
+			<Add library="GL" />
+			<Add library="GLU" />
+			<Add library="X11" />
+			<Add library="Xinerama" />
+			<Add library="Xrandr" />
+			<Add library="pthread" />
+			<Add library="Xcursor" />
+			<Add library="Xi" />
+			<Add library="Xxf86vm" />
+			<Add library="freetype" />
+			<Add library="SOIL" />
+			<Add library="IrrKlang" />
+			<Add library="gomp" />
+			<Add library="boost_system" />
+			<Add library="boost_filesystem" />
+			<Add directory="lib/linux" />
+			<Add directory="lib/linux/boost" />
+		</Linker>
+		<Unit filename="src/EngineFuncions/DevTools/TerrainGenerator/terrainGenerator.cpp" />
+		<Unit filename="src/EngineFuncions/DevTools/TerrainGenerator/terrainGenerator.h" />
+		<Unit filename="src/EngineFuncions/DevTools/terraingeneratorwrapper.cpp" />
+		<Unit filename="src/EngineFuncions/DevTools/terraingeneratorwrapper.h" />
+		<Unit filename="src/EngineFuncions/DevTools/testingbox.h" />
+		<Unit filename="src/EngineFuncions/DevTools/worldbuildertools/boxclass.cpp" />
+		<Unit filename="src/EngineFuncions/DevTools/worldbuildertools/boxclass.h" />
+		<Unit filename="src/EngineFuncions/DevTools/worldbuildertools/randlib.h" />
+		<Unit filename="src/EngineFuncions/DevTools/worldbuilderwrapper.cpp" />
+		<Unit filename="src/EngineFuncions/DevTools/worldbuilderwrapper.h" />
+		<Unit filename="src/EngineFuncions/Handlers/LightHandler/staticskylight.cpp" />
+		<Unit filename="src/EngineFuncions/Handlers/LightHandler/staticskylight.h" />
+		<Unit filename="src/EngineFuncions/Handlers/ModelHandler/base_classes.h" />
+		<Unit filename="src/EngineFuncions/Handlers/ModelHandler/mesh.cpp" />
+		<Unit filename="src/EngineFuncions/Handlers/ModelHandler/mesh.h" />
+		<Unit filename="src/EngineFuncions/Handlers/ModelHandler/model.cpp" />
+		<Unit filename="src/EngineFuncions/Handlers/ModelHandler/model.h" />
+		<Unit filename="src/EngineFuncions/Handlers/resourcemanager.cpp" />
+		<Unit filename="src/EngineFuncions/Handlers/resourcemanager.h" />
+		<Unit filename="src/EngineFuncions/Interfaces/MenuInterfaces/graphicspropertiesinterface.cpp" />
+		<Unit filename="src/EngineFuncions/Interfaces/MenuInterfaces/graphicspropertiesinterface.h" />
+		<Unit filename="src/EngineFuncions/Interfaces/MenuInterfaces/requestinterface.cpp" />
+		<Unit filename="src/EngineFuncions/Interfaces/MenuInterfaces/requestinterface.h" />
+		<Unit filename="src/EngineFuncions/Loaders/meshloader.h" />
+		<Unit filename="src/EngineFuncions/Loaders/properties.cpp" />
+		<Unit filename="src/EngineFuncions/Loaders/properties.h" />
+		<Unit filename="src/EngineFuncions/Loaders/shader.cpp" />
+		<Unit filename="src/EngineFuncions/Loaders/shader.h" />
+		<Unit filename="src/EngineFuncions/Loaders/texture.cpp" />
+		<Unit filename="src/EngineFuncions/Loaders/texture.h" />
+		<Unit filename="src/EngineFuncions/States/DevToolStates/terraingeneratorstate.cpp" />
+		<Unit filename="src/EngineFuncions/States/DevToolStates/terraingeneratorstate.h" />
+		<Unit filename="src/EngineFuncions/States/DevToolStates/worldbuilderstate.cpp" />
+		<Unit filename="src/EngineFuncions/States/DevToolStates/worldbuilderstate.h" />
+		<Unit filename="src/EngineFuncions/States/MenuStates/aboutmenustate.cpp" />
+		<Unit filename="src/EngineFuncions/States/MenuStates/aboutmenustate.h" />
+		<Unit filename="src/EngineFuncions/States/MenuStates/mainmenustate.cpp" />
+		<Unit filename="src/EngineFuncions/States/MenuStates/mainmenustate.h" />
+		<Unit filename="src/EngineFuncions/States/MenuStates/settingsmenustate.cpp" />
+		<Unit filename="src/EngineFuncions/States/MenuStates/settingsmenustate.h" />
+		<Unit filename="src/EngineFuncions/States/MenuStates/toolsmenustate.cpp" />
+		<Unit filename="src/EngineFuncions/States/MenuStates/toolsmenustate.h" />
+		<Unit filename="src/EngineFuncions/States/introstate.cpp" />
+		<Unit filename="src/EngineFuncions/States/introstate.h" />
+		<Unit filename="src/EngineFuncions/Tools/MenuItems.h" />
+		<Unit filename="src/EngineFuncions/Tools/MenuItems/boxcolored.cpp" />
+		<Unit filename="src/EngineFuncions/Tools/MenuItems/boxcolored.h" />
+		<Unit filename="src/EngineFuncions/Tools/MenuItems/checkbox.cpp" />
+		<Unit filename="src/EngineFuncions/Tools/MenuItems/checkbox.h" />
+		<Unit filename="src/EngineFuncions/Tools/MenuItems/dropbox.cpp" />
+		<Unit filename="src/EngineFuncions/Tools/MenuItems/dropbox.h" />
+		<Unit filename="src/EngineFuncions/Tools/MenuItems/dropdownmenu.cpp" />
+		<Unit filename="src/EngineFuncions/Tools/MenuItems/dropdownmenu.h" />
+		<Unit filename="src/EngineFuncions/Tools/MenuItems/insertionbox.cpp" />
+		<Unit filename="src/EngineFuncions/Tools/MenuItems/insertionbox.h" />
+		<Unit filename="src/EngineFuncions/Tools/MenuItems/menubar.cpp" />
+		<Unit filename="src/EngineFuncions/Tools/MenuItems/menubar.h" />
+		<Unit filename="src/EngineFuncions/Tools/MenuItems/menubutton.cpp" />
+		<Unit filename="src/EngineFuncions/Tools/MenuItems/menubutton.h" />
+		<Unit filename="src/EngineFuncions/Tools/ToolBoxs/materialmodificationtoolbox.cpp" />
+		<Unit filename="src/EngineFuncions/Tools/ToolBoxs/materialmodificationtoolbox.h" />
+		<Unit filename="src/EngineFuncions/Tools/ToolBoxs/saveterraintoolbox.cpp" />
+		<Unit filename="src/EngineFuncions/Tools/ToolBoxs/saveterraintoolbox.h" />
+		<Unit filename="src/EngineFuncions/Tools/ToolBoxs/terraincreationtoolbox.cpp" />
+		<Unit filename="src/EngineFuncions/Tools/ToolBoxs/terraincreationtoolbox.h" />
+		<Unit filename="src/EngineFuncions/Tools/ToolBoxs/terrainmodificationtoolbox.cpp" />
+		<Unit filename="src/EngineFuncions/Tools/ToolBoxs/terrainmodificationtoolbox.h" />
+		<Unit filename="src/EngineFuncions/Tools/displayimage.cpp" />
+		<Unit filename="src/EngineFuncions/Tools/displayimage.h" />
+		<Unit filename="src/EngineFuncions/Tools/flaghandler.h" />
+		<Unit filename="src/EngineFuncions/Tools/input_struct.h" />
+		<Unit filename="src/EngineFuncions/Tools/rtscamera.h" />
+		<Unit filename="src/EngineFuncions/Tools/screenwriter.cpp" />
+		<Unit filename="src/EngineFuncions/Tools/screenwriter.h" />
+		<Unit filename="src/EngineFuncions/Tools/tools.hpp" />
+		<Unit filename="src/EngineFuncions/engine.cpp" />
+		<Unit filename="src/EngineFuncions/engine.h" />
+		<Unit filename="src/EngineFuncions/eventstatebase.h" />
+		<Unit filename="src/EngineFuncions/state.h" />
+		<Unit filename="src/EventStateBase.h" />
+		<Unit filename="src/Headers/headerscpp.h" />
+		<Unit filename="src/Headers/headersogl.h" />
+		<Unit filename="src/main.cpp" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

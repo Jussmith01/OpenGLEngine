@@ -2,7 +2,7 @@
 #include "EngineFuncions/States/introstate.h"
 #include "EngineFuncions/States/MenuStates/mainmenustate.h"
 
-// The MAIN function, from here we start the application and run the game loop
+// The MAIN function, from here we start the application and run the game loop2
 int main(int argc, char *argv[])
 {
     Engine engine;

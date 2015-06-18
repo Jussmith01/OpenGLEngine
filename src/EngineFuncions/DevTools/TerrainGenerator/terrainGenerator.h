@@ -93,30 +93,25 @@ public:
         {
             //#pragma omp parallel for
             //See if parallelization can speed this up
+            texture[0].Setup(tools::appendStrings("landscape/",TextureFiles[0]),"textures.lowlandMap");
+            texture[1].Setup(tools::appendStrings("landscape/",TextureFiles[1]),"textures.mediumlandMap");
+            texture[2].Setup(tools::appendStrings("landscape/",TextureFiles[2]),"textures.highlandMap");
+            texture[3].Setup(tools::appendStrings("landscape/",TextureFiles[3]),"textures.cliffMap");
 
-            std::stringstream ss1;
-            ss1 << "landscape/" << TextureFiles[0];
-            texture[0].Setup(ss1.str(),"textures.lowlandMap");
-            texture[0].LoadTextureDataToCPU();
-            texture[0].LoadTextureDataToGPU();
+            //#pragma omp parallel for
+            for (int i=0;i<4;++i)
+            {
+                texture[i].LoadTextureDataToCPU();
+            }
 
-            std::stringstream ss2;
-            ss2 << "landscape/" << TextureFiles[1];
-            texture[1].Setup(ss2.str(),"textures.mediumlandMap");
-            texture[1].LoadTextureDataToCPU();
-            texture[1].LoadTextureDataToGPU();
+            //for (auto i : texture)
+            //    i.LoadTextureDataToCPU();
 
-            std::stringstream ss3;
-            ss3 << "landscape/" << TextureFiles[2];
-            texture[2].Setup(ss3.str(),"textures.highlandMap");
-            texture[2].LoadTextureDataToCPU();
-            texture[2].LoadTextureDataToGPU();
+            for (int i=0;i<4;++i)
+            {
+                texture[i].LoadTextureDataToGPU();
+            }
 
-            std::stringstream ss4;
-            ss4 << "landscape/" << TextureFiles[3];
-            texture[3].Setup(ss4.str(),"textures.cliffMap");
-            texture[3].LoadTextureDataToCPU();
-            texture[3].LoadTextureDataToGPU();
             GPUTexSet=true;
         }
     };

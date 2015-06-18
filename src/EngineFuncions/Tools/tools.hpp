@@ -1,4 +1,3 @@
-#define GLEW_STATIC
 #ifndef TOOLS_HPP
 #define TOOLS_HPP
 
@@ -12,6 +11,35 @@
 
 namespace tools
 {
+
+template<typename T>
+inline extern std::string numberToString(T number)
+{
+    std::stringstream ss;
+    ss << number;
+    return ss.str();
+};
+
+inline extern std::string appendStrings(std::string s1,std::string s2)
+{
+    std::stringstream ss;
+    ss << s1 << s2;
+    return ss.str();
+};
+
+inline extern std::string appendStrings(std::string s1,std::string s2,std::string s3)
+{
+    std::stringstream ss;
+    ss << s1 << s2 << s3;
+    return ss.str();
+};
+
+inline extern std::string appendStrings(std::string s1,std::string s2,std::string s3,std::string s4)
+{
+    std::stringstream ss;
+    ss << s1 << s2 << s3 << s4;
+    return ss.str();
+};
 
 inline extern void check_mouse_reset(GLFWwindow* window,double xpos,double ypos,double swidth,double sheight,float border)
 {

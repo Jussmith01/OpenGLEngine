@@ -74,7 +74,12 @@ vec3 SkyLight(vec3 inputColor)
 //*****************
 vec4 HeightTexturing()
 {
-  vec4 outColor;
+  // Must initialize return for += operator usage on
+  // intel 4000 GPUs for sure, Dont know about other
+  // intel or AMD yet. Nvidia Doesn't seem to have
+  // this problem. In any case it is safer to
+  // initialize manually.
+  vec4 outColor=vec4(0.0);
 
   // Variables
   float x=textures.relativeHeight.x;

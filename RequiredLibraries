@@ -2,7 +2,7 @@ GLEW - License is Free and Open
 
 GLFW - License is Free and Open 
 
-SOIL - Simple Opengl Image Library is Public domain software
+SOIL - Simple Opengl Image Library is Public domain software. NO LIMITATIONS ON USE.
 
 freetype2 - Redistribution in binary form must provide a  disclaimer  that
       states  that  the software is based in part of the work of the
@@ -11,10 +11,10 @@ freetype2 - Redistribution in binary form must provide a  disclaimer  that
       documentation, though this isn't mandatory.
 
 glm - openGL Mathematics Library uses the MIT license, so its free
-      to use citing licence and contributions. 
+      to use citing licence and copyright. Can be closed source.
 
 irrKlang - This is a paid license, however, cheap enough to pay for
-	   use in a indie game. This depends on sale price of the
+	   use in a indie game ~$65 for a game selling < $20. This depends on sale price of the
 	   software.
 
 Look for possible networking libraries that are free or super cheap.

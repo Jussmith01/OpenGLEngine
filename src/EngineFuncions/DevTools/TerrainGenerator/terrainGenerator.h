@@ -91,25 +91,17 @@ public:
 
         if (!GPUTexSet)
         {
-            //#pragma omp parallel for
-            //See if parallelization can speed this up
+            // Setup Textures
             texture[0].Setup(tools::appendStrings("landscape/",TextureFiles[0]),"textures.lowlandMap");
             texture[1].Setup(tools::appendStrings("landscape/",TextureFiles[1]),"textures.mediumlandMap");
             texture[2].Setup(tools::appendStrings("landscape/",TextureFiles[2]),"textures.highlandMap");
             texture[3].Setup(tools::appendStrings("landscape/",TextureFiles[3]),"textures.cliffMap");
 
-            //#pragma omp parallel for
-            for (int i=0;i<4;++i)
+            // Load Textures to CPU and GPU
+            for (auto&& i : texture)
             {
-                texture[i].LoadTextureDataToCPU();
-            }
-
-            //for (auto i : texture)
-            //    i.LoadTextureDataToCPU();
-
-            for (int i=0;i<4;++i)
-            {
-                texture[i].LoadTextureDataToGPU();
+                i.LoadTextureDataToCPU();
+                i.LoadTextureDataToGPU();
             }
 
             GPUTexSet=true;
@@ -139,10 +131,8 @@ public:
 
         if (GPUTexSet)
         {
-            texture[0].TextureCleanup();
-            texture[1].TextureCleanup();
-            texture[2].TextureCleanup();
-            texture[3].TextureCleanup();
+            for (auto&& i : texture)
+                i.TextureCleanup();
         }
 
         GPUTexSet=false;

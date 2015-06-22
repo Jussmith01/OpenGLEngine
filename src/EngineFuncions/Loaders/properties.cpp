@@ -4,7 +4,7 @@
 //        Properties Class Functions         //
 //-------------------------------------------//
 
-//Read the configuration file
+// Read the configuration file
 void Properties::read_gcf()
 {
     std::cout << "Reading Properties..." << std::endl;
@@ -24,6 +24,7 @@ void Properties::read_gcf()
     this->lines = lines;
 };
 
+// Save the configuration file
 void Properties::save_gcf(std::stringstream *pdata)
 {
     std::cout << "Saving Properties..." << std::endl;
@@ -42,7 +43,8 @@ void Properties::save_gcf(std::stringstream *pdata)
     file.close();
 
 };
-//Sets the properties stored in data
+
+// Sets the properties stored in data
 void Properties::set_properties()
 {
     for (int i = 0; i < lines; ++i)
@@ -96,7 +98,7 @@ void Properties::set_properties()
     //Calculate DPmm
     DPmm = sqrt(WinWidth * WinHeight)/sqrt(MonWidth * MonHeight);
     //FontSize = 0.0002f * (float)pow(DPmm,2) + 0.15f;
-    FontSize = 0.1f * (float)DPmm;
+    FontSize = 0.06f * (float)DPmm;
     //FontSize = 0.000000075f * (float)(WinWidth * WinHeight);
     ImgLength = (float)sqrt(DPmm);
     LineSpace = 0.48f * (float)DPmm + 15.0f;
@@ -111,7 +113,7 @@ void Properties::set_properties()
     data.clear();
 };
 
-//Auto obtain the primary monitor resolution
+// Auto obtain the primary monitor resolution
 void Properties::GetPrimaryResolution(int ResAuto)
 {
     if (ResAuto == 1)
@@ -131,7 +133,7 @@ void Properties::GetPrimaryResolution(int ResAuto)
     }
 };
 
-//Obtain the primary monitors size
+// Obtain the primary monitors size
 void Properties::GetPrimaryMonitorSize()
 {
     GLFWmonitor* Monitor = glfwGetPrimaryMonitor();

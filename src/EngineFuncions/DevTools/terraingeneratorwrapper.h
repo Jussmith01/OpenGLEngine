@@ -11,6 +11,7 @@
 #include "../Loaders/texture.h"
 #include "../Tools/screenwriter.h"
 #include "../Tools/ToolBoxs/terraincreationtoolbox.h"
+#include "../Tools/ToolBoxs/terrainsculptingtoolbox.h"
 #include "../Tools/ToolBoxs/saveterraintoolbox.h"
 #include "TerrainGenerator/terrainGenerator.h"
 
@@ -49,6 +50,9 @@ class TerrainGeneratorWrapper
 
     // Material Modification Toolbox
     MaterialModificationToolbox mmtoolbox;
+
+    // Terrain Scupting Class
+    TerrainSculptingToolbox tstoolbox;
 
     // Save Terrain Toolbox
     SaveTerrainToolbox sttoolbox;

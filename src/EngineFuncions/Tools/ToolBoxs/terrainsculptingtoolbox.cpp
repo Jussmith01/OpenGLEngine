@@ -1,8 +1,8 @@
 #include "terrainsculptingtoolbox.h"
 
-//************************************
-// Drop Box Initilization Function
-//************************************
+//******************************************
+// Sculpting Toolbox Initilization Function
+//******************************************
 /*
 Initialize the menu dropbox box class.
 
@@ -17,11 +17,11 @@ void TerrainSculptingToolbox::Init(float posx, float posy,Properties *props,ISou
     this->x=posx;
     this->y=posy;
 
-    lh=0.2f;
-    lw=0.3f;
+    lh=0.3f;
+    lw=0.1f;
 
     // Setup the frame
-    frame.Init(0.3f,0.2f,0.01f,*props);
+    frame.Init(0.1f,0.3f,0.01f,*props);
     frame.SetColors(glm::vec4(0.6f,0.6f,0.6f,0.5f),glm::vec4(0.2f,0.2f,0.2f,1.0f));
 
     // Setup the screen writer class
@@ -29,8 +29,7 @@ void TerrainSculptingToolbox::Init(float posx, float posy,Properties *props,ISou
 
     // Setup the buttons
     buttons.Init("Buttons/testbutton","solid","../Fonts/FreeSans.ttf",0.5,*props,audioengine);
-    buttons.DefineNewButton("Modify",x+0.20f,y+0.10f,false);
-    buttons.DefineNewButton("Cancel",x+0.20f,y-0.10f,true);
+    buttons.DefineNewButton("Close",x,y-0.24f,true);
 };
 
 //************************************
@@ -43,6 +42,7 @@ the buttons to the screen.
 void TerrainSculptingToolbox::DrawToolBox()
 {
     // Draw
+    text.RenderTextCentered("Sculpting Tool",1,x,1,0.25,1.1,glm::vec3(1.0f));
     frame.DrawBoxPos(x,y);
     buttons.DrawButtons();
 };

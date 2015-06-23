@@ -65,7 +65,7 @@ void TerrainSculptingToolbox::Cleanup()
 //       Check Input Events
 //************************************
 /*
-
+Update the input eventers
 */
 int TerrainSculptingToolbox::UpdateEvents(InputStruct &input)
 {
@@ -78,6 +78,7 @@ int TerrainSculptingToolbox::UpdateEvents(InputStruct &input)
     // Find out which button the mouse is over, -1 if none
     bool hover=CheckMouseOver(xmp,ymp);
 
+    //Assure mouse key press is not read later -- Interaction stuff must come later
     if (hover && mpress)
     {
         input.SetMouseKeyFalse(GLFW_MOUSE_BUTTON_LEFT);

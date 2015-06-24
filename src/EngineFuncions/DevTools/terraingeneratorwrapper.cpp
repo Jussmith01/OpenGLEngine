@@ -515,6 +515,7 @@ Cleaup the class
 */
 void TerrainGeneratorWrapper::Cleanup()
 {
+    // Cleanup required classes
     camera.Cleanup();
     skylight.Cleanup();
     text.Cleanup();
@@ -527,6 +528,6 @@ void TerrainGeneratorWrapper::Cleanup()
     sttoolbox.Cleanup();
     tstoolbox.Cleanup();
 
-    //Cleanup bars
+    // Cleanup bars
     mbar.Cleanup();
 };

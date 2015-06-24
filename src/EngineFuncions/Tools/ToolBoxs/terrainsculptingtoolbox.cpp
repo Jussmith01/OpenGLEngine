@@ -30,6 +30,9 @@ void TerrainSculptingToolbox::Init(float posx, float posy,Properties *props,ISou
     // Setup the buttons
     buttons.Init("Buttons/testbutton","solid","../Fonts/FreeSans.ttf",0.5,*props,audioengine);
     buttons.DefineNewButton("Close",x,y-0.24f,true);
+
+    // Setup the icons
+    icons.Init("Icons/")
 };
 
 //************************************

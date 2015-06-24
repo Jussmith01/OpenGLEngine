@@ -33,8 +33,7 @@ struct Icon
     {
         this->x=x;
         this->y=y;
-        this->caption=caption;
-        this->state=0;
+        this->state=false;
     };
 
     //***************************************
@@ -42,7 +41,7 @@ struct Icon
     //***************************************
     /*
     Function returns true if the mouse
-    is over the button given the xmp,ymp
+    is over the icon given the xmp,ymp
     mouse coordinates and lw,lh button
     width and height.
     */
@@ -86,56 +85,47 @@ struct Icon
 class MenuIcons
 {
     // Variables
-    std::vector<Button> button;
+    std::vector<Icon> icon;
     float swidth,sheight;
     float lw,lh;
-    int activebutton;
-    int hoverbutton;
+    int activeicon;
+    int hovericon;
 
-    keyhandler kh[4];
+    keyhandler kh;
 
     float lastuse;
     float alastuse;
 
     // Tools
-    ScreenWriter text;
-    ImageDisplay image[3];
-    ISoundEngine* audioengine;
+    ImageDisplay image[2];
 
     // Check if mouse is over button
     void CheckMouseOver(float x,float y);
 
     //Check if button is pressed
-    void CheckPress(bool press,int ButtonID);
+    void CheckPress(bool press,int IconID);
 
 public:
     // Initialize Button Class
-    void Init(std::string buttonimage,std::string buttonsound,std::string font,
-              float scale,Properties &props,ISoundEngine* audioengine);
-
-    // Sets the font colors for 1) normal 2) hovering over and 3) pressing
-    void SetFontColors(glm::vec3 normal,glm::vec3 hover,glm::vec3 press);
+    void Init(std::string iconimage,float scale,Properties &props);
 
     // Cleanup function for destruction
     void Cleanup();
 
     // Adds a new button to the class
-    void DefineNewButton(std::string caption,float x, float y,bool active);
+    void DefineNewIcon(float x, float y);
 
     // Returns ButtonID if button was Pressed and Released while over a Button
-    int UpdateButtonEvents(InputStruct &input);
+    int UpdateIconEvents(InputStruct &input);
 
     // Draw all buttons to the screen
-    void DrawButtons(void);
-
-    // input arrow up or arrow down true to change the active button
-    void ArrowChangeActive(bool aup,bool adown);
+    void DrawIcons(void);
 
     // Function resets all buttons to default state
-    void ResetButtonStates();
+    void ResetIconStates();
 
     // Function sets the active button given button ID.
-    void SetActiveButton(int ButtonID);
+    void SetActiveIcon(int IconID);
 };
 
 

@@ -35,6 +35,7 @@ class TerrainSculptingToolbox
 
     // Testing
     MenuButtons buttons;
+    MenuIcons icons;
 
     // Check if mouse is over button
     bool CheckMouseOver(float x,float y);

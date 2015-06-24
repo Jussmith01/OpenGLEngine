@@ -121,6 +121,8 @@
 		<Unit filename="src/EngineFuncions/Tools/MenuItems/menubar.h" />
 		<Unit filename="src/EngineFuncions/Tools/MenuItems/menubutton.cpp" />
 		<Unit filename="src/EngineFuncions/Tools/MenuItems/menubutton.h" />
+		<Unit filename="src/EngineFuncions/Tools/MenuItems/menuicon.cpp" />
+		<Unit filename="src/EngineFuncions/Tools/MenuItems/menuicon.h" />
 		<Unit filename="src/EngineFuncions/Tools/ToolBoxs/materialmodificationtoolbox.cpp" />
 		<Unit filename="src/EngineFuncions/Tools/ToolBoxs/materialmodificationtoolbox.h" />
 		<Unit filename="src/EngineFuncions/Tools/ToolBoxs/saveterraintoolbox.cpp" />

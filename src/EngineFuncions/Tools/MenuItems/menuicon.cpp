@@ -4,13 +4,13 @@
 // Menu Icon Initilization Function
 //************************************
 /*
-Initialize the menu button class.
+Initialize the menu icon class.
 
 PARAMETERS:
 
 1) The first parameter is the naming scheme for the
-button image in string. For instance, this parameter
-would be "icons/imgfilename" if your buttons
+icon image in string. For instance, this parameter
+would be "icons/imgfilename" if your icons
 image files were stored in bin/Data/Images/icons/
 and the file names were,
 
@@ -21,25 +21,20 @@ active: imgfilename_act.png
 
 5 and 6) the screen width and height.
 */
-void MenuButtons::Init(std::string iconimage,float scale,Properties &props)
+void MenuIcons::Init(std::string iconimage,float scale,Properties &props)
 {
     // Define needed variables
     this->swidth=props.WinWidth;
     this->sheight=props.WinHeight;
-    activebutton=-1;
-    hoverbutton=-1;
+    activeicon=-1;
+    hovericon=-1;
 
     std::stringstream fn1,fn2; //File names for images
-    fn1 << buttonimage << "_normal.png";
-    fn2 << buttonimage << "_hover.png";
+    fn1 << iconimage << "_inact.png";
+    fn2 << iconimage << "_act.png";
 
-    // Setup button images on GPU
+    // Setup icon images on GPU
     float is=scale*0.1;
-
-    //image[0].Init(fn1.str(),scale*is,scale*is,swidth,sheight);
-    //image[1].Init(fn2.str(),scale*is,scale*is,swidth,sheight);
-    //image[2].Init(fn3.str(),scale*is,scale*is,swidth,sheight);
-
     image[0].Init(fn1.str(),is,is,swidth,sheight);
     image[1].Init(fn2.str(),is,is,swidth,sheight);
 
@@ -48,41 +43,26 @@ void MenuButtons::Init(std::string iconimage,float scale,Properties &props)
     lh=image[0].GetImageHalfHeight();
 };
 
-//************************************
-//      Set Text Colors Function
-//************************************
-/*
-Change the color of the text under certain conditions.
-The parameters are self explainatory.
-*/
-void MenuButtons::SetFontColors(glm::vec3 normal,glm::vec3 hover,glm::vec3 press)
-{
-    colors[0]=normal;
-    colors[1]=hover;
-    colors[2]=press;
-};
 
 //************************************
-//     Draw the buttons Function
+//     Draw the icons Function
 //************************************
 /*
 This function carries out all draw calls to draw
-the buttons to the screen.
+the icons to the screen.
 */
-void MenuButtons::DrawButtons()
+void MenuIcons::DrawIcons()
 {
-    for (int i=0;i<(int)button.size();++i)
+    for (int i=0;i<(int)icon.size();++i)
     {
         // Variables
-        float x=button[i].x;
-        float y=button[i].y;
-        int bs=button[i].state;
-        std::string cap=button[i].caption;
+        float x=icon[i].x;
+        float y=icon[i].y;
+        int is=icon[i].state;
 
         // Draw
-        //std::cout << "BUTTON " << i<< "x: " << x << " y: " << y << std::endl;
-        image[bs].DrawImagePos(x,y);
-        text.RenderTextCentered(cap,true,x,true,y,1.0,colors[bs]);
+        //std::cout << "icon " << i<< "x: " << x << " y: " << y << std::endl;
+        image[is].DrawImagePos(x,y);
     }
 };
 
@@ -90,29 +70,27 @@ void MenuButtons::DrawButtons()
 //    Cleanup When Destroying
 //************************************
 /*
-Cleanup after finished using the buttons
+Cleanup after finished using the icons
 */
-void MenuButtons::Cleanup()
+void MenuIcons::Cleanup()
 {
     image[0].Cleanup();
     image[1].Cleanup();
-    image[2].Cleanup();
-    text.Cleanup();
-    button.clear();
+    icon.clear();
 };
 
 //************************************
-//   Adds a new button to the Class
+//   Adds a new icon to the Class
 //************************************
 /*
-This function adds a new button into the class
+This function adds a new icon into the class
 at screen position x,y in normalized device
 coordinates with a caption that reads "caption".
-The active parameter set to true sets this button
-as the default active button when these buttons are
+The active parameter set to true sets this icon
+as the default active icon when these icons are
 printed to the screen.
 */
-void MenuButtons::DefineNewButton(std::string caption,float x, float y,bool active)
+void MenuIcons::DefineNewIcon(float x, float y)
 {
     float xpos=x;
     float ypos=y;
@@ -121,60 +99,42 @@ void MenuButtons::DefineNewButton(std::string caption,float x, float y,bool acti
 
     //std::cout << "XPOS: " << xpos << " YPOS: " << xpos << std::endl;
 
-    Button Btemp(caption,xpos,ypos);
-    button.push_back(Btemp);
-    if (active)
-    {
-        int ID=button.size()-1;
-        SetActiveButton(ID);
-    }
+    Icon Itemp(xpos,ypos);
+    icon.push_back(Itemp);
 };
 
 //************************************
-//      Check Button States
+//      Check icon States
 //************************************
 /*
 
 */
-int MenuButtons::UpdateButtonEvents(InputStruct &input)
+int MenuIcons::UpdateIconEvents(InputStruct &input)
 {
-    //std::cout << "epress: " <<  epress << " erelease: " <<  erelease << " activebutton: " << activebutton << std::endl;
+    //std::cout << "epress: " <<  epress << " erelease: " <<  erelease << " activeicon: " << activeicon << std::endl;
     double x,y;
     input.ReturnMousePos(x,y);
 
-    bool aup=input.GetKey(GLFW_KEY_UP);
-    bool adown=input.GetKey(GLFW_KEY_DOWN);
-
-    aup=kh[0].CheckKeyState(aup,GLFW_KEY_UP);
-    adown=kh[1].CheckKeyState(adown,GLFW_KEY_DOWN);
-
-    // Find out which button the mouse is over, -1 if none
+    // Find out which icon the mouse is over, -1 if none
     CheckMouseOver(x,y);
-    ArrowChangeActive(aup,adown);
 
     bool mpress=input.GetMouseKey(GLFW_MOUSE_BUTTON_LEFT);
-    bool epress=input.GetKey(GLFW_KEY_ENTER);
 
-    //Check if press and hold occures and change for a button
-    CheckPress(mpress,hoverbutton);
-    CheckPress(epress,activebutton);
+    //Check if press and hold occures and change for a icon
+    CheckPress(mpress,hovericon);
 
-    mpress=kh[2].CheckKeyState(mpress,GLFW_MOUSE_BUTTON_LEFT);
-    epress=kh[3].CheckKeyState(epress,GLFW_KEY_ENTER);
+    mpress=kh.CheckKeyState(mpress,GLFW_MOUSE_BUTTON_LEFT);
 
-    int ButtonID=-1;
+    int IconID=-1;
 
     //std::cout << "ab: " << activebutton << " epress: " << epress << std::endl;
     //Tigestd::cout << "hb: " << hoverbutton << " mpress: " << mpress << std::endl;
-    if((activebutton>=0 && epress) || (hoverbutton>=0 && mpress))
+    if(hovericon>=0 && mpress)
     {
-        lastuse=glfwGetTime();
-        ISound* snd=audioengine->play2D(soundpress.c_str(),false,false,true);
-        while(!snd->isFinished()){};
-        ButtonID=activebutton;
+        IconID=activeicon;
     }
 
-    return ButtonID;
+    return IconID;
 };
 
 //************************************
@@ -185,9 +145,9 @@ This function checks if the mouse, at x,y coords,
 is over the function, then sets that button
 active if it is.
 */
-void MenuButtons::CheckMouseOver(float x, float y)
+void MenuIcons::CheckMouseOver(float x, float y)
 {
-    hoverbutton=-1;
+    hovericon=-1;
 
     float xmp=x;
     float ymp=y;
@@ -195,93 +155,65 @@ void MenuButtons::CheckMouseOver(float x, float y)
     //tools::normal_device_coordinate(xmp,ymp,swidth, sheight);
 
     bool hover=false;
-    for (int i=0;i<(int)button.size();++i)
+    for (int i=0;i<(int)icon.size();++i)
     {
 
-        hover=button[i].CheckIfOver(xmp,ymp,lw,lh);// Determine mouse over
+        hover=icon[i].CheckIfOver(xmp,ymp,lw,lh);// Determine mouse over
 
         if (hover)
         {
             //std::cout << "HOVERING: " << i << std::endl;
-            hoverbutton=i;
+            hovericon=i;
 
-            if (activebutton!=i)
+            if (activeicon!=i)
             {
-                SetActiveButton(i);
+                SetActiveIcon(i);
             }
         }
     }
 };
 
 //*******************************************
-//Determine if any button is in pressed state
+//Determine if any icon is in pressed state
 //*******************************************
 /*
 
 */
-void MenuButtons::CheckPress(bool press,int ButtonID)
+void MenuIcons::CheckPress(bool press,int IconID)
 {
-    if(ButtonID>=0 && press)
+    if(IconID>=0 && press)
     {
-        button[ButtonID].state=2;// Set State to button Pressed
-    }
-};
-
-
-//*******************************************
-//Determine if any button is in pressed state
-//*******************************************
-/*
-This function checks for arrow up and arrow down calls to change
-the active state of the buttons accordingly. Arrow down will
-cycle from first to last defined and so on for arrow up.
-*/
-void MenuButtons::ArrowChangeActive(bool aup,bool adown)
-{
-    if (aup && activebutton>0)
-    {
-        alastuse=glfwGetTime();
-        int ID=activebutton-1;
-        SetActiveButton(ID);
-    }
-
-    if (adown && activebutton<(int)(button.size()-1))
-    {
-        alastuse=glfwGetTime();
-        int ID=activebutton+1;
-        SetActiveButton(ID);
+        icon[IconID].state=2;// Set State to icon Pressed
     }
 };
 
 //*******************************************
-//          Reset Button States
+//          Reset icon States
 //*******************************************
 /*
 This is a tool function that resets all active states to zero.
 Its typically used before setting a new active state within
 this class.
 */
-void MenuButtons::ResetButtonStates()
+void MenuIcons::ResetIconStates()
 {
-        for (int j=0;j<(int)button.size();++j)
+        for (int j=0;j<(int)icon.size();++j)
         {
-            button[j].state=0;// Reset States to Default
+            icon[j].state=0;// Reset States to Default
         }
 };
 
 //*******************************************
-//             Set Active Button
+//             Set Active Icon
 //*******************************************
 /*
-This function sets the new buttonID give as the current active button.
-This is used many times throughout the class to change button active
+This function sets the new iconID give as the current active icon.
+This is used many times throughout the class to change icon active
 states under certain conditions.
 */
-void MenuButtons::SetActiveButton(int ButtonID)
+void MenuIcons::SetActiveIcon(int IconID)
 {
-    //std::cout << soundactive.c_str() << std::endl;
-    audioengine->play2D(soundactive.c_str());
-    ResetButtonStates();
-    activebutton=ButtonID;
-    button[ButtonID].state=1;
+    ResetIconStates();
+    activeicon=IconID;
+    icon[IconID].state=1;
 };

@@ -337,12 +337,12 @@ void TerrainGeneratorWrapper::UpdateEvents(InputStruct &input)
         if (selID.option==2)
         {
             int tstbCall=tstoolbox.UpdateEvents(input);
-            if(tstbCall==0)
+            if(tstbCall>0)
             {
                 //*****************************
                 //  TERRAIN SCULPTING FUNCTIONS
                 //*****************************
-
+                std::cout << "tstbCall: " << tstbCall << std::endl;
             }
 
             if (tstbCall==0)

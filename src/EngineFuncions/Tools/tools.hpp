@@ -12,6 +12,16 @@
 namespace tools
 {
 
+inline extern void FlipBool(bool &bset)
+{
+    if(bset)
+    {
+        bset=false;
+    } else {
+        bset=true;
+    }
+};
+
 template<typename T>
 inline extern std::string numberToString(T number)
 {

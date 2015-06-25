@@ -8,6 +8,7 @@
 #include "../displayimage.h"
 #include "../screenwriter.h"
 #include "../input_struct.h"
+#include "../tools.hpp"
 
 #include <irrKlang.h>
 #include <ik_ISound.h>

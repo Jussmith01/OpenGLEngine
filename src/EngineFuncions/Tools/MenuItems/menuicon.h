@@ -25,19 +25,44 @@ struct Icon
 {
     bool state; // Icon State, true=active false=inactive
     float x,y; // Icon Position
+    std::string iconimage;
+    float scale;
+    float lw,lh;
+
+    // The class assumes these images are the same size
+    ImageDisplay image[2];
 
     // Constuctors
     Icon () {}; // Default
 
-    Icon (float x, float y) // Overloaded constructor
+    Icon (float x,float y,std::string iconimage,float scale,float swidth,float sheight) // Overloaded constructor
     {
         this->x=x;
         this->y=y;
         this->state=false;
+
+        std::stringstream fn1,fn2; //File names for images
+        fn1 << iconimage << "_inact.png";
+        fn2 << iconimage << "_act.png";
+
+        // Setup icon images on GPU
+        float is=scale*0.1;
+        image[0].Init(fn1.str(),is,is,swidth,sheight);
+        image[1].Init(fn2.str(),is,is,swidth,sheight);
+
+        //Obtain Image Border
+        lw=image[0].GetImageHalfLength();
+        lh=image[0].GetImageHalfHeight();
+    };
+
+    void Cleanup()
+    {
+        image[0].Cleanup();
+        image[1].Cleanup();
     };
 
     //***************************************
-    // Check if the mouse is over the Struct
+    // Check if the mouse is over the Icon
     //***************************************
     /*
     Function returns true if the mouse
@@ -45,7 +70,7 @@ struct Icon
     mouse coordinates and lw,lh button
     width and height.
     */
-    bool CheckIfOver(float xmp,float ymp,float lw,float lh)
+    bool CheckIfOver(float xmp,float ymp)
     {
         // Check X over
         bool xchk=false;
@@ -87,33 +112,26 @@ class MenuIcons
     // Variables
     std::vector<Icon> icon;
     float swidth,sheight;
-    float lw,lh;
     int activeicon;
     int hovericon;
 
     keyhandler kh;
 
-    float lastuse;
-    float alastuse;
-
-    // Tools
-    ImageDisplay image[2];
-
     // Check if mouse is over button
     void CheckMouseOver(float x,float y);
 
     //Check if button is pressed
-    void CheckPress(bool press,int IconID);
+    int CheckPress(bool press,int IconID);
 
 public:
     // Initialize Button Class
-    void Init(std::string iconimage,float scale,Properties &props);
+    void Init(Properties *props);
 
     // Cleanup function for destruction
     void Cleanup();
 
     // Adds a new button to the class
-    void DefineNewIcon(float x, float y);
+    void DefineNewIcon(float x, float y,std::string iconimage,float scale);
 
     // Returns ButtonID if button was Pressed and Released while over a Button
     int UpdateIconEvents(InputStruct &input);
@@ -124,8 +142,8 @@ public:
     // Function resets all buttons to default state
     void ResetIconStates();
 
-    // Function sets the active button given button ID.
-    void SetActiveIcon(int IconID);
+    // Function gets the active icon ID.
+    int GetActiveIcon();
 };
 
 

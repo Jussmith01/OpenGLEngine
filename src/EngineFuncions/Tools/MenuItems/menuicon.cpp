@@ -83,7 +83,7 @@ void MenuIcons::DefineNewIcon(float x,float y,std::string iconimage,float scale)
 /*
 
 */
-int MenuIcons::UpdateIconEvents(InputStruct &input)
+void MenuIcons::UpdateIconEvents(InputStruct &input)
 {
     //std::cout << "epress: " <<  epress << " erelease: " <<  erelease << " activeicon: " << activeicon << std::endl;
     double x,y;
@@ -97,11 +97,9 @@ int MenuIcons::UpdateIconEvents(InputStruct &input)
     mpress=kh.CheckKeyState(mpress,GLFW_MOUSE_BUTTON_LEFT);
 
     //Check if press and hold occures and change for a icon
-    int IconID = CheckPress(mpress,hovericon);
+    CheckPress(mpress,hovericon);
 
     //std::cout << "ActiveIcon: " << activeicon << std::endl;
-
-    return IconID;
 };
 
 //************************************
@@ -140,9 +138,9 @@ void MenuIcons::CheckMouseOver(float x, float y)
 /*
 
 */
-int MenuIcons::CheckPress(bool press,int IconID)
+void MenuIcons::CheckPress(bool press,int IconID)
 {
-    int RTNID=-1;
+    //int RTNID=-1;
     if(IconID>=0 && press)
     {
         if (activeicon==IconID)
@@ -157,13 +155,11 @@ int MenuIcons::CheckPress(bool press,int IconID)
         if (icon[IconID].state)
         {
             activeicon=IconID;
-            RTNID=IconID;
+            //RTNID=IconID;
         } else {
             activeicon=-1;
         }
     }
-
-    return RTNID;
 };
 
 //*******************************************

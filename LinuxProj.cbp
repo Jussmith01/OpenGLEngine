@@ -24,7 +24,7 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
-					<Add option="-O2" />
+					<Add option="-O3" />
 					<Add option="-std=c++11" />
 					<Add option="-fno-strict-aliasing" />
 				</Compiler>
@@ -136,7 +136,9 @@
 		<Unit filename="src/EngineFuncions/Tools/displayimage.cpp" />
 		<Unit filename="src/EngineFuncions/Tools/displayimage.h" />
 		<Unit filename="src/EngineFuncions/Tools/flaghandler.h" />
+		<Unit filename="src/EngineFuncions/Tools/glmtools.hpp" />
 		<Unit filename="src/EngineFuncions/Tools/input_struct.h" />
+		<Unit filename="src/EngineFuncions/Tools/ogltools.hpp" />
 		<Unit filename="src/EngineFuncions/Tools/rtscamera.h" />
 		<Unit filename="src/EngineFuncions/Tools/screenwriter.cpp" />
 		<Unit filename="src/EngineFuncions/Tools/screenwriter.h" />

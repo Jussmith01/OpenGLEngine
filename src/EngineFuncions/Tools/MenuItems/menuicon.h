@@ -120,8 +120,8 @@ class MenuIcons
     // Check if mouse is over button
     void CheckMouseOver(float x,float y);
 
-    //Check if button is pressed
-    int CheckPress(bool press,int IconID);
+    //Check if button is pressed -- set activeicon
+    void CheckPress(bool press,int IconID);
 
 public:
     // Initialize Button Class
@@ -134,7 +134,7 @@ public:
     void DefineNewIcon(float x, float y,std::string iconimage,float scale);
 
     // Returns ButtonID if button was Pressed and Released while over a Button
-    int UpdateIconEvents(InputStruct &input);
+    void UpdateIconEvents(InputStruct &input);
 
     // Draw all buttons to the screen
     void DrawIcons(void);

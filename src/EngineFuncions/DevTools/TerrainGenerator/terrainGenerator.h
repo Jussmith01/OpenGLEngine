@@ -9,6 +9,8 @@
 #include "../worldbuildertools/boxclass.h"
 #include "../../Handlers/ModelHandler/base_classes.h"
 #include "../../Tools/tools.hpp"
+#include "../../Tools/ogltools.hpp"
+#include "../../Tools/glmtools.hpp"
 #include "../../Tools/ToolBoxs/terraincreationtoolbox.h"
 #include "../../Tools/ToolBoxs/terrainmodificationtoolbox.h"
 #include "../../Tools/ToolBoxs/materialmodificationtoolbox.h"
@@ -53,7 +55,7 @@ class TerrainGeneration
     //std::vector< glm::vec2 > positions; // mesh positions
 
     /*  Render data  */
-    std::vector< tools::BufferHandler > buffers;
+    std::vector< ogltools::BufferHandler > buffers;
 
     // Class Variables
     bool GPUDataSet;
@@ -407,6 +409,18 @@ public:
 
         }
     };*/
+
+    void lowerTerrain(InputStruct &input)
+    {
+
+    };
+
+    void raiseTerrain(InputStruct &input)
+    {
+
+    };
+
+    void modifyElevation(int func,InputStruct &input);
 
 private:
     //**************************

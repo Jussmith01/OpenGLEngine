@@ -223,7 +223,7 @@ void TerrainGeneration::setupMeshRegular()
     // Create buffers/arrays
     for (int i=0; i<Nsd; ++i)
     {
-        tools::BufferHandler tmpBuff;
+        ogltools::BufferHandler tmpBuff;
         tmpBuff.GenBuffers(meshVerts[i],idxs[i]);
         buffers.push_back(tmpBuff);
     }
@@ -674,3 +674,13 @@ void TerrainGeneration::SetRelativeHeightUniform()
     glUniform4f(RelHeightLoc,relativeHeight.x,relativeHeight.y,relativeHeight.z,relativeHeight.w);
 };
 
+//*********************************************
+//          Raise/Lower Terrain
+//*********************************************
+/*
+Set Relative Height Data on GPU.
+*/
+void TerrainGeneration::modifyElevation(int func,InputStruct &input)
+{
+
+};

@@ -85,7 +85,6 @@ int TerrainSculptingToolbox::UpdateEvents(InputStruct &input)
 
     // Initialize button press
     int bpress = -1;
-    int ipress = -1;
 
     // Find out Position which icon and button the mouse is over, -1 if none
     bool hover=CheckMouseOver(xmp,ymp);
@@ -93,7 +92,7 @@ int TerrainSculptingToolbox::UpdateEvents(InputStruct &input)
     if (hover)
     {
         bpress = buttons.UpdateButtonEvents(input);
-        ipress = icons.UpdateIconEvents(input);
+        icons.UpdateIconEvents(input);
     }
 
     //Assure mouse key press is not read later -- Interaction stuff must come later

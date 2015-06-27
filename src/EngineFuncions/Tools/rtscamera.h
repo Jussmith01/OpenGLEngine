@@ -42,8 +42,6 @@ class RTSCamera
     double ft; // Frame Time
     double dt; // Delta time
     float aspect;
-    int swidth;
-    int sheight;
 
     //____________________________________
     //       CAMERAUBO Variable
@@ -56,6 +54,11 @@ class RTSCamera
     */
 
 public:
+
+    // Screen width and height
+    int swidth;
+    int sheight;
+
     //*************************
     // Camera Positional Data
     //*************************

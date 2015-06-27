@@ -8,9 +8,11 @@
 #include "../worldbuildertools/randlib.h"
 #include "../worldbuildertools/boxclass.h"
 #include "../../Handlers/ModelHandler/base_classes.h"
+#include "../../Tools/rtscamera.h"
 #include "../../Tools/tools.hpp"
 #include "../../Tools/ogltools.hpp"
 #include "../../Tools/glmtools.hpp"
+#include "../../Tools/micro_timer.h"
 #include "../../Tools/ToolBoxs/terraincreationtoolbox.h"
 #include "../../Tools/ToolBoxs/terrainmodificationtoolbox.h"
 #include "../../Tools/ToolBoxs/materialmodificationtoolbox.h"
@@ -69,6 +71,7 @@ class TerrainGeneration
 
     // Class functions
     Texture texture[4];
+    microTimer generalTimer;
 
 public:
     // Public for use with register functions
@@ -410,17 +413,17 @@ public:
         }
     };*/
 
-    void lowerTerrain(InputStruct &input)
+    void lowerTerrain(InputStruct &input,RTSCamera &camera)
     {
-
+        modifyElevation(0,input,camera);
     };
 
-    void raiseTerrain(InputStruct &input)
+    void raiseTerrain(InputStruct &input,RTSCamera &camera)
     {
-
+        modifyElevation(1,input,camera);
     };
 
-    void modifyElevation(int func,InputStruct &input);
+    void modifyElevation(int func,InputStruct &input,RTSCamera &camera);
 
 private:
     //**************************

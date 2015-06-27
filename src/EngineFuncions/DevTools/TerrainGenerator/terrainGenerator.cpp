@@ -256,15 +256,15 @@ void TerrainGeneration::Draw()
     // Create buffers/arrays
     for (int i=0; i<(int)buffers.size(); ++i)
     {
-            // Set Position
-            GLuint modelLoc = glGetUniformLocation(shader.Program, "modelMat");
+        // Set Position
+        GLuint modelLoc = glGetUniformLocation(shader.Program, "modelMat");
 
-            glm::mat4 model2;
-            model2=glm::translate(model2,glm::vec3(0.0f,0.0f,0.0f));
-            glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model2));
+        glm::mat4 model2;
+        model2=glm::translate(model2,glm::vec3(0.0f,0.0f,0.0f));
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model2));
 
-            // Draw mesh
-            buffers[i].DrawVerts();
+        // Draw mesh
+        buffers[i].DrawVerts();
     }
 };
 
@@ -381,8 +381,7 @@ void TerrainGeneration::SetupVerts()
             double dx=fw/(double)sqrt(sd);
 
             double x=n*dx+dx/2.0-(fw/2.0);
-            double y=m
-                     *dx+dx/2.0-(fw/2.0);
+            double y=m*dx+dx/2.0-(fw/2.0);
 
             positions[sdIdx]=glm::vec2(x,y);
             //std::cout << "DISTANCE(" << sdIdx << "): {" << positions.back().x << "," << positions.back().y << "}" << std::endl;
@@ -680,7 +679,64 @@ void TerrainGeneration::SetRelativeHeightUniform()
 /*
 Set Relative Height Data on GPU.
 */
-void TerrainGeneration::modifyElevation(int func,InputStruct &input)
+void TerrainGeneration::modifyElevation(int func,InputStruct &input,RTSCamera &camera)
 {
+    double x,y;
 
+    input.ReturnMousePos(x,y);
+
+    glm::vec3 baryPos;
+
+    generalTimer.start_point();
+
+    #pragma omp parallel for default(shared)//shared(camera,x,y,baryPos)
+    for(int m=0; m<(int)idxs.size(); ++m)
+    {
+        // Declare Thread Variables
+        glm::vec3 dir = camera.cameraDir;
+        glm::vec3 pos = camera.cameraPos;
+
+        glm::mat4 PM = camera.PM;
+        glm::mat4 VM = camera.VM;
+
+        double swidth = camera.swidth;
+        double sheight = camera.sheight;
+
+        // Begin Looping over triangles
+        for(int i=0; i<(int)idxs[m].size()/3; ++i)
+        {
+            int idx1 = idxs[m][i*3];
+            int idx2 = idxs[m][i*3+1];
+            int idx3 = idxs[m][i*3+2];
+
+            //glm::vec3 v1 = meshVerts[m][idx1].normal;
+            //glm::vec3 v2 = meshVerts[m][idx2].normal;
+            //glm::vec3 v3 = meshVerts[m][idx3].normal;
+
+            //glm::vec3 Tnorm = glm::normalize(v1+v2+v3);
+
+            //float dface = glm::dot(Tnorm,-dir);
+
+            //if (dface>0)
+            //{
+                glm::vec3 v1 = meshVerts[m][idx1].position;
+                glm::vec3 v2 = meshVerts[m][idx2].position;
+                glm::vec3 v3 = meshVerts[m][idx3].position;
+
+                glm::vec3 baryPostmp;
+
+                if (glmtools::DetermineTriangleIntersection(x,y,swidth,sheight,VM,PM,pos,dir,v1,v2,v3,baryPostmp))
+                {
+                    baryPos = baryPostmp;
+                    std::cout << "Intersect Mesh(" << m << ") triangle(" << i << ")\n";
+                    std::cout << "baryPos: [" << baryPos.x << "," << baryPos.y << "," << baryPos.z << "]\n";
+                    break;
+                    break;
+                }
+            //}
+        }
+    }
+
+    generalTimer.end_point();
+    generalTimer.print_generic("modifyElevation ",std::cout);
 };

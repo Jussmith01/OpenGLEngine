@@ -138,6 +138,8 @@
 		<Unit filename="src/EngineFuncions/Tools/flaghandler.h" />
 		<Unit filename="src/EngineFuncions/Tools/glmtools.hpp" />
 		<Unit filename="src/EngineFuncions/Tools/input_struct.h" />
+		<Unit filename="src/EngineFuncions/Tools/micro_timer.cpp" />
+		<Unit filename="src/EngineFuncions/Tools/micro_timer.h" />
 		<Unit filename="src/EngineFuncions/Tools/ogltools.hpp" />
 		<Unit filename="src/EngineFuncions/Tools/rtscamera.h" />
 		<Unit filename="src/EngineFuncions/Tools/screenwriter.cpp" />

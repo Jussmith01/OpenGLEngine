@@ -1,6 +1,8 @@
 #include "engine.h"
 #include "state.h"
 
+//std::list<std::string> Console::cbuffer;
+
 //**********************************
 //Initializes the GL Engine via GLFW
 //**********************************
@@ -29,6 +31,8 @@ void Engine::Init(std::string enginetitle,int argc,char *argv[])
     glfwInit();
 
     std::cout << "Initializing Engine: " << enginetitle << std::endl;
+
+
 
     //Initialize the Properties class. This loads all properties from the bin/config.cfg file.
     props.init();
@@ -83,11 +87,16 @@ void Engine::Init(std::string enginetitle,int argc,char *argv[])
     //Poly Fill Mode
     glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
 
+    //Initialize the console
+    console.Init(&props);
+
     //Setup Audio Engine
     audioengine = createIrrKlangDevice();
     if (!audioengine)
 	{
-		printf("Could not startup audio engine\n");
+		Console::cPrint("Could not start audio engine...");
+	} else {
+        Console::cPrint("Audio engine stared...");
 	}
 
 };
@@ -125,6 +134,9 @@ void Engine::Cleanup()
 
     //Terminate GLFW
     glfwTerminate();
+
+    //Console
+    console.Clear();
 };
 
 //****************************************
@@ -200,4 +212,9 @@ void Engine::Draw()
 {
 	// let the state draw the screen
 	states.back()->Draw(this);
+	console.Draw();
+
+    // Swap the screen buffers or NULL to remove the currently set callback.
+    glfwSwapInterval(1); //Vsync this state
+    glfwSwapBuffers(window);
 };

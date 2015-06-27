@@ -179,8 +179,8 @@ void WorldBuilderState::Draw(Engine* game)
     cursor.DrawImagePos(input.mx,input.my);
 
     // Swap the screen buffers and flush
-    glfwSwapBuffers(game->window);
-    glFlush();
+    //glfwSwapBuffers(game->window);
+    //glFlush();
 };
 
 //Function handles key callbacks

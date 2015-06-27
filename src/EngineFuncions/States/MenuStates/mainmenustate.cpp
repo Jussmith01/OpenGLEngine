@@ -151,9 +151,9 @@ void MainMenuState::Draw(Engine* game)
     cursor.DrawImagePos(input.mx,input.my);
 
     // Swap the screen buffers
-    glfwSwapBuffers(game->window);
-    glFlush();
-    glFinish();
+    //glfwSwapBuffers(game->window);
+    //glFlush();
+    //glFinish();
 };
 
 //Function handles key callbacks

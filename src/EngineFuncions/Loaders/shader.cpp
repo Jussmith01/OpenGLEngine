@@ -1,4 +1,7 @@
 #include "shader.h"
+#include "../Tools/console.h"
+#include "../Tools/tools.hpp"
+
 
 
 //************************************
@@ -48,7 +51,8 @@ void Shader::ShaderSet(std::string filename)
     }
     catch(std::exception e)
     {
-        std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
+        Console::cPrint("ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ");
+        //std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
     }
 
     const GLchar* vShaderCode = vertexCode.c_str();

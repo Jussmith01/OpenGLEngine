@@ -24,7 +24,8 @@ void Texture::LoadTextureDataToCPU()
         image=SOIL_load_image(filename.c_str(), &w, &h, 0, SOIL_LOAD_RGBA);
         if (image == NULL)
         {
-            std::cout << "ERROR: Texture failed to load: " << filename.c_str() << "\n";
+            Console::cPrint(tools::appendStrings("ERROR: Texture failed to load: ",filename));
+            //std::cout << "ERROR: Texture failed to load: " << filename.c_str() << "\n";
         }
     }
 };
@@ -53,28 +54,32 @@ void Texture::LoadTextureDataToGPU()
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-        std::cout << "Binding Texture: " << filename << " to Address: " << this->TextureID << "\n";
+        Console::cPrint(tools::appendStrings("Binding Texture: ",filename," to Address: ",this->TextureID));
+        //std::cout << "Binding Texture: " << filename << " to Address: " << this->TextureID << "\n";
         glBindTexture(GL_TEXTURE_2D, 0);
     }
 };
 
 void Texture::TextureDeleteFromGPU ()
 {
-    std::cout << "Clearing GPU data...\n";
+    //std::cout << "Clearing GPU data...\n";
+    Console::cPrint("Clearing GPU data...");
     GPUload=false;
     glDeleteTextures(1,&TextureID);
 };
 
 void Texture::TextureDeleteFromCPU ()
 {
-    std::cout << "Clearing CPU data...\n";
+    Console::cPrint("Clearing CPU data...");
+    //std::cout << "Clearing CPU data...\n";
     CPUload=false;
     delete [] image;
 };
 
 void Texture::TextureCleanup ()
 {
-    std::cout << "Clearing Texture Data...\n";
+    //std::cout << "Clearing Texture Data...\n";
+    Console::cPrint("Clearing Texture Data...");
 
     if (GPUload)
     {

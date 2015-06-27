@@ -5,6 +5,7 @@
 #include "../../Headers/headersogl.h"
 #include <SOIL/SOIL.h>
 #include "shader.h"
+#include "../Tools/console.h"
 
 //**************************
 //Vertex Object Loader Class

@@ -79,8 +79,8 @@ void IntroState::Draw(Engine* game)
     SW.RenderTextCentered("Press Space to Continue",1,0.0,1,-0.85,1,glm::vec3(1.0));
 
     // Swap the screen buffers or NULL to remove the currently set callback.
-    glfwSwapInterval(1); //Vsync this state
-    glfwSwapBuffers(game->window);
+    //glfwSwapInterval(1); //Vsync this state
+    //glfwSwapBuffers(game->window);
 };
 
 //Function handles key callbacks

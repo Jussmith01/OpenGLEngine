@@ -1,79 +1,34 @@
-#include "micro_timer.h"
+#include "console.h"
 
-void microTimer::Init ()
+std::vector<std::string> Console::cbuffer;
+
+void Console::Init (Properties *props)
 {
-    wt_count=0;
-    ct_count=0;
-    accumtime=0;
-    accumclock=0;
+    cPrint(tools::appendStrings("**Console Initialized** ",2));
+
+    this->props=props;
+    ctext.Setup("../Fonts/FreeSans.ttf",props->WinWidth,props->WinHeight,props->FontSize);
 };
 
-void microTimer::start_point ()
+void Console::Draw ()
 {
-    start_wall_time = omp_get_wtime();
-    start_clock_time = clock();
+    int N = cbuffer.size();
+    for(int i=0;i<N;++i)
+    {
+        ctext.RenderTextLeftJustified(cbuffer[N-1-i],-0.95f,-0.95f+i*0.04,1.0f,glm::vec3(1.0f));
+        if (i>=10) {break;}
+    }
 };
 
-void microTimer::end_point ()
+void Console::Clear ()
 {
-    accumtime+=omp_get_wtime()-start_wall_time;
-    accumclock+=clock()-start_clock_time / (double)CLOCKS_PER_SEC;
-
-    ++wt_count;
-    ++ct_count;
-
-    start_clock_time=0;
-    start_wall_time=0;
+    //Write a dump function
+    ctext.Cleanup();
+    cbuffer.clear();
 };
 
-//template<typename T>
-void microTimer::print_wall_time(std::string message,std::ostream &output)
+void Console::cPrint(std::string line)
 {
-    //file1 << message.c_str() << mk_time_string((double)accumtime/(double)wt_count).c_str() << "\n";
-    output << message.c_str() << mk_time_string((double)accumtime).c_str() << "\n";
-    reset();
+    cbuffer.push_back("> ");
+    cbuffer.back().append(line);
 };
-
-//template<typename T>
-void microTimer::print_clock_time(std::string message,std::ostream &output)
-{
-    output << message.c_str() << mk_time_string((double)accumclock/(double)ct_count).c_str() << "\n";
-    reset();
-};
-
-void microTimer::print_generic(std::string message,std::ostream &output)
-{
-    std::stringstream ss1;
-    ss1 << message << " Wall Time: ";
-
-    //stringstream ss2;
-    //ss2 << message << " Clock Time: ";
-
-    print_wall_time(ss1.str(),output);
-    //print_clock_time(ss2.str(),file1);
-};
-
-void microTimer::reset ()
-{
-    wt_count=0;
-    ct_count=0;
-
-    accumtime=0;
-    accumclock=0;
-};
-
-std::string microTimer::mk_time_string(double time_val)
-{
-    int days, hours, minutes;
-    double seconds;
-
-    days = floor(time_val/86400);
-    hours = floor((time_val-(days*86400))/3600);
-    minutes = floor((time_val - (days * 86400)-(hours * 3600))/60);
-    seconds = (double)(time_val - (days * 86400) - (hours * 3600) - (minutes * 60));
-
-    std::stringstream time_str;
-    time_str << days << " days " << hours  << " hours " << minutes << " minutes " << seconds  << " seconds";
-    return time_str.str();
-};
-

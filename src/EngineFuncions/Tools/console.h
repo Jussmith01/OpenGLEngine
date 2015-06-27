@@ -1,9 +1,11 @@
-#ifndef MICROTIMER_HPP
-#define MICROTIMER_HPP
+#ifndef CONSOLE_H
+#define CONSOLE_H
 
 #include "../../Headers/headerscpp.h"
-#include <time.h>
-#include <omp.h>
+#include "../../Headers/headersogl.h"
+#include "screenwriter.h"
+#include "tools.hpp"
+#include "../Loaders/properties.h"
 #include <iostream>
 
 //________________________________________________________________________//
@@ -11,60 +13,34 @@
 //                               Timer Class
 //                  Holds timer variables and class functions
 //      *************************************************************     //
-class microTimer
+class Console
 {
-    //--------------------------
-    //Private Class Declarations
-    //--------------------------
-
-    double start_wall_time; //Holds start time
-    long int wt_count; //Holds end time
-    double accumtime;
-
-    clock_t start_clock_time;
-    long int ct_count;
-    double accumclock;
+    static std::vector<std::string> cbuffer; // Console buffer
 
     //------------------------------
     //Private Member Class Functions
     //------------------------------
-
-    //Intakes a value of time in seconds and returns a string formmatted as:
-    //Computation Wall Time: d days h hours m minutes s seconds
-    std::string mk_time_string(double time_val);
+    ScreenWriter ctext;
+    Properties *props;
 
 public:
-    microTimer()
-    {
-        Init();
-    };
+    //--------------------------
+    //Public Class Declarations
+    //--------------------------
+    //static std::vector<std::string> cbuffer; // Console buffer
+    //static std::vector<std::string> cbuffer; // Console buffer
 
     //-----------------------------
     //Public Member Class Functions
     //-----------------------------
     // Initialie the class
-    void Init(void);
+    void Init(Properties *props);
 
-    //Sets the start time for the timer
-    void start_point(void);
+    void Draw(void);
 
-    //Sets the end time for the timer
-    void end_point(void);
+    void Clear(void);
 
-    //Prints run_timer = end_time - start_time
-    //template<typename T>
-    void print_wall_time(std::string message,std::ostream &output);
-
-    //Prints the clock time
-    //template<typename T>
-    void print_clock_time(std::string message,std::ostream &output);
-
-    // Generic Time Print
-    //template<typename T>
-    void print_generic(std::string message,std::ostream &output);
-
-    //Resets the timer if needed
-    void reset(void);
+    static void cPrint(std::string line);
 };
 
 #endif

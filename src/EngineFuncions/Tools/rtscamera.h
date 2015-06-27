@@ -74,6 +74,7 @@ public:
     //**************************
     glm::mat4 PM;
     glm::mat4 VM;
+    glm::vec3 Cursor3DRay;
     glm::vec3 Cursor3DPos;
 
     //**************
@@ -153,7 +154,8 @@ public:
         RotateCameraHPole(input);
         ChangeLengthCameraVPole(input);
         ChangeLengthCameraHPole(input);
-        UpdateCursor3DPos(input);
+        //UpdateCursor3DPos(input);
+        UpdateCursor3DRay(input);
         SetCamera();
         UpdateCameraDataUBO();
     };
@@ -306,6 +308,30 @@ private:
             vPole.y=0.5f;
         }
         input.sy=0.0;
+    };
+
+    //************************************
+    //       Update Cursor 3D Ray
+    //************************************
+    /*
+    Input:
+        1) inputstruct from the state class
+
+    This calculates the cursors ray in 3D
+    space game space from 2D screen space.
+    */
+    void UpdateCursor3DRay(InputStruct &input)
+    {
+        double x,z;
+        input.ReturnMousePos(x,z);
+
+        z=-1.0f*z; // Must flip the z axis to transform into 3D space properly.
+        tools::pixel_device_coordinate(x,z,swidth,sheight);
+
+        glm::vec3 rayfar=glm::unProject(glm::vec3((float)x,(float)z,1.0f),VM,PM,glm::vec4(0,0,swidth,sheight));
+        glm::vec3 raynear=glm::unProject(glm::vec3((float)x,(float)z,0.0f),VM,PM,glm::vec4(0,0,swidth,sheight));
+
+        Cursor3DRay=glm::normalize(rayfar-raynear);;
     };
 
     //************************************

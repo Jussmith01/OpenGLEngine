@@ -92,10 +92,10 @@ public:
     //*********************************************
     void SetTextures()
     {
-        std::cout << "Setting Textures on GPU...\n";
-
         if (!GPUTexSet)
         {
+            std::cout << "Setting Textures on GPU...\n";
+
             // Setup Textures
             texture[0].Setup(tools::appendStrings("landscape/",TextureFiles[0]),"textures.lowlandMap");
             texture[1].Setup(tools::appendStrings("landscape/",TextureFiles[1]),"textures.mediumlandMap");
@@ -103,13 +103,15 @@ public:
             texture[3].Setup(tools::appendStrings("landscape/",TextureFiles[3]),"textures.cliffMap");
 
             // Load Textures to CPU and GPU
-            for (auto&& i : texture)
+            for (auto&& tex : texture)
             {
-                i.LoadTextureDataToCPU();
-                i.LoadTextureDataToGPU();
+                tex.LoadTextureDataToCPU();
+                tex.LoadTextureDataToGPU();
             }
 
             GPUTexSet=true;
+        } else {
+            std::cout << "Textures already set on the GPU!\n";
         }
     };
 
@@ -118,12 +120,13 @@ public:
     //*********************************************
     void SetShader()
     {
-        std::cout << "Setting Shader on GPU...\n";
-
         if (!GPUShdrSet)
         {
+            std::cout << "Setting Shader on GPU...\n";
             shader.ShaderSet(ShaderFiles);
             GPUShdrSet=true;
+        } else {
+            std::cout << "Shader already set on the GPU!\n";
         }
     };
 
@@ -132,15 +135,15 @@ public:
     //*********************************************
     void UnsetTextures()
     {
-        std::cout << "Unsetting Textures on GPU...\n";
-
         if (GPUTexSet)
         {
-            for (auto&& i : texture)
-                i.TextureCleanup();
+            std::cout << "Clearing Textures on GPU...\n";
+            for (auto&& tex : texture)
+                tex.TextureCleanup();
+            GPUTexSet=false;
+        } else {
+            std::cout << "Textures not set on the GPU.\n";
         }
-
-        GPUTexSet=false;
     };
 
     //*********************************************
@@ -148,14 +151,14 @@ public:
     //*********************************************
     void UnsetShader()
     {
-        std::cout << "Unsetting Shader on GPU...\n";
-
         if (GPUShdrSet)
         {
+            std::cout << "Clearing Shader on GPU...\n";
             shader.Cleanup();
+            GPUShdrSet=false;
+        } else {
+            std::cout << "Shader not set on GPU.\n";
         }
-
-        GPUShdrSet=false;
     };
 
     //*********************************************

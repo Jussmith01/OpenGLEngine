@@ -682,58 +682,40 @@ Set Relative Height Data on GPU.
 void TerrainGeneration::modifyElevation(int func,InputStruct &input,RTSCamera &camera)
 {
     double x,y;
-
     input.ReturnMousePos(x,y);
 
     glm::vec3 baryPos;
 
     generalTimer.start_point();
 
-    #pragma omp parallel for default(shared)//shared(camera,x,y,baryPos)
+    //#pragma omp parallel for default(shared)//shared(camera,x,y,baryPos)
     for(int m=0; m<(int)idxs.size(); ++m)
     {
-        // Declare Thread Variables
-        glm::vec3 dir = camera.cameraDir;
+        // Declare thread variables for private use
+        //glm::vec3 dir = camera.cameraDir;
         glm::vec3 pos = camera.cameraPos;
-
-        glm::mat4 PM = camera.PM;
-        glm::mat4 VM = camera.VM;
-
-        double swidth = camera.swidth;
-        double sheight = camera.sheight;
+        glm::vec3 ray = camera.Cursor3DRay;
 
         // Begin Looping over triangles
+        #pragma omp parallel for default(shared) private(pos,ray)
         for(int i=0; i<(int)idxs[m].size()/3; ++i)
         {
             int idx1 = idxs[m][i*3];
             int idx2 = idxs[m][i*3+1];
             int idx3 = idxs[m][i*3+2];
 
-            //glm::vec3 v1 = meshVerts[m][idx1].normal;
-            //glm::vec3 v2 = meshVerts[m][idx2].normal;
-            //glm::vec3 v3 = meshVerts[m][idx3].normal;
+            glm::vec3 v1 = meshVerts[m][idx1].position;
+            glm::vec3 v2 = meshVerts[m][idx2].position;
+            glm::vec3 v3 = meshVerts[m][idx3].position;
 
-            //glm::vec3 Tnorm = glm::normalize(v1+v2+v3);
+            glm::vec3 baryPostmp;
 
-            //float dface = glm::dot(Tnorm,-dir);
-
-            //if (dface>0)
-            //{
-                glm::vec3 v1 = meshVerts[m][idx1].position;
-                glm::vec3 v2 = meshVerts[m][idx2].position;
-                glm::vec3 v3 = meshVerts[m][idx3].position;
-
-                glm::vec3 baryPostmp;
-
-                if (glmtools::DetermineTriangleIntersection(x,y,swidth,sheight,VM,PM,pos,dir,v1,v2,v3,baryPostmp))
-                {
-                    baryPos = baryPostmp;
-                    std::cout << "Intersect Mesh(" << m << ") triangle(" << i << ")\n";
-                    std::cout << "baryPos: [" << baryPos.x << "," << baryPos.y << "," << baryPos.z << "]\n";
-                    break;
-                    break;
-                }
-            //}
+            if (glmtools::DetermineTriangleIntersection(pos,ray,v1,v2,v3,baryPostmp))
+            {
+                baryPos = baryPostmp;
+                std::cout << "Intersect Mesh(" << m << ") triangle(" << i << ")";
+                std::cout << " baryPos: [" << baryPos.x << "," << baryPos.y << "," << baryPos.z << "]\n";
+            }
         }
     }
 

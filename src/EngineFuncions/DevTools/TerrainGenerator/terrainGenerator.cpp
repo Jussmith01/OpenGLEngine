@@ -697,7 +697,7 @@ void TerrainGeneration::modifyElevation(int func,InputStruct &input,RTSCamera &c
         glm::vec3 ray = camera.Cursor3DRay;
 
         // Begin Looping over triangles
-        #pragma omp parallel for default(shared) private(pos,ray)
+        #pragma omp parallel for default(shared)
         for(int i=0; i<(int)idxs[m].size()/3; ++i)
         {
             int idx1 = idxs[m][i*3];

@@ -35,7 +35,6 @@ namespace glmtools
 
         return detisec;
     };*/
-
 }
 
 #endif

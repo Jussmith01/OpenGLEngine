@@ -6,6 +6,7 @@
 #include "screenwriter.h"
 #include "tools.hpp"
 #include "../Loaders/properties.h"
+
 #include <iostream>
 
 //________________________________________________________________________//
@@ -15,7 +16,11 @@
 //      *************************************************************     //
 class Console
 {
+    //******************
+    // Static Variables
+    //******************
     static std::vector<std::string> cbuffer; // Console buffer
+    //static bool consoleActive;
 
     //------------------------------
     //Private Member Class Functions
@@ -27,8 +32,6 @@ public:
     //--------------------------
     //Public Class Declarations
     //--------------------------
-    //static std::vector<std::string> cbuffer; // Console buffer
-    //static std::vector<std::string> cbuffer; // Console buffer
 
     //-----------------------------
     //Public Member Class Functions
@@ -36,11 +39,17 @@ public:
     // Initialie the class
     void Init(Properties *props);
 
+    // Draw to the screen
     void Draw(void);
 
-    void Clear(void);
+    // Update the class with state inputs
+    //static void Update(bool F12);
 
+    // Console printing functions
     static void cPrint(std::string line);
+
+    // Cleanup
+    void Clear(void);
 };
 
 #endif

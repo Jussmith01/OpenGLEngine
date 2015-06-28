@@ -1,6 +1,8 @@
 #include "console.h"
 
+// Declar global static variables
 std::vector<std::string> Console::cbuffer;
+//bool consoleActive;
 
 void Console::Init (Properties *props)
 {
@@ -8,19 +10,27 @@ void Console::Init (Properties *props)
 
     this->props=props;
     ctext.Setup("../Fonts/FreeSans.ttf",props->WinWidth,props->WinHeight,props->FontSize);
+
+    //this->consoleActive=false;
 };
 
 void Console::Draw ()
 {
-    int N = cbuffer.size();
-    for(int i=0;i<N;++i)
-    {
-        ctext.RenderTextLeftJustified(cbuffer[N-1-i],-0.95f,-0.95f+i*0.04,1.0f,glm::vec3(1.0f));
-        if (i>=10) {break;}
-    }
+    //if (consoleActive)
+    //{
+        int N = cbuffer.size();
+        for(int i=0; i<N; ++i)
+        {
+            ctext.RenderTextLeftJustified(cbuffer[N-1-i],-0.95f,-0.95f+i*0.04,1.0f,glm::vec3(1.0f));
+            if (i>=10)
+            {
+                break;
+            }
+        }
+    //}
 };
 
-void Console::Clear ()
+void Console::Clear()
 {
     //Write a dump function
     ctext.Cleanup();
@@ -32,3 +42,9 @@ void Console::cPrint(std::string line)
     cbuffer.push_back("> ");
     cbuffer.back().append(line);
 };
+
+/*void Console::Update(bool F12)
+{
+        if(F12)
+            {consoleActive = !consoleActive;}
+};*/

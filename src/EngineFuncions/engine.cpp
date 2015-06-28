@@ -1,8 +1,6 @@
 #include "engine.h"
 #include "state.h"
 
-//std::list<std::string> Console::cbuffer;
-
 //**********************************
 //Initializes the GL Engine via GLFW
 //**********************************

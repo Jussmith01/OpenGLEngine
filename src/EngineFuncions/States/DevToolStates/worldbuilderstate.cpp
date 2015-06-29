@@ -5,6 +5,8 @@ WorldBuilderState WorldBuilderState::m_WorldBuilderState;
 
 void WorldBuilderState::Init(Engine *game)
 {
+    WorldBuilderState::stateID = "WorldBuilder";
+
     swidth=game->props.WinWidth;
     sheight=game->props.WinHeight;
     bID=0;

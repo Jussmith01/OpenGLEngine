@@ -9,18 +9,20 @@
 
 #include <iostream>
 
-//________________________________________________________________________//
-//      *************************************************************     //
-//                               Timer Class
-//                  Holds timer variables and class functions
-//      *************************************************************     //
+//_____________________________________________________________//
+//      **************************************************     //
+//                        Console Class
+//       Holds the console functionality within one class
+//       The class uses statically defined functions and
+//       variables to track the console output
+//      **************************************************     //
 class Console
 {
-    //******************
+    //------------------
     // Static Variables
-    //******************
+    //------------------
     static std::vector<std::string> cbuffer; // Console buffer
-    //static bool consoleActive;
+    static bool consoleActive;
 
     //------------------------------
     //Private Member Class Functions
@@ -42,14 +44,25 @@ public:
     // Draw to the screen
     void Draw(void);
 
-    // Update the class with state inputs
-    //static void Update(bool F12);
+    // Cleanup
+    void Clear(void);
+
+    //------------------------------
+    //Static Public Member Functions
+    //------------------------------
+
+    // Console dump
+    static void DumpConsole(bool errchk);
+
+    // Update the class
+    static void Update(bool F12);
 
     // Console printing functions
     static void cPrint(std::string line);
+    static void cPrint(bool spacef,std::string line);
+    static void cPrint(std::string line,bool spaceb);
+    static void cPrint(bool spacef,std::string line,bool spaceb);
 
-    // Cleanup
-    void Clear(void);
 };
 
 #endif

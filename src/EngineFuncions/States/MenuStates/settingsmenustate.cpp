@@ -1,10 +1,11 @@
 #include "settingsmenustate.h"
 
 SettingsMenuState SettingsMenuState::m_SettingsMenuState;
-//EventHandlingStateBase * EventHandlingStateBase::event_handling_instance;
 
 void SettingsMenuState::Init(Engine *game)
 {
+    SettingsMenuState::stateID = "Settings Menu";
+
     swidth=game->props.WinWidth;
     sheight=game->props.WinHeight;
     bID=-1;

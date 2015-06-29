@@ -5,6 +5,8 @@ MainMenuState MainMenuState::m_MainMenuState;
 
 void MainMenuState::Init(Engine *game)
 {
+    MainMenuState::stateID = "Main Menu";
+
     swidth=game->props.WinWidth;
     sheight=game->props.WinHeight;
     bID=-1;
@@ -77,6 +79,8 @@ void MainMenuState::Resume(Engine* game)
 
 void MainMenuState::HandleEvents(Engine* game)
 {
+    Console::Update(kh.CheckKeyState(input.GetKey(GLFW_KEY_F12),GLFW_KEY_F12));
+
     glfwPollEvents();
 
     // Update the button events

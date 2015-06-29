@@ -11,6 +11,8 @@
 class State
 {
 public:
+    std::string stateID;
+
     virtual void Init(Engine* game) = 0;
     virtual void Cleanup() = 0;
 

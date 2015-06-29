@@ -5,6 +5,8 @@ AboutMenuState AboutMenuState::m_AboutMenuState;
 
 void AboutMenuState::Init(Engine *game)
 {
+    AboutMenuState::stateID = "About Menu";
+
     swidth=game->props.WinWidth;
     sheight=game->props.WinHeight;
 

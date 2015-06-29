@@ -4,12 +4,11 @@
 
 
 IntroState IntroState::m_IntroState;
-//IntroState *IntroState::event_handling_instance;
 EventHandlingStateBase * EventHandlingStateBase::event_handling_instance;
-//IntroEventStateBase * IntroEventStateBase::event_handling_instance;
 
 void IntroState::Init(Engine *game)
 {
+    IntroState::stateID = "Intro";
     EntChk=false;
 
     //Disable Cursor

@@ -5,6 +5,8 @@ ToolsMenuState ToolsMenuState::m_ToolsMenuState;
 
 void ToolsMenuState::Init(Engine *game)
 {
+    ToolsMenuState::stateID = "Tools Menu";
+
     swidth=game->props.WinWidth;
     sheight=game->props.WinHeight;
 

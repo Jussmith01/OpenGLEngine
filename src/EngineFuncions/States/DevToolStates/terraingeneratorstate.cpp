@@ -5,6 +5,8 @@ TerrainGeneratorState TerrainGeneratorState::m_TerrainGeneratorState;
 
 void TerrainGeneratorState::Init(Engine *game)
 {
+    TerrainGeneratorState::stateID = "Terrain Generator";
+
     swidth=game->props.WinWidth;
     sheight=game->props.WinHeight;
     bID=0;

@@ -1,0 +1,40 @@
+Time and Date: 28-6-2015 23:42:10
+> |-------------------------------------|
+> Initializing Engine: Engine Testing
+> Initializing GLFW...
+> Loading Properties...
+ 
+> |-----------------------------------|
+> Reading Properties file: ../graphicsconfig.gcf
+> Resolution: 800x600
+> Monitor Size: 293x164
+> MSAA Sampling: 2
+> DPmm: 3 pixels/mm^2  Aspect Ratio: 1.78659
+> Calculated Font Scaling: 0.18
+> |-----------------------------------|
+ 
+> Starting GLFW 3.1.0 X11 GLX glXGetProcAddress clock_gettime /dev/js
+> Setting up OpenGL 3.3
+> Initializing GLEW...
+> **Console Initialized**
+> Irrklang audio engine started...
+> |-------------------------------------|
+ 
+>  -Changing to state: Intro
+>  -Popping state: Intro
+>  -Changing to state: Main Menu
+>  -Pushing to state: Settings Menu
+>  -Popping state: Settings Menu
+>  -Resuming state: Main Menu
+>  -Pushing to state: Settings Menu
+>  -Popping state: Settings Menu
+>  -Resuming state: Main Menu
+>  -Pushing to state: Tools Menu
+>  -Popping state: Tools Menu
+>  -Popping state: Main Menu
+>  -Changing to state: Terrain Generator
+ 
+> Engine Cleanup...
+>  -Popping state: Terrain Generator
+> Console Cleanup...
+***Normal Termination***

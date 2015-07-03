@@ -38,6 +38,7 @@ private:
     ImageDisplay cursor;
     MenuButtons buttons;
     ISoundEngine* audioengine;
+    keyhandler kh;
 
     //********************
     //   State Instance

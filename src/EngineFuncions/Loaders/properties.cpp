@@ -1,5 +1,9 @@
 #include "properties.h"
 
+//These are included here in console also contains a Properties class pointer
+#include "../Tools/tools.hpp"
+#include "../Tools/console.h"
+
 //-------------------------------------------//
 //        Properties Class Functions         //
 //-------------------------------------------//
@@ -7,7 +11,9 @@
 // Read the configuration file
 void Properties::read_gcf()
 {
-    std::cout << "Reading Properties..." << std::endl;
+    Console::cPrint(true,"|-----------------------------------|");
+    Console::cPrint(tools::appendStrings("Reading Properties file: ",filename));
+
     lines = 0;
     std::string line;
     std::ifstream file (filename.c_str());
@@ -20,14 +26,19 @@ void Properties::read_gcf()
         }
         file.close();
     }
-    else std::cout << "Error: Unable to open file: " << filename.c_str() << std::endl;
+    else
+    {
+        Console::cPrint(tools::appendStrings("Error: Unable to open file: ",filename));
+        Console::DumpConsole(true);
+        exit(1);
+    }
     this->lines = lines;
 };
 
 // Save the configuration file
 void Properties::save_gcf(std::stringstream *pdata)
 {
-    std::cout << "Saving Properties..." << std::endl;
+    Console::cPrint("Saving Properties...");
     std::ofstream file;
     file.open(filename.c_str());
 
@@ -47,6 +58,9 @@ void Properties::save_gcf(std::stringstream *pdata)
 // Sets the properties stored in data
 void Properties::set_properties()
 {
+    //*********************
+    // Parse the File Data
+    //*********************
     for (int i = 0; i < lines; ++i)
     {
         int pos = data[i].find_first_of("=");
@@ -95,6 +109,9 @@ void Properties::set_properties()
     GetPrimaryResolution(ResAuto);
     GetPrimaryMonitorSize();
 
+    //********************
+    // Some Calculations
+    //********************
     //Calculate DPmm
     DPmm = sqrt(WinWidth * WinHeight)/sqrt(MonWidth * MonHeight);
     //FontSize = 0.0002f * (float)pow(DPmm,2) + 0.15f;
@@ -102,15 +119,23 @@ void Properties::set_properties()
     //FontSize = 0.000000075f * (float)(WinWidth * WinHeight);
     ImgLength = (float)sqrt(DPmm);
     LineSpace = 0.48f * (float)DPmm + 15.0f;
-
-    //cout << "Fullscreen Mode: " << FullScreen << endl;
-    //cout << "Auto Resolution: " << ResAuto << endl;
-    //cout << "Screen Resolution: " << WinWidth << "X" << WinHeight << endl;
     aspectratio=MonWidth/(float)MonHeight;
-    std::cout << "MSAA Sampling: " << MSAA << std::endl;
-    std::cout << "DPmm: " << DPmm << " pixels/mm^2 " << " Aspect Ratio: " << aspectratio << std::endl;
-    std::cout << "Calculated Font Scaling: " << FontSize << std::endl;
+
+    //********************
+    // Results -> Console
+    //********************
+    Console::cPrint(tools::appendStrings("Resolution: ",WinWidth,"x",WinHeight));
+    Console::cPrint(tools::appendStrings("Monitor Size: ",MonWidth,"x",MonHeight));
+    Console::cPrint(tools::appendStrings("MSAA Sampling: ",MSAA));
+    Console::cPrint(tools::appendStrings("DPmm: ",DPmm," pixels/mm^2 "," Aspect Ratio: ",aspectratio));
+    Console::cPrint(tools::appendStrings("Calculated Font Scaling: ",FontSize));
+
+    //*************************
+    //   Clear Working Memory
+    //*************************
     data.clear();
+
+    Console::cPrint("|-----------------------------------|",true);
 };
 
 // Auto obtain the primary monitor resolution
@@ -122,13 +147,14 @@ void Properties::GetPrimaryResolution(int ResAuto)
         if (Monitor)
         {
             const GLFWvidmode* Mode = glfwGetVideoMode(Monitor);
-            std::cout << "Detected Video Mode: " << Mode->width << "x" << Mode->height << std::endl;
             WinWidth = Mode->width;
             WinHeight = Mode->height;
         }
         else
         {
-            std::cout << "Error Obtaining Primary Monitor.\n";
+            Console::cPrint("Error Obtaining Primary Monitor.");
+            Console::DumpConsole(true);
+            exit(1);
         };
     }
 };
@@ -140,10 +166,11 @@ void Properties::GetPrimaryMonitorSize()
     if (Monitor)
     {
         glfwGetMonitorPhysicalSize(Monitor,&MonWidth,&MonHeight);
-        std::cout << "Detected Monitor Size: " << MonWidth << "x" << MonHeight << std::endl;
     }
     else
     {
-        std::cout << "Error Obtaining Primary Monitor.\n";
+        Console::cPrint("Error Obtaining Primary Monitor.");
+        Console::DumpConsole(true);
+        exit(1);
     };
 };

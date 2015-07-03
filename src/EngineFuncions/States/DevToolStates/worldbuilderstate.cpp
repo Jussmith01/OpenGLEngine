@@ -5,6 +5,8 @@ WorldBuilderState WorldBuilderState::m_WorldBuilderState;
 
 void WorldBuilderState::Init(Engine *game)
 {
+    WorldBuilderState::stateID = "WorldBuilder";
+
     swidth=game->props.WinWidth;
     sheight=game->props.WinHeight;
     bID=0;
@@ -179,8 +181,8 @@ void WorldBuilderState::Draw(Engine* game)
     cursor.DrawImagePos(input.mx,input.my);
 
     // Swap the screen buffers and flush
-    glfwSwapBuffers(game->window);
-    glFlush();
+    //glfwSwapBuffers(game->window);
+    //glFlush();
 };
 
 //Function handles key callbacks

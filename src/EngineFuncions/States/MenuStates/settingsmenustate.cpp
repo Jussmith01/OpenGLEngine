@@ -1,10 +1,11 @@
 #include "settingsmenustate.h"
 
 SettingsMenuState SettingsMenuState::m_SettingsMenuState;
-//EventHandlingStateBase * EventHandlingStateBase::event_handling_instance;
 
 void SettingsMenuState::Init(Engine *game)
 {
+    SettingsMenuState::stateID = "Settings Menu";
+
     swidth=game->props.WinWidth;
     sheight=game->props.WinHeight;
     bID=-1;
@@ -71,6 +72,8 @@ void SettingsMenuState::HandleEvents(Engine* game)
 {
     glfwPollEvents();
 
+    Console::Update(kh.CheckKeyState(input.GetKey(GLFW_KEY_F12),GLFW_KEY_F12));
+
     // Update the button events
     if (bID==-1)
     {
@@ -129,8 +132,8 @@ void SettingsMenuState::Draw(Engine* game)
     cursor.DrawImagePos(input.mx,input.my);
 
     // Swap the screen buffers
-    glfwSwapBuffers(game->window);
-    glFlush();
+    //glfwSwapBuffers(game->window);
+    //glFlush();
 };
 
 //Function handles key callbacks

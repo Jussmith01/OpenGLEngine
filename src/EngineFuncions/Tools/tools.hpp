@@ -30,24 +30,35 @@ inline extern std::string numberToString(T number)
     return ss.str();
 };
 
-inline extern std::string appendStrings(std::string s1,std::string s2)
+template<typename T1,typename T2>
+inline extern std::string appendStrings(T1 s1,T2 s2)
 {
     std::stringstream ss;
     ss << s1 << s2;
     return ss.str();
 };
 
-inline extern std::string appendStrings(std::string s1,std::string s2,std::string s3)
+template<typename T1,typename T2,typename T3>
+inline extern std::string appendStrings(T1 s1,T2 s2,T3 s3)
 {
     std::stringstream ss;
     ss << s1 << s2 << s3;
     return ss.str();
 };
 
-inline extern std::string appendStrings(std::string s1,std::string s2,std::string s3,std::string s4)
+template<typename T1,typename T2,typename T3,typename T4>
+inline extern std::string appendStrings(T1 s1,T2 s2,T3 s3,T4 s4)
 {
     std::stringstream ss;
     ss << s1 << s2 << s3 << s4;
+    return ss.str();
+};
+
+template<typename T1,typename T2,typename T3,typename T4,typename T5>
+inline extern std::string appendStrings(T1 s1,T2 s2,T3 s3,T4 s4,T5 s5)
+{
+    std::stringstream ss;
+    ss << s1 << s2 << s3 << s4 << s5;
     return ss.str();
 };
 

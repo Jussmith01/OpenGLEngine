@@ -1,6 +1,17 @@
 #include "engine.h"
 #include "state.h"
 
+//***************************************
+// GLFW Error Handling Callback Function
+//***************************************
+void glfw_error_callback(int error, const char* description)
+{
+    Console::cPrint("GLFW Error Detected: ");
+    Console::cPrint(description);
+    std::cerr << "GLFW Error Detected: " << std::endl;
+    std::cerr << description << std::endl;
+}
+
 //**********************************
 //Initializes the GL Engine via GLFW
 //**********************************
@@ -23,16 +34,25 @@ void Engine::Init(std::string enginetitle,int argc,char *argv[])
 {
     m_running=true;
 
+    Console::cPrint("|-------------------------------------|");
+    Console::cPrint(tools::appendStrings("Initializing Engine: ",enginetitle));
+    std::cout << "Initializing Engine: " << enginetitle << std::endl;
+
     flaghandler.Init(argc,argv);
 
     // Init GLFW
+    Console::cPrint("Initializing GLFW...");
     glfwInit();
 
-    std::cout << "Initializing Engine: " << enginetitle << std::endl;
+    //Set error handling callback
+    glfwSetErrorCallback(glfw_error_callback);
 
     //Initialize the Properties class. This loads all properties from the bin/config.cfg file.
+    Console::cPrint("Loading Properties...");
     props.init();
 
+    Console::cPrint(tools::appendStrings("Starting GLFW ",glfwGetVersionString()));
+    Console::cPrint("Setting up OpenGL 3.3");
     std::cout << "Starting GLFW " << glfwGetVersionString() << " context, OpenGL 3.3" << std::endl;
 
     // Set all the required options for GLFW^M
@@ -57,6 +77,7 @@ void Engine::Init(std::string enginetitle,int argc,char *argv[])
 
 	if( window == NULL )
 	{
+        Console::cPrint("Failed to open GLFW window.");
         fprintf( stderr, "Failed to open GLFW window.\n" );
         glfwTerminate();
     }
@@ -68,6 +89,7 @@ void Engine::Init(std::string enginetitle,int argc,char *argv[])
     glewExperimental = GL_TRUE;
 
     // Initialize GLEW to setup the OpenGL Function pointers^M
+    Console::cPrint("Initializing GLEW...");
     glewInit();
 
     // Define the viewport dimensions^M
@@ -83,13 +105,18 @@ void Engine::Init(std::string enginetitle,int argc,char *argv[])
     //Poly Fill Mode
     glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
 
+    //Initialize the console
+    console.Init(&props);
+
     //Setup Audio Engine
     audioengine = createIrrKlangDevice();
     if (!audioengine)
 	{
-		printf("Could not startup audio engine\n");
+		Console::cPrint("Could not start audio engine...");
+	} else {
+        Console::cPrint("Irrklang audio engine started...");
 	}
-
+    Console::cPrint("|-------------------------------------|",true);
 };
 
 //**********************************
@@ -112,10 +139,12 @@ class or just using default parameters.
 */
 void Engine::Cleanup()
 {
+    Console::cPrint(true,"Engine Cleanup...");
     std::cout << "Engine Cleanup..." << std::endl;
 
 	// cleanup all states
 	while ( !states.empty() ) {
+        Console::cPrint(tools::appendStrings(" -Popping state: ",states.back()->stateID));
 		states.back()->Cleanup();
 		states.pop_back();
 	}
@@ -123,6 +152,11 @@ void Engine::Cleanup()
     //Terminate Audio
     audioengine->drop();
 
+    //Terminate Console
+    Console::cPrint("Console Cleanup...");
+    console.Clear();
+
+    std::cout << "Exiting..." << std::endl;
     //Terminate GLFW
     glfwTerminate();
 };
@@ -132,15 +166,18 @@ void Engine::Cleanup()
 //****************************************
 void Engine::ChangeState(State* state)
 {
-	// cleanup the current state
+	// Cleanup the current states
 	while ( !states.empty() ) {
+        Console::cPrint(tools::appendStrings(" -Popping state: ",states.back()->stateID));
 		states.back()->Cleanup();
 		states.pop_back();
 	}
 
-	// store and init the new state
+	// Store and Init the new state
 	states.push_back(state);
 	states.back()->Init(this);
+
+    Console::cPrint(tools::appendStrings(" -Changing to state: ",states.back()->stateID));
 };
 
 //*****************************************
@@ -156,6 +193,8 @@ void Engine::PushState(State* state)
 	// store and init the new state
 	states.push_back(state);
 	states.back()->Init(this);
+
+    Console::cPrint(tools::appendStrings(" -Pushing to state: ",states.back()->stateID));
 };
 
 //******************************
@@ -165,12 +204,14 @@ void Engine::PopState()
 {
 	// cleanup the current state
 	if ( !states.empty() ) {
+        Console::cPrint(tools::appendStrings(" -Popping state: ",states.back()->stateID));
 		states.back()->Cleanup();
 		states.pop_back();
 	}
 
 	// resume previous state
 	if ( !states.empty() ) {
+        Console::cPrint(tools::appendStrings(" -Resuming state: ",states.back()->stateID));
 		states.back()->Resume(this);
 	}
 };
@@ -200,4 +241,9 @@ void Engine::Draw()
 {
 	// let the state draw the screen
 	states.back()->Draw(this);
+	console.Draw();
+
+    // Swap the screen buffers or NULL to remove the currently set callback.
+    glfwSwapInterval(1); //Vsync this state
+    glfwSwapBuffers(window);
 };

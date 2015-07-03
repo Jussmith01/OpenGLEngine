@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <vector>
+#include <list>
 #include <sstream>
 #include <cmath>
 #include <unistd.h>

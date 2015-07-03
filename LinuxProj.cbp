@@ -133,6 +133,8 @@
 		<Unit filename="src/EngineFuncions/Tools/ToolBoxs/terrainmodificationtoolbox.h" />
 		<Unit filename="src/EngineFuncions/Tools/ToolBoxs/terrainsculptingtoolbox.cpp" />
 		<Unit filename="src/EngineFuncions/Tools/ToolBoxs/terrainsculptingtoolbox.h" />
+		<Unit filename="src/EngineFuncions/Tools/console.cpp" />
+		<Unit filename="src/EngineFuncions/Tools/console.h" />
 		<Unit filename="src/EngineFuncions/Tools/displayimage.cpp" />
 		<Unit filename="src/EngineFuncions/Tools/displayimage.h" />
 		<Unit filename="src/EngineFuncions/Tools/flaghandler.h" />

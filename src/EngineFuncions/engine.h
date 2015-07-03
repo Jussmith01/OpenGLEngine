@@ -5,6 +5,8 @@
 #include "../Headers/headersogl.h"
 #include "Loaders/properties.h"
 #include "Tools/flaghandler.h"
+#include "Tools/console.h"
+#include "Tools/tools.hpp"
 
 #include <irrKlang.h>
 #include <ik_ISound.h>
@@ -42,6 +44,7 @@ public:
     ISoundEngine* audioengine;
     Properties props;
     FlagHandler flaghandler;
+    Console console;
 
 private:
     // the stack of states

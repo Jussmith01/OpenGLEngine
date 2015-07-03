@@ -6,13 +6,11 @@
 #include "../../Loaders/shader.h"
 #include "../../Tools/screenwriter.h"
 #include "../../Tools/displayimage.h"
-#include "../../Tools/MenuItems/menubutton.h"
-#include "../../Tools/MenuItems/boxcolored.h"
-#include "../../Tools/MenuItems/checkbox.h"
-#include "../../Tools/MenuItems/dropbox.h"
+#include "../../Tools/MenuItems.h"
 #include "../introstate.h"
 #include "../../../EventStateBase.h"
 #include "../../Tools/tools.hpp"
+#include "../../Tools/console.h"
 #include "../../Tools/input_struct.h"
 #include "settingsmenustate.h"
 #include "aboutmenustate.h"
@@ -43,6 +41,7 @@ private:
     ImageDisplay cursor;
     MenuButtons buttons;
     RequestInterface exitInterface;
+    keyhandler kh;
 
     ISoundEngine* audioengine;
 

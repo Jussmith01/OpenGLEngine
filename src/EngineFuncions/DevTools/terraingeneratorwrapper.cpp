@@ -337,12 +337,21 @@ void TerrainGeneratorWrapper::UpdateEvents(InputStruct &input)
         if (selID.option==2)
         {
             int tstbCall=tstoolbox.UpdateEvents(input);
-            if(tstbCall==0)
+            if(tstbCall>0)
             {
                 //*****************************
                 //  TERRAIN SCULPTING FUNCTIONS
                 //*****************************
+                std::cout << "tstbCall: " << tstbCall << std::endl;
+                if (tstbCall==1)
+                {
+                    terrainGen.lowerTerrain(input,camera);
+                }
 
+                if (tstbCall==2)
+                {
+                    terrainGen.raiseTerrain(input,camera);
+                }
             }
 
             if (tstbCall==0)
@@ -515,6 +524,7 @@ Cleaup the class
 */
 void TerrainGeneratorWrapper::Cleanup()
 {
+    // Cleanup required classes
     camera.Cleanup();
     skylight.Cleanup();
     text.Cleanup();
@@ -527,6 +537,6 @@ void TerrainGeneratorWrapper::Cleanup()
     sttoolbox.Cleanup();
     tstoolbox.Cleanup();
 
-    //Cleanup bars
+    // Cleanup bars
     mbar.Cleanup();
 };

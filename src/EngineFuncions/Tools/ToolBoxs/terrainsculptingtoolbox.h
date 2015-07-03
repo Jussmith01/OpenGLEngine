@@ -8,6 +8,7 @@
 #include "../displayimage.h"
 #include "../screenwriter.h"
 #include "../input_struct.h"
+#include "../tools.hpp"
 
 #include <irrKlang.h>
 #include <ik_ISound.h>
@@ -35,6 +36,7 @@ class TerrainSculptingToolbox
 
     // Testing
     MenuButtons buttons;
+    MenuIcons icons;
 
     // Check if mouse is over button
     bool CheckMouseOver(float x,float y);

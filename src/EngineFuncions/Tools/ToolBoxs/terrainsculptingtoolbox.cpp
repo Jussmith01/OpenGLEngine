@@ -29,7 +29,13 @@ void TerrainSculptingToolbox::Init(float posx, float posy,Properties *props,ISou
 
     // Setup the buttons
     buttons.Init("Buttons/testbutton","solid","../Fonts/FreeSans.ttf",0.5,*props,audioengine);
-    buttons.DefineNewButton("Close",x,y-0.24f,true);
+    buttons.DefineNewButton("Close",x,y-0.24f,false);
+
+    // Setup the icons
+    icons.Init(props);
+    icons.DefineNewIcon(x-0.037,y+0.14,"Icons/test_sculpting_raiseterr",0.35f);
+    icons.DefineNewIcon(x+0.037,y+0.14,"Icons/test_sculpting_lowerterr",0.35f);
+    icons.DefineNewIcon(x+0.037,y+0.04,"Icons/test_sculpting_levelterr",0.35f);
 };
 
 //************************************
@@ -44,6 +50,7 @@ void TerrainSculptingToolbox::DrawToolBox()
     // Draw
     text.RenderTextCentered("Sculpting Tool",1,x,1,0.25,1.1,glm::vec3(1.0f));
     frame.DrawBoxPos(x,y);
+    icons.DrawIcons();
     buttons.DrawButtons();
 };
 
@@ -56,6 +63,7 @@ Cleanup after finished using the buttons
 void TerrainSculptingToolbox::Cleanup()
 {
     frame.Cleanup();
+    icons.Cleanup();
     text.Cleanup();
     buttons.Cleanup();
 };
@@ -71,12 +79,21 @@ int TerrainSculptingToolbox::UpdateEvents(InputStruct &input)
 {
     double xmp,ymp;
     input.ReturnMousePos(xmp,ymp);
+
+    // Check for mouse button press
     bool mpress=input.GetMouseKey(GLFW_MOUSE_BUTTON_LEFT);
 
-    int bpress = buttons.UpdateButtonEvents(input);
+    // Initialize button press
+    int bpress = -1;
 
-    // Find out which button the mouse is over, -1 if none
+    // Find out Position which icon and button the mouse is over, -1 if none
     bool hover=CheckMouseOver(xmp,ymp);
+
+    if (hover)
+    {
+        bpress = buttons.UpdateButtonEvents(input);
+        icons.UpdateIconEvents(input);
+    }
 
     //Assure mouse key press is not read later -- Interaction stuff must come later
     if (hover && mpress)
@@ -84,17 +101,24 @@ int TerrainSculptingToolbox::UpdateEvents(InputStruct &input)
         input.SetMouseKeyFalse(GLFW_MOUSE_BUTTON_LEFT);
     }
 
+    // Initialize Return
     int rtn=-1;
+
+    // Check for return events
+    int ActI=icons.GetActiveIcon();
+    mpress=input.GetMouseKey(GLFW_MOUSE_BUTTON_LEFT);
+
+    if (ActI>=0 && mpress)
+    {
+        rtn=ActI + 1;
+    }
+
+    // Check for exit events
     if (bpress==0)
     {
         rtn=0;
-        buttons.SetActiveButton(0);
-    }
-
-    if (bpress==1)
-    {
-        rtn=1;
-        buttons.SetActiveButton(1);
+        buttons.ResetButtonStates();
+        icons.ResetIconStates();
     }
 
     return rtn;

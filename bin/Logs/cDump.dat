@@ -1,4 +1,4 @@
-Time and Date: 1-7-2015 19:5:29
+Time and Date: 3-7-2015 12:48:57
 > |-------------------------------------|
 > Initializing Engine: Engine Testing
 > Initializing GLFW...
@@ -7,10 +7,10 @@ Time and Date: 1-7-2015 19:5:29
 > |-----------------------------------|
 > Reading Properties file: ../graphicsconfig.gcf
 > Resolution: 800x600
-> Monitor Size: 293x164
+> Monitor Size: 621x341
 > MSAA Sampling: 2
-> DPmm: 3 pixels/mm^2  Aspect Ratio: 1.78659
-> Calculated Font Scaling: 0.18
+> DPmm: 1 pixels/mm^2  Aspect Ratio: 1.82111
+> Calculated Font Scaling: 0.06
 > |-----------------------------------|
  
 > Starting GLFW 3.1.0 X11 GLX glXGetProcAddress clock_gettime /dev/js
@@ -23,28 +23,8 @@ Time and Date: 1-7-2015 19:5:29
 >  -Changing to state: Intro
 >  -Popping state: Intro
 >  -Changing to state: Main Menu
->  -Pushing to state: Tools Menu
->  -Popping state: Tools Menu
->  -Popping state: Main Menu
->  -Changing to state: Terrain Generator
-> Binding Texture: ../Data/Textures/landscape/lowland.png to Address: 6179
-> Binding Texture: ../Data/Textures/landscape/grass1.png to Address: 6180
-> Binding Texture: ../Data/Textures/landscape/rocks.png to Address: 6181
-> Binding Texture: ../Data/Textures/landscape/cliff1.png to Address: 6182
  
 > Engine Cleanup...
->  -Popping state: Terrain Generator
-> Clearing Texture Data...
-> Clearing GPU data...
-> Clearing CPU data...
-> Clearing Texture Data...
-> Clearing GPU data...
-> Clearing CPU data...
-> Clearing Texture Data...
-> Clearing GPU data...
-> Clearing CPU data...
-> Clearing Texture Data...
-> Clearing GPU data...
-> Clearing CPU data...
+>  -Popping state: Main Menu
 > Console Cleanup...
 ***Normal Termination***

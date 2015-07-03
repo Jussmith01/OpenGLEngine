@@ -72,6 +72,8 @@ void SettingsMenuState::HandleEvents(Engine* game)
 {
     glfwPollEvents();
 
+    Console::Update(kh.CheckKeyState(input.GetKey(GLFW_KEY_F12),GLFW_KEY_F12));
+
     // Update the button events
     if (bID==-1)
     {

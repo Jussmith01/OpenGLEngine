@@ -12,6 +12,9 @@ void TerrainGeneration::AllocateData(int size)
     int h = size;
     int w = size;
 
+    long long int memSize = h*w*sizeof(int);
+    Console::cPrint(tools::appendStrings("Required Memory for Height Data: ",memSize/(float)(1024*1024),"MB"));
+
     if(!HeightData.empty())
     {
         for (int i=0; i<(int)HeightData.size(); ++i)
@@ -57,7 +60,8 @@ void TerrainGeneration::GenerateTerrainData(int terrainSize)
     HeightData[ h-1 ][  0  ] = heightVariation.x;
     HeightData[ h-1 ][ w-1 ] = heightVariation.x;
 
-    std::cout << "Beginning Fractal\n";
+    //std::cout << "Beginning Fra\n";
+    Console::cPrint("Computing Height Data...");
     //std::cout << "[" << HeightData[0][0] << "," << HeightData[0][w-1] << "]" << std::endl;
     //std::cout << "[" << HeightData[h-1][0] << "," << HeightData[h-1][w-1] << "]" << std::endl;
     std::vector<Box> Boxes;
@@ -75,7 +79,7 @@ void TerrainGeneration::GenerateTerrainData(int terrainSize)
     while (!chkfin)
     {
         ++cycle;
-        std::cout << "   Cycle: " << cycle << std::endl;
+        Console::cPrint(tools::appendStrings(" Cycle: ",cycle));
         int N = Boxes.size();
         //RandomInt RI(N,100+cycle);
 
@@ -126,11 +130,13 @@ void TerrainGeneration::GenerateTerrainData(int terrainSize)
     //******************************
     //Blur image For Smoothness
     //******************************
-    std::cout << "Running Height Map Blur Cycles..." << "\n";
+    Console::cPrint("Running Height Map Blur Cycles...");
+    //std::cout << "Running Height Map Blur Cycles..." << "\n";
     for (int l=0; l<NSmooth; ++l)
     {
         std::vector< std::vector<int> > TempData = HeightData;
-        std::cout << "   Cycle: " << l << "\n";
+        //std::cout << "   Cycle: " << l << "\n";
+        Console::cPrint(tools::appendStrings("   Cycle: ",l));
 
         #pragma omp parallel for
         for (int j = 0; j<h; ++j)
@@ -218,8 +224,8 @@ after generation.
 */
 void TerrainGeneration::setupMeshRegular()
 {
-
-    std::cout << "Setting Up Terrain Mesh" << std::endl;
+    Console::cPrint("Setting Up Terrain Mesh");
+    //std::cout << "Setting Up Terrain Mesh" << std::endl;
     // Create buffers/arrays
     for (int i=0; i<Nsd; ++i)
     {
@@ -282,20 +288,20 @@ void TerrainGeneration::SetupVerts()
     int sd = pow(4,subdiv);
     Nsd=sd;
 
-    std::cout << "Allocating Verts Memory...\n";
+    Console::cPrint("Allocating Verts Memory...");
     verts.resize(w*h);
 
-    std::cout << "Determining Max/Min Heights...\n";
+    Console::cPrint("Determining Max/Min Heights...");
     RecalculateMaxMinHeights();
 
-    std::cout << "Calculating Verts...\n";
+    Console::cPrint("Calculating Verts...");
     RecalculateVerticies();
     //HeightData.clear(); // Done with height data
 
-    std::cout << "Calculating Normals...\n";
+    Console::cPrint("Calculating Normals...");
     RecalculateNormals();
 
-    std::cout << "Calculating Indicies...\n";
+    Console::cPrint("Calculating Indicies...");
 
     if (!idxs.empty())
     {
@@ -310,10 +316,10 @@ void TerrainGeneration::SetupVerts()
     positions.resize(sd);
 
     int N=(h/sqrt(sd))+1; // Length of each mesh
-    std::cout << " Width of Mesh: " << N << "\n";
+    Console::cPrint(tools::appendStrings(" Width of Mesh: ",N));
 
-    long int memreq=(N-1)*(N-1)*6;
-    std::cout << " Idx Mem Req: " << sd * memreq << "\n";
+    long long int memreq=(N-1)*(N-1)*6;
+    Console::cPrint(tools::appendStrings(" Idx. Mem. Req.: ",(sd*memreq)/(1024*1024),"MB"));
 
     idxs.resize(sd);
     for (int i=0; i<sd; ++i)
@@ -321,14 +327,14 @@ void TerrainGeneration::SetupVerts()
         idxs[i].resize(memreq);
     }
 
-    std::cout << "Allocating Mesh Verts Memory...\n";
+    Console::cPrint(" Allocating Mesh Verts Memory...");
     meshVerts.resize(sd);
     for (int i=0; i<sd; ++i)
     {
         meshVerts[i].resize(N*N);
     }
 
-    std::cout << " Indexing Mesh Verts..." << "\n";
+    Console::cPrint(" Indexing Mesh Verts...");
 
     #pragma omp parallel for shared(sd,N)
     for (int m=0; m<(int)sqrt(sd); ++m)
@@ -391,7 +397,7 @@ void TerrainGeneration::SetupVerts()
     #pragma omp barrier
 
     //verts.clear(); // Done with normal verts
-    std::cout << "Terrain Set Up.\n";
+    Console::cPrint(" Terrain Successfully Setup!",true);
 };
 
 //*********************************************
@@ -412,6 +418,7 @@ void TerrainGeneration::RecalculateNormals()
     int w = terrainSize;
 
     //std::cout << "Beginning Normals...\n";
+    //Console::cPrint(" Calculating Normals...");
 
     #pragma omp parallel for shared(h,w)
     for (int i=0; i<h; ++i)
@@ -543,7 +550,7 @@ void TerrainGeneration::RecalculateVerticies()
 
     relativeHeight.x=heightMult*(relativeHeight.x-midpoint);
 
-    #pragma omp parallel for shared(h,w,shift,midpoint)
+    #pragma omp parallel for firstprivate(h,w) shared(shift,midpoint)
     for (int i=0; i<h; ++i)
     {
         for (int j=0; j<w; ++j)
@@ -713,12 +720,14 @@ void TerrainGeneration::modifyElevation(int func,InputStruct &input,RTSCamera &c
             if (glmtools::DetermineTriangleIntersection(pos,ray,v1,v2,v3,baryPostmp))
             {
                 baryPos = baryPostmp;
-                std::cout << "Intersect Mesh(" << m << ") triangle(" << i << ")";
-                std::cout << " baryPos: [" << baryPos.x << "," << baryPos.y << "," << baryPos.z << "]\n";
+                Console::cPrint(tools::appendStrings("Intersect Mesh(",m,") triangle(",i,")"));
+                //std::cout << "Intersect Mesh(" << m << ") triangle(" << i << ")";
+                //Console::cPrint(tools::appendStrings("Intersect Mesh(",m,") triangle(",i,")"));
+                //std::cout << " baryPos: [" << baryPos.x << "," << baryPos.y << "," << baryPos.z << "]\n";
             }
         }
     }
 
     generalTimer.end_point();
-    generalTimer.print_generic("modifyElevation ",std::cout);
+    Console::cPrint(generalTimer.get_generic_print_string("modifyElevation "));
 };

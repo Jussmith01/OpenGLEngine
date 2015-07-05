@@ -1,4 +1,4 @@
-Time and Date: 3-7-2015 16:44:17
+Time and Date: 4-7-2015 21:17:18
 > |-------------------------------------|
 > Initializing Engine: Engine Testing
 > Initializing GLFW...
@@ -17,174 +17,137 @@ Time and Date: 3-7-2015 16:44:17
 > Setting up OpenGL 3.3
 > Initializing GLEW...
 > **Console Initialized**
-> SHADER: text compiled and ready.
 > Irrklang audio engine started...
 > |-------------------------------------|
  
-> SHADER: text compiled and ready.
-> SHADER: image compiled and ready.
 >  -Changing to state: Intro
 >  -Popping state: Intro
-> SHADER: text compiled and ready.
-> SHADER: image compiled and ready.
-> SHADER: image compiled and ready.
-> SHADER: image compiled and ready.
-> SHADER: image compiled and ready.
-> SHADER: text compiled and ready.
-> SHADER: text compiled and ready.
-> SHADER: box compiled and ready.
-> SHADER: image compiled and ready.
-> SHADER: image compiled and ready.
-> SHADER: image compiled and ready.
-> SHADER: text compiled and ready.
 >  -Changing to state: Main Menu
-> SHADER: text compiled and ready.
-> SHADER: image compiled and ready.
-> SHADER: image compiled and ready.
-> SHADER: image compiled and ready.
-> SHADER: image compiled and ready.
-> SHADER: text compiled and ready.
 >  -Pushing to state: Tools Menu
 >  -Popping state: Tools Menu
 >  -Popping state: Main Menu
-> SHADER: text compiled and ready.
-> SHADER: image compiled and ready.
-> SHADER: image compiled and ready.
-> SHADER: image compiled and ready.
-> SHADER: image compiled and ready.
-> SHADER: text compiled and ready.
-> SHADER: box compiled and ready.
-> SHADER: text compiled and ready.
-> SHADER: box compiled and ready.
-> SHADER: image compiled and ready.
-> SHADER: image compiled and ready.
-> SHADER: image compiled and ready.
-> SHADER: text compiled and ready.
-> SHADER: text compiled and ready.
-> SHADER: box compiled and ready.
-> SHADER: text compiled and ready.
-> SHADER: box compiled and ready.
-> SHADER: text compiled and ready.
-> SHADER: box compiled and ready.
-> SHADER: text compiled and ready.
-> SHADER: box compiled and ready.
-> SHADER: text compiled and ready.
-> SHADER: box compiled and ready.
-> SHADER: text compiled and ready.
-> SHADER: box compiled and ready.
-> SHADER: text compiled and ready.
-> SHADER: box compiled and ready.
-> SHADER: text compiled and ready.
-> SHADER: image compiled and ready.
-> SHADER: image compiled and ready.
-> SHADER: image compiled and ready.
-> SHADER: text compiled and ready.
-> SHADER: box compiled and ready.
-> SHADER: text compiled and ready.
-> SHADER: box compiled and ready.
-> SHADER: text compiled and ready.
-> SHADER: box compiled and ready.
-> SHADER: text compiled and ready.
-> SHADER: box compiled and ready.
-> SHADER: text compiled and ready.
-> SHADER: box compiled and ready.
-> SHADER: text compiled and ready.
-> SHADER: image compiled and ready.
-> SHADER: image compiled and ready.
-> SHADER: image compiled and ready.
-> SHADER: text compiled and ready.
-> SHADER: box compiled and ready.
-> SHADER: text compiled and ready.
-> SHADER: box compiled and ready.
-> SHADER: text compiled and ready.
-> SHADER: box compiled and ready.
-> SHADER: text compiled and ready.
-> SHADER: box compiled and ready.
-> SHADER: text compiled and ready.
-> SHADER: box compiled and ready.
-> SHADER: text compiled and ready.
-> SHADER: box compiled and ready.
-> SHADER: text compiled and ready.
-> SHADER: box compiled and ready.
-> SHADER: text compiled and ready.
-> SHADER: box compiled and ready.
-> SHADER: text compiled and ready.
-> SHADER: box compiled and ready.
-> SHADER: text compiled and ready.
-> SHADER: box compiled and ready.
-> SHADER: text compiled and ready.
-> SHADER: box compiled and ready.
-> SHADER: text compiled and ready.
-> SHADER: image compiled and ready.
-> SHADER: image compiled and ready.
-> SHADER: image compiled and ready.
-> SHADER: text compiled and ready.
-> SHADER: box compiled and ready.
-> SHADER: text compiled and ready.
-> SHADER: box compiled and ready.
-> SHADER: text compiled and ready.
-> SHADER: image compiled and ready.
-> SHADER: image compiled and ready.
-> SHADER: image compiled and ready.
-> SHADER: text compiled and ready.
-> SHADER: box compiled and ready.
-> SHADER: text compiled and ready.
-> SHADER: image compiled and ready.
-> SHADER: image compiled and ready.
-> SHADER: image compiled and ready.
-> SHADER: text compiled and ready.
-> SHADER: image compiled and ready.
-> SHADER: image compiled and ready.
-> SHADER: image compiled and ready.
-> SHADER: image compiled and ready.
-> SHADER: image compiled and ready.
-> SHADER: image compiled and ready.
-> SHADER: box compiled and ready.
-> SHADER: box compiled and ready.
-> SHADER: text compiled and ready.
-> SHADER: box compiled and ready.
-> SHADER: box compiled and ready.
-> SHADER: text compiled and ready.
-> SHADER: box compiled and ready.
-> SHADER: box compiled and ready.
-> SHADER: text compiled and ready.
-> SHADER: box compiled and ready.
-> SHADER: box compiled and ready.
-> SHADER: text compiled and ready.
 >  -Changing to state: Terrain Generator
+> Setting Textures on GPU...
 > Binding Texture: ../Data/Textures/landscape/lowland.png to Address: 6173
 > Binding Texture: ../Data/Textures/landscape/grass1.png to Address: 6174
 > Binding Texture: ../Data/Textures/landscape/rocks.png to Address: 6175
 > Binding Texture: ../Data/Textures/landscape/cliff1.png to Address: 6176
-> SHADER: terrain compiled and ready.
->  -Popping state: Terrain Generator
-> Clearing Texture Data...
-> Clearing GPU data...
-> Clearing CPU data...
-> Clearing Texture Data...
-> Clearing GPU data...
-> Clearing CPU data...
-> Clearing Texture Data...
-> Clearing GPU data...
-> Clearing CPU data...
-> Clearing Texture Data...
-> Clearing GPU data...
-> Clearing CPU data...
-> SHADER: text compiled and ready.
-> SHADER: image compiled and ready.
-> SHADER: image compiled and ready.
-> SHADER: image compiled and ready.
-> SHADER: image compiled and ready.
-> SHADER: text compiled and ready.
-> SHADER: text compiled and ready.
-> SHADER: box compiled and ready.
-> SHADER: image compiled and ready.
-> SHADER: image compiled and ready.
-> SHADER: image compiled and ready.
-> SHADER: text compiled and ready.
->  -Changing to state: Main Menu
+> Setting Shader on GPU...
+> Generating Terrain Data:
+> Terain Size: 17
+ 
+> Required Memory for Height Data: 0.00110245MB
+> Computing Height Data...
+>  Cycle: 1
+>  Cycle: 2
+>  Cycle: 3
+> Running Height Map Blur Cycles...
+> Setting up Verts:
+> Allocating Verts Memory...
+> Determining Max/Min Heights...
+> Calculating Verts...
+> Calculating Normals...
+> Calculating Indicies...
+>  Width of Mesh: 5
+>  Idx. Mem. Req.: 0MB
+>  Allocating Mesh Verts Memory...
+>  Indexing Mesh Verts...
+>  Terrain Successfully Setup!
+> Setting Up Terrain Mesh
+> Generating Terrain Data:
+> Terain Size: 257
+ 
+> Required Memory for Height Data: 0.251957MB
+> Computing Height Data...
+>  Cycle: 1
+>  Cycle: 2
+>  Cycle: 3
+>  Cycle: 4
+>  Cycle: 5
+>  Cycle: 6
+>  Cycle: 7
+> Running Height Map Blur Cycles...
+> Setting up Verts:
+> Allocating Verts Memory...
+> Determining Max/Min Heights...
+> Calculating Verts...
+> Calculating Normals...
+> Calculating Indicies...
+>  Width of Mesh: 65
+>  Idx. Mem. Req.: 0MB
+>  Allocating Mesh Verts Memory...
+>  Indexing Mesh Verts...
+>  Terrain Successfully Setup!
+> Setting Up Terrain Mesh
+> Generating Terrain Data:
+> Terain Size: 513
+ 
+> Required Memory for Height Data: 1.00391MB
+> Computing Height Data...
+>  Cycle: 1
+>  Cycle: 2
+>  Cycle: 3
+>  Cycle: 4
+>  Cycle: 5
+>  Cycle: 6
+>  Cycle: 7
+>  Cycle: 8
+> Running Height Map Blur Cycles...
+> Setting up Verts:
+> Allocating Verts Memory...
+> Determining Max/Min Heights...
+> Calculating Verts...
+> Calculating Normals...
+> Calculating Indicies...
+>  Width of Mesh: 129
+>  Idx. Mem. Req.: 1MB
+>  Allocating Mesh Verts Memory...
+>  Indexing Mesh Verts...
+>  Terrain Successfully Setup!
+> Setting Up Terrain Mesh
+> Generating Terrain Data:
+> Terain Size: 1025
+ 
+> Required Memory for Height Data: 4.00782MB
+> Computing Height Data...
+>  Cycle: 1
+>  Cycle: 2
+>  Cycle: 3
+>  Cycle: 4
+>  Cycle: 5
+>  Cycle: 6
+>  Cycle: 7
+>  Cycle: 8
+>  Cycle: 9
+> Running Height Map Blur Cycles...
+> Setting up Verts:
+> Allocating Verts Memory...
+> Determining Max/Min Heights...
+> Calculating Verts...
+> Calculating Normals...
+> Calculating Indicies...
+>  Width of Mesh: 257
+>  Idx. Mem. Req.: 6MB
+>  Allocating Mesh Verts Memory...
+>  Indexing Mesh Verts...
+>  Terrain Successfully Setup!
+> Setting Up Terrain Mesh
  
 > Engine Cleanup...
->  -Popping state: Main Menu
+>  -Popping state: Terrain Generator
+> Clearing Textures on GPU...
+> Clearing Texture Data...
+> Clearing GPU data...
+> Clearing CPU data...
+> Clearing Texture Data...
+> Clearing GPU data...
+> Clearing CPU data...
+> Clearing Texture Data...
+> Clearing GPU data...
+> Clearing CPU data...
+> Clearing Texture Data...
+> Clearing GPU data...
+> Clearing CPU data...
+> Clearing Shader on GPU...
 > Console Cleanup...
 ***Normal Termination***

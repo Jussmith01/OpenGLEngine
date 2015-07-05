@@ -63,6 +63,8 @@ public:
     //template<typename T>
     void print_generic(std::string message,std::ostream &output);
 
+    std::string get_generic_print_string(std::string message);
+
     //Resets the timer if needed
     void reset(void);
 };

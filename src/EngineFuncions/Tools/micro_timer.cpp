@@ -53,6 +53,15 @@ void microTimer::print_generic(std::string message,std::ostream &output)
     //print_clock_time(ss2.str(),file1);
 };
 
+std::string microTimer::get_generic_print_string(std::string message)
+{
+    std::stringstream ss1;
+    ss1 << message << " Wall Time: " << mk_time_string((double)accumtime).c_str();
+
+    reset();
+    return ss1.str();
+};
+
 void microTimer::reset ()
 {
     wt_count=0;

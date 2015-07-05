@@ -9,6 +9,7 @@
 #include "../worldbuildertools/boxclass.h"
 #include "../../Handlers/ModelHandler/base_classes.h"
 #include "../../Tools/rtscamera.h"
+#include "../../Tools/console.h"
 #include "../../Tools/tools.hpp"
 #include "../../Tools/ogltools.hpp"
 #include "../../Tools/glmtools.hpp"
@@ -94,7 +95,8 @@ public:
     {
         if (!GPUTexSet)
         {
-            std::cout << "Setting Textures on GPU...\n";
+            Console::cPrint("Setting Textures on GPU...");
+            //std::cout << "Setting Textures on GPU...\n";
 
             // Setup Textures
             texture[0].Setup(tools::appendStrings("landscape/",TextureFiles[0]),"textures.lowlandMap");
@@ -111,7 +113,8 @@ public:
 
             GPUTexSet=true;
         } else {
-            std::cout << "Textures already set on the GPU!\n";
+            Console::cPrint("Textures already set on the GPU!");
+            //std::cout << "Textures already set on the GPU!\n";
         }
     };
 
@@ -122,11 +125,13 @@ public:
     {
         if (!GPUShdrSet)
         {
-            std::cout << "Setting Shader on GPU...\n";
+            //std::cout << "Setting Shader on GPU...\n";
+            Console::cPrint("Setting Shader on GPU...");
             shader.ShaderSet(ShaderFiles);
             GPUShdrSet=true;
         } else {
-            std::cout << "Shader already set on the GPU!\n";
+            Console::cPrint("Shader already set on the GPU!");
+            //std::cout << "Shader already set on the GPU!\n";
         }
     };
 
@@ -137,12 +142,14 @@ public:
     {
         if (GPUTexSet)
         {
-            std::cout << "Clearing Textures on GPU...\n";
+            Console::cPrint("Clearing Textures on GPU...");
+            //std::cout << "Clearing Textures on GPU...\n";
             for (auto&& tex : texture)
                 tex.TextureCleanup();
             GPUTexSet=false;
         } else {
-            std::cout << "Textures not set on the GPU.\n";
+            Console::cPrint("Textures not set on the GPU.");
+            //std::cout << "Textures not set on the GPU.\n";
         }
     };
 
@@ -153,11 +160,13 @@ public:
     {
         if (GPUShdrSet)
         {
-            std::cout << "Clearing Shader on GPU...\n";
+            Console::cPrint("Clearing Shader on GPU...");
+            //std::cout << "Clearing Shader on GPU...\n";
             shader.Cleanup();
             GPUShdrSet=false;
         } else {
-            std::cout << "Shader not set on GPU.\n";
+            Console::cPrint("Shader not set on GPU.");
+            //std::cout << "Shader not set on GPU.\n";
         }
     };
 
@@ -166,10 +175,12 @@ public:
     //*********************************************
     void GenerateTerrain()
     {
-        std::cout << "Generating Terrain Data...\n";
+        Console::cPrint("Generating Terrain Data:");
+        Console::cPrint(tools::appendStrings("Terain Size: ",this->terrainSize),true);
         GenerateTerrainData(this->terrainSize);
 
-        std::cout << "Setting up Verts...\n";
+        Console::cPrint("Setting up Verts:");
+        //std::cout << "Setting up Verts...\n";
         SetupVerts();
     };
 
@@ -299,7 +310,7 @@ public:
         double ts=glfwGetTime();
         SetupVerts();
         SetInitalTerrainOnGPU();
-        std::cout << "ReCalcTime: " << glfwGetTime()-ts << "s" << std::endl;
+        Console::cPrint(tools::appendStrings("ReCalcTime: " ,glfwGetTime()-ts,"s"));
     };
 
     //**************************

@@ -5,6 +5,8 @@ TerrainGeneratorState TerrainGeneratorState::m_TerrainGeneratorState;
 
 void TerrainGeneratorState::Init(Engine *game)
 {
+    TerrainGeneratorState::stateID = "Terrain Generator";
+
     swidth=game->props.WinWidth;
     sheight=game->props.WinHeight;
     bID=0;
@@ -77,6 +79,8 @@ void TerrainGeneratorState::Resume(Engine* game)
 void TerrainGeneratorState::HandleEvents(Engine* game)
 {
     glfwPollEvents();
+
+    Console::Update(kh.CheckKeyState(input.GetKey(GLFW_KEY_F12),GLFW_KEY_F12));
 
     // Update the button events
     if (bID==-1)
@@ -178,8 +182,8 @@ void TerrainGeneratorState::Draw(Engine* game)
     cursor.DrawImagePos(input.mx,input.my);
 
     // Swap the screen buffers and flush
-    glfwSwapBuffers(game->window);
-    glFlush();
+    //glfwSwapBuffers(game->window);
+    //glFlush();
 };
 
 //Function handles key callbacks

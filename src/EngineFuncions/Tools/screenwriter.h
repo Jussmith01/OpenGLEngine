@@ -5,8 +5,8 @@
 #include <map>
 #include "../../Headers/headerscpp.h"
 #include "../../Headers/headersogl.h"
-#include "../Loaders/shader.h"
 #include "tools.hpp"
+#include "../Loaders/shader.h"
 
 //FREETYPE LIBRARIES
 #include <freetype2/ft2build.h>

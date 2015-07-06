@@ -8,7 +8,12 @@
 #include "../worldbuildertools/randlib.h"
 #include "../worldbuildertools/boxclass.h"
 #include "../../Handlers/ModelHandler/base_classes.h"
+#include "../../Tools/rtscamera.h"
+#include "../../Tools/console.h"
 #include "../../Tools/tools.hpp"
+#include "../../Tools/ogltools.hpp"
+#include "../../Tools/glmtools.hpp"
+#include "../../Tools/micro_timer.h"
 #include "../../Tools/ToolBoxs/terraincreationtoolbox.h"
 #include "../../Tools/ToolBoxs/terrainmodificationtoolbox.h"
 #include "../../Tools/ToolBoxs/materialmodificationtoolbox.h"
@@ -53,7 +58,7 @@ class TerrainGeneration
     //std::vector< glm::vec2 > positions; // mesh positions
 
     /*  Render data  */
-    std::vector< tools::BufferHandler > buffers;
+    std::vector< ogltools::BufferHandler > buffers;
 
     // Class Variables
     bool GPUDataSet;
@@ -67,6 +72,7 @@ class TerrainGeneration
 
     // Class functions
     Texture texture[4];
+    microTimer generalTimer;
 
 public:
     // Public for use with register functions
@@ -87,37 +93,28 @@ public:
     //*********************************************
     void SetTextures()
     {
-        std::cout << "Setting Textures on GPU...\n";
-
         if (!GPUTexSet)
         {
-            //#pragma omp parallel for
-            //See if parallelization can speed this up
+            Console::cPrint("Setting Textures on GPU...");
+            //std::cout << "Setting Textures on GPU...\n";
 
-            std::stringstream ss1;
-            ss1 << "landscape/" << TextureFiles[0];
-            texture[0].Setup(ss1.str(),"textures.lowlandMap");
-            texture[0].LoadTextureDataToCPU();
-            texture[0].LoadTextureDataToGPU();
+            // Setup Textures
+            texture[0].Setup(tools::appendStrings("landscape/",TextureFiles[0]),"textures.lowlandMap");
+            texture[1].Setup(tools::appendStrings("landscape/",TextureFiles[1]),"textures.mediumlandMap");
+            texture[2].Setup(tools::appendStrings("landscape/",TextureFiles[2]),"textures.highlandMap");
+            texture[3].Setup(tools::appendStrings("landscape/",TextureFiles[3]),"textures.cliffMap");
 
-            std::stringstream ss2;
-            ss2 << "landscape/" << TextureFiles[1];
-            texture[1].Setup(ss2.str(),"textures.mediumlandMap");
-            texture[1].LoadTextureDataToCPU();
-            texture[1].LoadTextureDataToGPU();
+            // Load Textures to CPU and GPU
+            for (auto&& tex : texture)
+            {
+                tex.LoadTextureDataToCPU();
+                tex.LoadTextureDataToGPU();
+            }
 
-            std::stringstream ss3;
-            ss3 << "landscape/" << TextureFiles[2];
-            texture[2].Setup(ss3.str(),"textures.highlandMap");
-            texture[2].LoadTextureDataToCPU();
-            texture[2].LoadTextureDataToGPU();
-
-            std::stringstream ss4;
-            ss4 << "landscape/" << TextureFiles[3];
-            texture[3].Setup(ss4.str(),"textures.cliffMap");
-            texture[3].LoadTextureDataToCPU();
-            texture[3].LoadTextureDataToGPU();
             GPUTexSet=true;
+        } else {
+            Console::cPrint("Textures already set on the GPU!");
+            //std::cout << "Textures already set on the GPU!\n";
         }
     };
 
@@ -126,12 +123,15 @@ public:
     //*********************************************
     void SetShader()
     {
-        std::cout << "Setting Shader on GPU...\n";
-
         if (!GPUShdrSet)
         {
+            //std::cout << "Setting Shader on GPU...\n";
+            Console::cPrint("Setting Shader on GPU...");
             shader.ShaderSet(ShaderFiles);
             GPUShdrSet=true;
+        } else {
+            Console::cPrint("Shader already set on the GPU!");
+            //std::cout << "Shader already set on the GPU!\n";
         }
     };
 
@@ -140,17 +140,17 @@ public:
     //*********************************************
     void UnsetTextures()
     {
-        std::cout << "Unsetting Textures on GPU...\n";
-
         if (GPUTexSet)
         {
-            texture[0].TextureCleanup();
-            texture[1].TextureCleanup();
-            texture[2].TextureCleanup();
-            texture[3].TextureCleanup();
+            Console::cPrint("Clearing Textures on GPU...");
+            //std::cout << "Clearing Textures on GPU...\n";
+            for (auto&& tex : texture)
+                tex.TextureCleanup();
+            GPUTexSet=false;
+        } else {
+            Console::cPrint("Textures not set on the GPU.");
+            //std::cout << "Textures not set on the GPU.\n";
         }
-
-        GPUTexSet=false;
     };
 
     //*********************************************
@@ -158,14 +158,16 @@ public:
     //*********************************************
     void UnsetShader()
     {
-        std::cout << "Unsetting Shader on GPU...\n";
-
         if (GPUShdrSet)
         {
+            Console::cPrint("Clearing Shader on GPU...");
+            //std::cout << "Clearing Shader on GPU...\n";
             shader.Cleanup();
+            GPUShdrSet=false;
+        } else {
+            Console::cPrint("Shader not set on GPU.");
+            //std::cout << "Shader not set on GPU.\n";
         }
-
-        GPUShdrSet=false;
     };
 
     //*********************************************
@@ -173,10 +175,12 @@ public:
     //*********************************************
     void GenerateTerrain()
     {
-        std::cout << "Generating Terrain Data...\n";
+        Console::cPrint("Generating Terrain Data:");
+        Console::cPrint(tools::appendStrings("Terain Size: ",this->terrainSize),true);
         GenerateTerrainData(this->terrainSize);
 
-        std::cout << "Setting up Verts...\n";
+        Console::cPrint("Setting up Verts:");
+        //std::cout << "Setting up Verts...\n";
         SetupVerts();
     };
 
@@ -306,7 +310,7 @@ public:
         double ts=glfwGetTime();
         SetupVerts();
         SetInitalTerrainOnGPU();
-        std::cout << "ReCalcTime: " << glfwGetTime()-ts << "s" << std::endl;
+        Console::cPrint(tools::appendStrings("ReCalcTime: " ,glfwGetTime()-ts,"s"));
     };
 
     //**************************
@@ -422,6 +426,18 @@ public:
 
         }
     };*/
+
+    void lowerTerrain(InputStruct &input,RTSCamera &camera)
+    {
+        modifyElevation(0,input,camera);
+    };
+
+    void raiseTerrain(InputStruct &input,RTSCamera &camera)
+    {
+        modifyElevation(1,input,camera);
+    };
+
+    void modifyElevation(int func,InputStruct &input,RTSCamera &camera);
 
 private:
     //**************************

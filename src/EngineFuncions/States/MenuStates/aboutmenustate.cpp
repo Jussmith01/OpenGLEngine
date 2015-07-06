@@ -5,6 +5,8 @@ AboutMenuState AboutMenuState::m_AboutMenuState;
 
 void AboutMenuState::Init(Engine *game)
 {
+    AboutMenuState::stateID = "About Menu";
+
     swidth=game->props.WinWidth;
     sheight=game->props.WinHeight;
 
@@ -93,6 +95,8 @@ void AboutMenuState::HandleEvents(Engine* game)
 {
     glfwPollEvents();
 
+    Console::Update(kh.CheckKeyState(input.GetKey(GLFW_KEY_F12),GLFW_KEY_F12));
+
     // Update the button events
     int bID=buttons.UpdateButtonEvents(input);
     mbar.UpdateBarEvents(input);
@@ -127,8 +131,8 @@ void AboutMenuState::Draw(Engine* game)
     cursor.DrawImagePos(input.mx,input.my);
 
     // Swap the screen buffers
-    glfwSwapBuffers(game->window);
-    glFlush();
+    //glfwSwapBuffers(game->window);
+    //glFlush();
 };
 
 //Function handles key callbacks

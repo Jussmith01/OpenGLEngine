@@ -50,6 +50,12 @@ void TerrainGeneratorWrapper::Init (Engine *game)
     // Initialize the Terrain Creation Toolbox
     sttoolbox.Init(0.0f,0.0f,&game->props,game->audioengine);
 
+    //**************************
+    //Terrain Sculpting Toolbox
+    //**************************
+    // Initialize the Terrain Sculpting Toolbox
+    tstoolbox.Init(0.85f,0.0f,&game->props,game->audioengine);
+
     //********************
     // Setup the menu bar
     //********************
@@ -76,6 +82,7 @@ void TerrainGeneratorWrapper::Init (Engine *game)
     smbi[3].title="Modify";
     smbi[3].options.push_back("Terrain");
     smbi[3].options.push_back("Material");
+    smbi[3].options.push_back("Sculpting");
 
     mbar.Init(smbi,game->props);
     smbi.clear();
@@ -323,8 +330,38 @@ void TerrainGeneratorWrapper::UpdateEvents(InputStruct &input)
                 selID.reset();
             }
         }
+
+        //*******************************
+        // Material Modification Toolbox
+        //******************************
+        if (selID.option==2)
+        {
+            int tstbCall=tstoolbox.UpdateEvents(input);
+            if(tstbCall>0)
+            {
+                //*****************************
+                //  TERRAIN SCULPTING FUNCTIONS
+                //*****************************
+                std::cout << "tstbCall: " << tstbCall << std::endl;
+                if (tstbCall==1)
+                {
+                    terrainGen.lowerTerrain(input,camera);
+                }
+
+                if (tstbCall==2)
+                {
+                    terrainGen.raiseTerrain(input,camera);
+                }
+            }
+
+            if (tstbCall==0)
+            {
+                selID.reset();
+            }
+        }
     }
 
+    // Update the camera
     camera.UpdateCamera(input);
 };
 
@@ -391,6 +428,12 @@ void TerrainGeneratorWrapper::ToolBoxDraw()
             if(selID.option==1)
             {
                 mmtoolbox.DrawToolBox();
+            }
+
+            // Terrain Sculpting Menu
+            if(selID.option==2)
+            {
+                tstoolbox.DrawToolBox();
             }
         }
     }
@@ -481,6 +524,7 @@ Cleaup the class
 */
 void TerrainGeneratorWrapper::Cleanup()
 {
+    // Cleanup required classes
     camera.Cleanup();
     skylight.Cleanup();
     text.Cleanup();
@@ -491,7 +535,8 @@ void TerrainGeneratorWrapper::Cleanup()
     tmtoolbox.Cleanup();
     mmtoolbox.Cleanup();
     sttoolbox.Cleanup();
+    tstoolbox.Cleanup();
 
-    //Cleanup bars
+    // Cleanup bars
     mbar.Cleanup();
 };

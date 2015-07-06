@@ -1,4 +1,3 @@
-#define GLEW_STATIC
 #ifndef TOOLS_HPP
 #define TOOLS_HPP
 
@@ -12,6 +11,56 @@
 
 namespace tools
 {
+
+inline extern void FlipBool(bool &bset)
+{
+    if(bset)
+    {
+        bset=false;
+    } else {
+        bset=true;
+    }
+};
+
+template<typename T>
+inline extern std::string numberToString(T number)
+{
+    std::stringstream ss;
+    ss << number;
+    return ss.str();
+};
+
+template<typename T1,typename T2>
+inline extern std::string appendStrings(T1 s1,T2 s2)
+{
+    std::stringstream ss;
+    ss << s1 << s2;
+    return ss.str();
+};
+
+template<typename T1,typename T2,typename T3>
+inline extern std::string appendStrings(T1 s1,T2 s2,T3 s3)
+{
+    std::stringstream ss;
+    ss << s1 << s2 << s3;
+    return ss.str();
+};
+
+template<typename T1,typename T2,typename T3,typename T4>
+inline extern std::string appendStrings(T1 s1,T2 s2,T3 s3,T4 s4)
+{
+    std::stringstream ss;
+    ss << s1 << s2 << s3 << s4;
+    return ss.str();
+};
+
+template<typename T1,typename T2,typename T3,typename T4,typename T5>
+inline extern std::string appendStrings(T1 s1,T2 s2,T3 s3,T4 s4,T5 s5)
+{
+    std::stringstream ss;
+    ss << s1 << s2 << s3 << s4 << s5;
+    return ss.str();
+};
 
 inline extern void check_mouse_reset(GLFWwindow* window,double xpos,double ypos,double swidth,double sheight,float border)
 {
@@ -80,75 +129,6 @@ inline extern std::vector<std::string> GetFilesInDirectory(std::string directory
     }
 
     return rtn;
-};
-
-struct BufferHandler
-{
-    GLuint VAO;
-    GLuint VBO;
-    GLuint EBO;
-    int idxSize;
-
-    BufferHandler () {};
-
-    //Class Assignment
-    BufferHandler& operator=(const BufferHandler& instance)
-    {
-        this->VAO = instance.VAO;
-        this->VBO = instance.VBO;
-        this->EBO = instance.EBO;
-        this->idxSize=instance.idxSize;
-        return *this;
-    }
-
-    void GenBuffers(std::vector<Vertex> &verts,std::vector<GLuint> &idxs)
-    {
-        idxSize=(int)idxs.size();
-
-        glGenVertexArrays(1, &this->VAO);
-        glGenBuffers(1, &this->VBO);
-        glGenBuffers(1, &this->EBO);
-
-        glBindVertexArray(this->VAO);
-        // Load data into vertex buffers
-        glBindBuffer(GL_ARRAY_BUFFER, this->VBO);
-        // A great thing about structs is that their memory layout is sequential for all its items.
-        // The effect is that we can simply pass a pointer to the struct and it translates perfectly to a glm::vec3/2 array which
-        // again translates to 3/2 floats which translates to a byte array.
-        glBufferData(GL_ARRAY_BUFFER, verts.size() * sizeof(Vertex), &verts[0], GL_DYNAMIC_DRAW);
-
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->EBO);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, idxs.size() * sizeof(GLuint), &idxs[0], GL_DYNAMIC_DRAW);
-
-        // Set the vertex attribute pointers
-        // Vertex Positions
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)0);
-        // Vertex Tex Coords
-        glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, texture));
-        // Vertex Normals
-        glEnableVertexAttribArray(2);
-        glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, normal));
-
-        glBindVertexArray(0);
-    };
-
-    void DrawVerts()
-    {
-        // Draw mesh
-        glBindVertexArray(this->VAO);
-        glDrawElements(GL_TRIANGLES, idxSize, GL_UNSIGNED_INT, 0);
-        glBindVertexArray(0);
-    };
-
-    void ClearBuffers()
-    {
-        idxSize=0;
-        glDeleteVertexArrays(1, &VAO);
-        glDeleteBuffers(1, &VBO);
-        glDeleteBuffers(1, &EBO);
-    };
 };
 
 }

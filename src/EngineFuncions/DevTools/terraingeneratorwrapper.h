@@ -11,6 +11,7 @@
 #include "../Loaders/texture.h"
 #include "../Tools/screenwriter.h"
 #include "../Tools/ToolBoxs/terraincreationtoolbox.h"
+#include "../Tools/ToolBoxs/terrainsculptingtoolbox.h"
 #include "../Tools/ToolBoxs/saveterraintoolbox.h"
 #include "TerrainGenerator/terrainGenerator.h"
 
@@ -19,7 +20,10 @@
 //******************************************//
 /*
 Bundles all terrain generator functionality into
-one class.
+one class. This acts to deploy the different
+terrain generation functionality and toolboxes
+on the the screen for rendering and interaction
+with the scene.
 */
 class TerrainGeneratorWrapper
 {
@@ -49,6 +53,9 @@ class TerrainGeneratorWrapper
 
     // Material Modification Toolbox
     MaterialModificationToolbox mmtoolbox;
+
+    // Terrain Scupting Toolbox
+    TerrainSculptingToolbox tstoolbox;
 
     // Save Terrain Toolbox
     SaveTerrainToolbox sttoolbox;

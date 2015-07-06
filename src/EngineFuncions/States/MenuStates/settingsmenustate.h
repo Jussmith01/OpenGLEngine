@@ -43,7 +43,7 @@ private:
     ImageDisplay cursor;
     MenuButtons buttons;
     ISoundEngine* audioengine;
-
+    keyhandler kh;
     GraphicsPropertiesInterface GPI;
 
     //********************

@@ -29,12 +29,15 @@ namespace glmtools
     /*
     This function determines if a ray intersects a cube given the 8 corners of the cube.
     */
-    /*inline extern bool DetermineCubeIntersection(glm::vec3 &orig,glm::vec3 &raypix,vector<glm::vec3> &vecs)
+    inline extern bool DetermineSphereIntersection(glm::vec3 &orig,glm::vec3 &raypix,glm::vec3 &spherecent,double &width)
     {
-        bool side1 = glm::intersectRayTriangle(orig,raypix,v1,v2,v3,baryPos);
+        glm::vec3 pos;
+        glm::vec3 norm;
 
-        return detisec;
-    };*/
+        bool isec = glm::intersectRaySphere(orig,raypix,spherecent,width,pos,norm);
+
+        return isec;
+    };
 }
 
 #endif

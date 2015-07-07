@@ -342,7 +342,6 @@ void TerrainGeneratorWrapper::UpdateEvents(InputStruct &input)
                 //*****************************
                 //  TERRAIN SCULPTING FUNCTIONS
                 //*****************************
-                std::cout << "tstbCall: " << tstbCall << std::endl;
                 if (tstbCall==1)
                 {
                     terrainGen.lowerTerrain(input,camera);

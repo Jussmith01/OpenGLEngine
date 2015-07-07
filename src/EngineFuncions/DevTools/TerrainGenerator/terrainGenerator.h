@@ -68,7 +68,7 @@ class TerrainGeneration
     int Nsd;
     float lowShift;
 
-    float sizeScale;
+    float sizeScale; // Distance between verts
 
     // Class functions
     Texture texture[4];
@@ -79,6 +79,7 @@ public:
     Shader shader;
 
     /*MOVE BACK TO PRIVATE WHEN DONE*/
+    double meshwidth;
     std::vector< glm::vec2 > positions; // mesh positions
 
     TerrainGeneration()

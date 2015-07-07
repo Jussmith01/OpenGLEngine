@@ -336,7 +336,7 @@ void TerrainGeneration::SetupVerts()
 
     Console::cPrint(" Indexing Mesh Verts...");
 
-    #pragma omp parallel for shared(sd,N)
+    #pragma omp parallel for firstprivate(sd,N)
     for (int m=0; m<(int)sqrt(sd); ++m)
     {
         for (int n=0; n<(int)sqrt(sd); ++n)
@@ -345,6 +345,7 @@ void TerrainGeneration::SetupVerts()
             //std::cout << "SubDivisions: m: " << m << " n: " << n << " IDX: " << sdIdx << std::endl;
 
             long int it=0;
+            // Index the verts for each new mesh
             for (int i=0; i<(N-1); ++i)
             {
                 for (int j=0; j<(N-1); ++j)
@@ -369,7 +370,7 @@ void TerrainGeneration::SetupVerts()
                 }
             }
 
-
+            // Store the verts based on the index
             for (int i=0; i<N; ++i)
             {
                 for (int j=0; j<N; ++j)
@@ -383,18 +384,24 @@ void TerrainGeneration::SetupVerts()
                 }
             }
 
-            double fw=(w-1)*sizeScale;
-            double dx=fw/(double)sqrt(sd);
+            // Compute the center of each new mesh
+            double fw=(w-1)*sizeScale; // full width of terrain
+            double dx=fw/(double)sqrt(sd); // Width of a single mesh
 
             double x=n*dx+dx/2.0-(fw/2.0);
             double y=m*dx+dx/2.0-(fw/2.0);
 
             positions[sdIdx]=glm::vec2(x,y);
+
             //std::cout << "DISTANCE(" << sdIdx << "): {" << positions.back().x << "," << positions.back().y << "}" << std::endl;
         }
         //std::cout << "\n";
     }
     #pragma omp barrier
+
+    double fw=(w-1)*sizeScale; // full width of terrain
+    double dx=fw/(double)sqrt(sd); // Width of a single mesh
+    meshwidth = dx/2.0;
 
     //verts.clear(); // Done with normal verts
     Console::cPrint(" Terrain Successfully Setup!",true);
@@ -696,6 +703,8 @@ void TerrainGeneration::modifyElevation(int func,InputStruct &input,RTSCamera &c
     generalTimer.start_point();
 
     //#pragma omp parallel for default(shared)//shared(camera,x,y,baryPos)
+    double sphererad = sqrt(meshwidth*meshwidth+meshwidth*meshwidth);
+
     for(int m=0; m<(int)idxs.size(); ++m)
     {
         // Declare thread variables for private use
@@ -703,29 +712,43 @@ void TerrainGeneration::modifyElevation(int func,InputStruct &input,RTSCamera &c
         glm::vec3 pos = camera.cameraPos;
         glm::vec3 ray = camera.Cursor3DRay;
 
-        // Begin Looping over triangles
-        #pragma omp parallel for default(shared)
-        for(int i=0; i<(int)idxs[m].size()/3; ++i)
+        glm::vec3 spherecent = glm::vec3(positions[m].x,0.0f,positions[m].y);
+        if (glmtools::DetermineSphereIntersection(pos,ray,spherecent,sphererad))
         {
-            int idx1 = idxs[m][i*3];
-            int idx2 = idxs[m][i*3+1];
-            int idx3 = idxs[m][i*3+2];
-
-            glm::vec3 v1 = meshVerts[m][idx1].position;
-            glm::vec3 v2 = meshVerts[m][idx2].position;
-            glm::vec3 v3 = meshVerts[m][idx3].position;
-
-            glm::vec3 baryPostmp;
-
-            if (glmtools::DetermineTriangleIntersection(pos,ray,v1,v2,v3,baryPostmp))
+            //Console::cPrint(tools::appendStrings("CHECKING Mesh(",m,")"));
+            bool found=false;
+            // Begin Looping over triangles
+            #pragma omp parallel for default(shared) firstprivate(m,pos,ray)
+            for(int i=0; i<(int)idxs[m].size()/3; ++i)
             {
-                baryPos = baryPostmp;
-                Console::cPrint(tools::appendStrings("Intersect Mesh(",m,") triangle(",i,")"));
-                //std::cout << "Intersect Mesh(" << m << ") triangle(" << i << ")";
-                //Console::cPrint(tools::appendStrings("Intersect Mesh(",m,") triangle(",i,")"));
-                //std::cout << " baryPos: [" << baryPos.x << "," << baryPos.y << "," << baryPos.z << "]\n";
+                #pragma omp flush (found)
+                if (!found)
+                {
+                    int idx1 = idxs[m][i*3];
+                    int idx2 = idxs[m][i*3+1];
+                    int idx3 = idxs[m][i*3+2];
+
+                    glm::vec3 v1 = meshVerts[m][idx1].position;
+                    glm::vec3 v2 = meshVerts[m][idx2].position;
+                    glm::vec3 v3 = meshVerts[m][idx3].position;
+
+                    glm::vec3 baryPostmp;
+
+                    if (glmtools::DetermineTriangleIntersection(pos,ray,v1,v2,v3,baryPostmp))
+                    {
+                        baryPos = baryPostmp;
+                        Console::cPrint(tools::appendStrings("Intersect Mesh(",m,") triangle(",i,")"));
+                        found=true;
+                        #pragma omp flush (found)
+                        //std::cout << "Intersect Mesh(" << m << ") triangle(" << i << ")";
+                        //Console::cPrint(tools::appendStrings("Intersect Mesh(",m,") triangle(",i,")"));
+                        //std::cout << " baryPos: [" << baryPos.x << "," << baryPos.y << "," << baryPos.z << "]\n";
+                    }
+                }
             }
-        }
+        } // else {
+        //    Console::cPrint(tools::appendStrings("SKIPPING Mesh(",m,")"));
+        //}
     }
 
     generalTimer.end_point();

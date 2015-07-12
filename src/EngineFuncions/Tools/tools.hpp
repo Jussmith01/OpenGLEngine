@@ -62,6 +62,22 @@ inline extern std::string appendStrings(T1 s1,T2 s2,T3 s3,T4 s4,T5 s5)
     return ss.str();
 };
 
+template<typename T1,typename T2,typename T3,typename T4,typename T5,typename T6>
+inline extern std::string appendStrings(T1 s1,T2 s2,T3 s3,T4 s4,T5 s5,T6 s6)
+{
+    std::stringstream ss;
+    ss << s1 << s2 << s3 << s4 << s5 << s6;
+    return ss.str();
+};
+
+template<typename T1,typename T2,typename T3,typename T4,typename T5,typename T6,typename T7>
+inline extern std::string appendStrings(T1 s1,T2 s2,T3 s3,T4 s4,T5 s5,T6 s6,T7 s7)
+{
+    std::stringstream ss;
+    ss << s1 << s2 << s3 << s4 << s5 << s6 << s7;
+    return ss.str();
+};
+
 inline extern void check_mouse_reset(GLFWwindow* window,double xpos,double ypos,double swidth,double sheight,float border)
 {
     if(xpos < border)

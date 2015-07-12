@@ -696,61 +696,78 @@ Set Relative Height Data on GPU.
 void TerrainGeneration::modifyElevation(int func,InputStruct &input,RTSCamera &camera)
 {
     double x,y;
-    input.ReturnMousePos(x,y);
+    input.ReturnMousePos(x,y); // Get mouse screen position
 
+    generalTimer.start_point(); // Start the timer *TESTING*
+
+    double sphererad = sqrt(meshwidth*meshwidth+meshwidth*meshwidth); // Radius of the sphere
+
+    // Initialize variables to be set
+    int mesh=-1;
+    int poly=-1;
     glm::vec3 baryPos;
+    bool found=false;
 
-    generalTimer.start_point();
-
-    //#pragma omp parallel for default(shared)//shared(camera,x,y,baryPos)
-    double sphererad = sqrt(meshwidth*meshwidth+meshwidth*meshwidth);
-
+    // Search all meshes for click
     for(int m=0; m<(int)idxs.size(); ++m)
     {
-        // Declare thread variables for private use
-        //glm::vec3 dir = camera.cameraDir;
-        glm::vec3 pos = camera.cameraPos;
-        glm::vec3 ray = camera.Cursor3DRay;
-
-        glm::vec3 spherecent = glm::vec3(positions[m].x,0.0f,positions[m].y);
-        if (glmtools::DetermineSphereIntersection(pos,ray,spherecent,sphererad))
+        if (!found)
         {
-            //Console::cPrint(tools::appendStrings("CHECKING Mesh(",m,")"));
-            bool found=false;
-            // Begin Looping over triangles
-            #pragma omp parallel for default(shared) firstprivate(m,pos,ray)
-            for(int i=0; i<(int)idxs[m].size()/3; ++i)
+            // Declare thread variables for private use
+            //glm::vec3 dir = camera.cameraDir;
+            glm::vec3 pos = camera.cameraPos;
+            glm::vec3 ray = camera.Cursor3DRay;
+
+            glm::vec3 spherecent = glm::vec3(positions[m].x,0.0f,positions[m].y);
+
+            // Determine if click occurs within mesh sphere
+            if (glmtools::DetermineSphereIntersection(pos,ray,spherecent,sphererad))
             {
-                #pragma omp flush (found)
-                if (!found)
+                // If click occurs within mesh sphere, search mesh for clicked triangle
+                #pragma omp parallel for default(shared) firstprivate(m,pos,ray)
+                for(int i=0; i<(int)idxs[m].size()/3; ++i)
                 {
                     int idx1 = idxs[m][i*3];
                     int idx2 = idxs[m][i*3+1];
                     int idx3 = idxs[m][i*3+2];
 
-                    glm::vec3 v1 = meshVerts[m][idx1].position;
-                    glm::vec3 v2 = meshVerts[m][idx2].position;
-                    glm::vec3 v3 = meshVerts[m][idx3].position;
+                    glm::vec3 n1 = meshVerts[m][idx1].normal;
+                    glm::vec3 n2 = meshVerts[m][idx2].normal;
+                    glm::vec3 n3 = meshVerts[m][idx3].normal;
 
-                    glm::vec3 baryPostmp;
+                    glm::vec3 na = glm::normalize(n1+n2+n3);
 
-                    if (glmtools::DetermineTriangleIntersection(pos,ray,v1,v2,v3,baryPostmp))
+                    // Determine if the polygon is facing the ray
+                    if (glm::dot(-glm::normalize(ray),na) > 0)
                     {
-                        baryPos = baryPostmp;
-                        Console::cPrint(tools::appendStrings("Intersect Mesh(",m,") triangle(",i,")"));
-                        found=true;
-                        #pragma omp flush (found)
-                        //std::cout << "Intersect Mesh(" << m << ") triangle(" << i << ")";
-                        //Console::cPrint(tools::appendStrings("Intersect Mesh(",m,") triangle(",i,")"));
-                        //std::cout << " baryPos: [" << baryPos.x << "," << baryPos.y << "," << baryPos.z << "]\n";
+                        glm::vec3 v1 = meshVerts[m][idx1].position;
+                        glm::vec3 v2 = meshVerts[m][idx2].position;
+                        glm::vec3 v3 = meshVerts[m][idx3].position;
+
+                        glm::vec3 baryPostmp;
+
+                        // Determine if searched triangle intersects click ray
+                        if (glmtools::DetermineTriangleIntersection(pos,ray,v1,v2,v3,baryPostmp))
+                        {
+                            baryPos=baryPostmp;
+                            mesh=m;
+                            poly=i;
+                            found=true;
+                        }
                     }
                 }
             }
-        } // else {
-        //    Console::cPrint(tools::appendStrings("SKIPPING Mesh(",m,")"));
-        //}
+        }
     }
 
-    generalTimer.end_point();
+    //****************
+    // TESTING THINGS
+    //****************
+    Console::cPrint(tools::appendStrings("Intersect Mesh(",mesh,") Polygon(",poly,")"));
+    Console::cPrint(tools::appendStrings("Bary Position [",baryPos.x,",",baryPos.y,",",baryPos.z,"]"));
+
+    generalTimer.end_point(); // End the *TESTING* timer
     Console::cPrint(generalTimer.get_generic_print_string("modifyElevation "));
+
+
 };

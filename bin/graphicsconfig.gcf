@@ -1,5 +1,5 @@
 fullscreen=1
-resauto=1
-reswidth=3840
-resheight=2160
-msaa=2
+resauto=0
+reswidth=1024
+resheight=768
+msaa=0

@@ -30,7 +30,7 @@ void Properties::read_gcf()
     {
         Console::cPrint(tools::appendStrings("Error: Unable to open file: ",filename));
         Console::DumpConsole(true);
-        exit(1);
+        exit(EXIT_FAILURE);
     }
     this->lines = lines;
 };
@@ -116,6 +116,7 @@ void Properties::set_properties()
     DPmm = sqrt(WinWidth * WinHeight)/sqrt(MonWidth * MonHeight);
     //FontSize = 0.0002f * (float)pow(DPmm,2) + 0.15f;
     FontSize = 0.06f * (float)DPmm;
+    //FontSize = 0.2f;
     //FontSize = 0.000000075f * (float)(WinWidth * WinHeight);
     ImgLength = (float)sqrt(DPmm);
     LineSpace = 0.48f * (float)DPmm + 15.0f;

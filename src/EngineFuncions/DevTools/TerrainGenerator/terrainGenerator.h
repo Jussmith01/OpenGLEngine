@@ -37,7 +37,7 @@ class TerrainGeneration
     int terrainSize; // Size of the terrain
     int NSmooth; // Number of smoothing cycles to run
     int subdiv; // Number of meshes to subdivide into
-    float heightMult;
+    float heightMult; // Height multiplier
 
     glm::vec4 relativeHeight;
     glm::ivec3 heightVariation;
@@ -67,6 +67,7 @@ class TerrainGeneration
 
     int Nsd;
     float lowShift;
+    float highShift;
 
     float sizeScale; // Distance between verts
 
@@ -388,7 +389,7 @@ public:
         float rtnSize;
         glm::vec3 rtnHV;
         data.ReturnData(rtnSize,rtnHV);
-        std::cout << "rtnSize: " << rtnSize << " rtnHV: " << rtnHV.x << "," << rtnHV.y << "," << rtnHV.z << std::endl;
+        //std::cout << "rtnSize: " << rtnSize << " rtnHV: " << rtnHV.x << "," << rtnHV.y << "," << rtnHV.z << std::endl;
         SetupTerrainModifyParameters(rtnSize,rtnHV);
     };
 
@@ -460,7 +461,7 @@ private:
     // Recalculate Normals
     void RecalculateNormals();
 
-    // Recalculate Normals
+    // Recalculate Verticies
     void RecalculateVerticies();
 
     // Setup Verties
@@ -471,5 +472,8 @@ private:
 
     // Set Relative Height Parameters
     void SetRelativeHeightUniform();
+
+    // Modify the height data
+    void ModifyHeightData(glm::vec3 point,int updown);
 };
 #endif

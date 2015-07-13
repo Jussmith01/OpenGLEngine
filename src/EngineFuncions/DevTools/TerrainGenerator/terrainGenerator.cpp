@@ -551,22 +551,26 @@ void TerrainGeneration::RecalculateVerticies()
     int h = terrainSize;
     int w = terrainSize;
 
+    // Calculate the shift of the mesh (Used to shift 0,0 to center)
     float shift=(float)sizeScale*(h-1)/2.0f;
 
     float midpoint=(lowShift+relativeHeight.x)/2.0f;
 
     relativeHeight.x=heightMult*(relativeHeight.x-midpoint);
 
-    #pragma omp parallel for firstprivate(h,w) shared(shift,midpoint)
+    float sScale = sizeScale;
+    float hMult = heightMult;
+
+    #pragma omp parallel for firstprivate(h,w,sScale,shift,midpoint,hMult)
     for (int i=0; i<h; ++i)
     {
         for (int j=0; j<w; ++j)
         {
             float Height = HeightData[i][j];
 
-            verts[j+i*w].position.x = j*sizeScale-shift;
-            verts[j+i*w].position.y = (float)heightMult*(Height-midpoint);
-            verts[j+i*w].position.z = i*sizeScale-shift;
+            verts[j+i*w].position.x = j*sScale-shift;
+            verts[j+i*w].position.y = (float)hMult*(Height-midpoint);
+            verts[j+i*w].position.z = i*sScale-shift;
 
             verts[j+i*w].texture.x = (float)j;
             verts[j+i*w].texture.y = (float)i;
@@ -598,6 +602,7 @@ void TerrainGeneration::RecalculateMaxMinHeights()
             if (Height>relativeHeight.x)
             {
                 relativeHeight.x=Height;
+                highShift=Height;
             }
 
             if (Height<lowShift)
@@ -706,6 +711,7 @@ void TerrainGeneration::modifyElevation(int func,InputStruct &input,RTSCamera &c
     int mesh=-1;
     int poly=-1;
     glm::vec3 baryPos;
+    glm::vec3 avgPos;
     bool found=false;
 
     // Search all meshes for click
@@ -752,6 +758,9 @@ void TerrainGeneration::modifyElevation(int func,InputStruct &input,RTSCamera &c
                             baryPos=baryPostmp;
                             mesh=m;
                             poly=i;
+
+                            avgPos=v1+v2+v3;
+                            avgPos*=(1.0/3.0);
                             found=true;
                         }
                     }
@@ -760,14 +769,68 @@ void TerrainGeneration::modifyElevation(int func,InputStruct &input,RTSCamera &c
         }
     }
 
+    // Modify the height data
+    ModifyHeightData(avgPos,func);
+
+    // Recalculate the data based on height changes
+    RecalculateData();
+
     //****************
-    // TESTING THINGS
+    // TESTING THINGSsds
     //****************
     Console::cPrint(tools::appendStrings("Intersect Mesh(",mesh,") Polygon(",poly,")"));
     Console::cPrint(tools::appendStrings("Bary Position [",baryPos.x,",",baryPos.y,",",baryPos.z,"]"));
 
     generalTimer.end_point(); // End the *TESTING* timer
     Console::cPrint(generalTimer.get_generic_print_string("modifyElevation "));
+};
 
+//*********************************************
+//            Modify Height Data
+//*********************************************
+/*
 
+*/
+void TerrainGeneration::ModifyHeightData(glm::vec3 point,int updown)
+{
+    int h = terrainSize;
+    int w = terrainSize;
+
+    float hmult=0.0f;
+    switch (updown)
+    {
+    case 0:
+    {
+        hmult=-10.0;
+        break;
+    }
+    case 1:
+    {
+        hmult= 10.0;
+        break;
+    }
+    }
+
+    float lShift=lowShift;
+    float hShift=highShift;
+
+    //#pragma omp parallel for firstprivate(h,w,point,hmult)
+    for (int i=0; i<h; ++i)
+    {
+        for (int j=0; j<w; ++j)
+        {
+            float R = glm::length(verts[j+i*w].position-point);
+            if (R < 100.0)
+            {
+                float nM = hmult/(pow(R/4.0,1.0)+1.0);
+                float nY = HeightData[i][j] + nM;
+
+                //std::cout << "*TEST* Length: " << R << " nM: " << nM << " nY: " << nY << " nYo: " << HeightData[i][j] << std::endl;
+
+                if (!(nY>hShift) && !(nY<lShift))
+                    HeightData[i][j] = (int)nY;
+            }
+        }
+    }
+    //#pragma omp barrier
 };

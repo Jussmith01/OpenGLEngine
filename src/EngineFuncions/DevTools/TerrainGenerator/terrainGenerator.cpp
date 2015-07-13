@@ -336,7 +336,7 @@ void TerrainGeneration::SetupVerts()
 
     Console::cPrint(" Indexing Mesh Verts...");
 
-    #pragma omp parallel for shared(sd,N)
+    #pragma omp parallel for firstprivate(sd,N)
     for (int m=0; m<(int)sqrt(sd); ++m)
     {
         for (int n=0; n<(int)sqrt(sd); ++n)
@@ -345,6 +345,7 @@ void TerrainGeneration::SetupVerts()
             //std::cout << "SubDivisions: m: " << m << " n: " << n << " IDX: " << sdIdx << std::endl;
 
             long int it=0;
+            // Index the verts for each new mesh
             for (int i=0; i<(N-1); ++i)
             {
                 for (int j=0; j<(N-1); ++j)
@@ -369,7 +370,7 @@ void TerrainGeneration::SetupVerts()
                 }
             }
 
-
+            // Store the verts based on the index
             for (int i=0; i<N; ++i)
             {
                 for (int j=0; j<N; ++j)
@@ -383,18 +384,24 @@ void TerrainGeneration::SetupVerts()
                 }
             }
 
-            double fw=(w-1)*sizeScale;
-            double dx=fw/(double)sqrt(sd);
+            // Compute the center of each new mesh
+            double fw=(w-1)*sizeScale; // full width of terrain
+            double dx=fw/(double)sqrt(sd); // Width of a single mesh
 
             double x=n*dx+dx/2.0-(fw/2.0);
             double y=m*dx+dx/2.0-(fw/2.0);
 
             positions[sdIdx]=glm::vec2(x,y);
+
             //std::cout << "DISTANCE(" << sdIdx << "): {" << positions.back().x << "," << positions.back().y << "}" << std::endl;
         }
         //std::cout << "\n";
     }
     #pragma omp barrier
+
+    double fw=(w-1)*sizeScale; // full width of terrain
+    double dx=fw/(double)sqrt(sd); // Width of a single mesh
+    meshwidth = dx/2.0;
 
     //verts.clear(); // Done with normal verts
     Console::cPrint(" Terrain Successfully Setup!",true);
@@ -544,22 +551,26 @@ void TerrainGeneration::RecalculateVerticies()
     int h = terrainSize;
     int w = terrainSize;
 
+    // Calculate the shift of the mesh (Used to shift 0,0 to center)
     float shift=(float)sizeScale*(h-1)/2.0f;
 
     float midpoint=(lowShift+relativeHeight.x)/2.0f;
 
     relativeHeight.x=heightMult*(relativeHeight.x-midpoint);
 
-    #pragma omp parallel for firstprivate(h,w) shared(shift,midpoint)
+    float sScale = sizeScale;
+    float hMult = heightMult;
+
+    #pragma omp parallel for firstprivate(h,w,sScale,shift,midpoint,hMult)
     for (int i=0; i<h; ++i)
     {
         for (int j=0; j<w; ++j)
         {
             float Height = HeightData[i][j];
 
-            verts[j+i*w].position.x = j*sizeScale-shift;
-            verts[j+i*w].position.y = (float)heightMult*(Height-midpoint);
-            verts[j+i*w].position.z = i*sizeScale-shift;
+            verts[j+i*w].position.x = j*sScale-shift;
+            verts[j+i*w].position.y = (float)hMult*(Height-midpoint);
+            verts[j+i*w].position.z = i*sScale-shift;
 
             verts[j+i*w].texture.x = (float)j;
             verts[j+i*w].texture.y = (float)i;
@@ -591,6 +602,7 @@ void TerrainGeneration::RecalculateMaxMinHeights()
             if (Height>relativeHeight.x)
             {
                 relativeHeight.x=Height;
+                highShift=Height;
             }
 
             if (Height<lowShift)
@@ -689,45 +701,136 @@ Set Relative Height Data on GPU.
 void TerrainGeneration::modifyElevation(int func,InputStruct &input,RTSCamera &camera)
 {
     double x,y;
-    input.ReturnMousePos(x,y);
+    input.ReturnMousePos(x,y); // Get mouse screen position
 
+    generalTimer.start_point(); // Start the timer *TESTING*
+
+    double sphererad = sqrt(meshwidth*meshwidth+meshwidth*meshwidth); // Radius of the sphere
+
+    // Initialize variables to be set
+    int mesh=-1;
+    int poly=-1;
     glm::vec3 baryPos;
+    glm::vec3 avgPos;
+    bool found=false;
 
-    generalTimer.start_point();
-
-    //#pragma omp parallel for default(shared)//shared(camera,x,y,baryPos)
+    // Search all meshes for click
     for(int m=0; m<(int)idxs.size(); ++m)
     {
-        // Declare thread variables for private use
-        //glm::vec3 dir = camera.cameraDir;
-        glm::vec3 pos = camera.cameraPos;
-        glm::vec3 ray = camera.Cursor3DRay;
-
-        // Begin Looping over triangles
-        #pragma omp parallel for default(shared)
-        for(int i=0; i<(int)idxs[m].size()/3; ++i)
+        if (!found)
         {
-            int idx1 = idxs[m][i*3];
-            int idx2 = idxs[m][i*3+1];
-            int idx3 = idxs[m][i*3+2];
+            // Declare thread variables for private use
+            //glm::vec3 dir = camera.cameraDir;
+            glm::vec3 pos = camera.cameraPos;
+            glm::vec3 ray = camera.Cursor3DRay;
 
-            glm::vec3 v1 = meshVerts[m][idx1].position;
-            glm::vec3 v2 = meshVerts[m][idx2].position;
-            glm::vec3 v3 = meshVerts[m][idx3].position;
+            glm::vec3 spherecent = glm::vec3(positions[m].x,0.0f,positions[m].y);
 
-            glm::vec3 baryPostmp;
-
-            if (glmtools::DetermineTriangleIntersection(pos,ray,v1,v2,v3,baryPostmp))
+            // Determine if click occurs within mesh sphere
+            if (glmtools::DetermineSphereIntersection(pos,ray,spherecent,sphererad))
             {
-                baryPos = baryPostmp;
-                Console::cPrint(tools::appendStrings("Intersect Mesh(",m,") triangle(",i,")"));
-                //std::cout << "Intersect Mesh(" << m << ") triangle(" << i << ")";
-                //Console::cPrint(tools::appendStrings("Intersect Mesh(",m,") triangle(",i,")"));
-                //std::cout << " baryPos: [" << baryPos.x << "," << baryPos.y << "," << baryPos.z << "]\n";
+                // If click occurs within mesh sphere, search mesh for clicked triangle
+                #pragma omp parallel for default(shared) firstprivate(m,pos,ray)
+                for(int i=0; i<(int)idxs[m].size()/3; ++i)
+                {
+                    int idx1 = idxs[m][i*3];
+                    int idx2 = idxs[m][i*3+1];
+                    int idx3 = idxs[m][i*3+2];
+
+                    glm::vec3 n1 = meshVerts[m][idx1].normal;
+                    glm::vec3 n2 = meshVerts[m][idx2].normal;
+                    glm::vec3 n3 = meshVerts[m][idx3].normal;
+
+                    glm::vec3 na = glm::normalize(n1+n2+n3);
+
+                    // Determine if the polygon is facing the ray
+                    if (glm::dot(-glm::normalize(ray),na) > 0)
+                    {
+                        glm::vec3 v1 = meshVerts[m][idx1].position;
+                        glm::vec3 v2 = meshVerts[m][idx2].position;
+                        glm::vec3 v3 = meshVerts[m][idx3].position;
+
+                        glm::vec3 baryPostmp;
+
+                        // Determine if searched triangle intersects click ray
+                        if (glmtools::DetermineTriangleIntersection(pos,ray,v1,v2,v3,baryPostmp))
+                        {
+                            baryPos=baryPostmp;
+                            mesh=m;
+                            poly=i;
+
+                            avgPos=v1+v2+v3;
+                            avgPos*=(1.0/3.0);
+                            found=true;
+                        }
+                    }
+                }
             }
         }
     }
 
-    generalTimer.end_point();
+    // Modify the height data
+    ModifyHeightData(avgPos,func);
+
+    // Recalculate the data based on height changes
+    RecalculateData();
+
+    //****************
+    // TESTING THINGSsds
+    //****************
+    Console::cPrint(tools::appendStrings("Intersect Mesh(",mesh,") Polygon(",poly,")"));
+    Console::cPrint(tools::appendStrings("Bary Position [",baryPos.x,",",baryPos.y,",",baryPos.z,"]"));
+
+    generalTimer.end_point(); // End the *TESTING* timer
     Console::cPrint(generalTimer.get_generic_print_string("modifyElevation "));
+};
+
+//*********************************************
+//            Modify Height Data
+//*********************************************
+/*
+
+*/
+void TerrainGeneration::ModifyHeightData(glm::vec3 point,int updown)
+{
+    int h = terrainSize;
+    int w = terrainSize;
+
+    float hmult=0.0f;
+    switch (updown)
+    {
+    case 0:
+    {
+        hmult=-10.0;
+        break;
+    }
+    case 1:
+    {
+        hmult= 10.0;
+        break;
+    }
+    }
+
+    float lShift=lowShift;
+    float hShift=highShift;
+
+    //#pragma omp parallel for firstprivate(h,w,point,hmult)
+    for (int i=0; i<h; ++i)
+    {
+        for (int j=0; j<w; ++j)
+        {
+            float R = glm::length(verts[j+i*w].position-point);
+            if (R < 100.0)
+            {
+                float nM = hmult/(pow(R/4.0,1.0)+1.0);
+                float nY = HeightData[i][j] + nM;
+
+                //std::cout << "*TEST* Length: " << R << " nM: " << nM << " nY: " << nY << " nYo: " << HeightData[i][j] << std::endl;
+
+                if (!(nY>hShift) && !(nY<lShift))
+                    HeightData[i][j] = (int)nY;
+            }
+        }
+    }
+    //#pragma omp barrier
 };

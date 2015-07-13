@@ -122,13 +122,13 @@ else if (verty <= Range2)
   }
 
   float dNorm=dot(vec3(0.0f,1.0f,0.0f),Normal);
-  if(dNorm<=0.75)
+  if(dNorm<=0.85)
   {
     outColor = texture2D(textures.cliffMap, TexCoord);
   }
-  else if (dNorm<=0.8)
+  else if (dNorm<=0.9)
   {
-    float transition = smoothstep(0.75,0.8,dNorm);
+    float transition = smoothstep(0.85,0.9,dNorm);
     outColor = mix(texture2D(textures.cliffMap, TexCoord),outColor,transition);
   }
 

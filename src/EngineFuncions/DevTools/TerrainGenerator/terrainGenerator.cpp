@@ -1,5 +1,6 @@
 #include "terrainGenerator.h"
 #include <omp.h>
+#include <math.h>
 
 //******************************************//
 //             Allocate Data                //
@@ -698,7 +699,7 @@ void TerrainGeneration::SetRelativeHeightUniform()
 /*
 Set Relative Height Data on GPU.
 */
-void TerrainGeneration::modifyElevation(int func,InputStruct &input,RTSCamera &camera)
+void TerrainGeneration::modifyElevation(int func,float eff,InputStruct &input,RTSCamera &camera)
 {
     double x,y;
     input.ReturnMousePos(x,y); // Get mouse screen position
@@ -770,7 +771,12 @@ void TerrainGeneration::modifyElevation(int func,InputStruct &input,RTSCamera &c
     }
 
     // Modify the height data
-    ModifyHeightData(avgPos,func);
+    switch(func)
+    {
+        case 0: {ModifyHeightData(avgPos,0,eff);break;}
+        case 1: {ModifyHeightData(avgPos,1,eff);break;}
+        case 2: {LevelHeightData(avgPos,eff);break;}
+    }
 
     // Recalculate the data based on height changes
     RecalculateData();
@@ -791,46 +797,104 @@ void TerrainGeneration::modifyElevation(int func,InputStruct &input,RTSCamera &c
 /*
 
 */
-void TerrainGeneration::ModifyHeightData(glm::vec3 point,int updown)
+void TerrainGeneration::ModifyHeightData(glm::vec3 point,int updown,float eff)
 {
     int h = terrainSize;
     int w = terrainSize;
 
-    float hmult=0.0f;
-    switch (updown)
-    {
-    case 0:
-    {
-        hmult=-10.0;
-        break;
-    }
-    case 1:
-    {
-        hmult= 10.0;
-        break;
-    }
-    }
+    float hmult=5.0f;
 
     float lShift=lowShift;
     float hShift=highShift;
 
-    //#pragma omp parallel for firstprivate(h,w,point,hmult)
+    #pragma omp parallel for firstprivate(h,w,point,hmult,eff,lShift,hShift)
     for (int i=0; i<h; ++i)
     {
         for (int j=0; j<w; ++j)
         {
             float R = glm::length(verts[j+i*w].position-point);
-            if (R < 100.0)
+            if (R < 50.0)
             {
-                float nM = hmult/(pow(R/4.0,1.0)+1.0);
-                float nY = HeightData[i][j] + nM;
+                float nM = hmult/(pow(R/4.0,eff)+1.0);
+                float nY = 0.0;
 
+                switch (updown)
+                {
+                    case 0: {nY = HeightData[i][j] - nM;break;}
+                    case 1: {nY = HeightData[i][j] + nM;break;}
+                }
                 //std::cout << "*TEST* Length: " << R << " nM: " << nM << " nY: " << nY << " nYo: " << HeightData[i][j] << std::endl;
 
-                if (!(nY>hShift) && !(nY<lShift))
-                    HeightData[i][j] = (int)nY;
+                if (!(std::round(nY)>hShift) && !(std::round(nY)<lShift))
+                {
+                    //std::cout << "*TEST* Length: " << R << " nM: " << nM << " nY: " << nY << " nYcorr: " << std::round(nY) << " nYo: " << HeightData[i][j] << "\n";
+                    HeightData[i][j] = std::round(nY);
+                }
             }
         }
+        //std::cout << " "<< std::endl;
     }
+    //std::cout << "|-------------------------------|"<< std::endl;
+    #pragma omp barrier
+};
+
+//*********************************************
+//            Modify Height Data
+//*********************************************
+/*
+
+*/
+void TerrainGeneration::LevelHeightData(glm::vec3 point,float eff)
+{
+    int h = terrainSize;
+    int w = terrainSize;
+
+    //float hmult=5.0f;
+
+    //float lShift=lowShift;
+    //float hShift=highShift;
+
+    std::vector< std::pair<int,int> > idx;
+    std::vector< double > dists;
+    std::pair< int,int > avgh;
+
+    avgh.first=0.0;
+    avgh.second=0;
+
+    //#pragma omp parallel for firstprivate(h,w,point,hmult,eff)
+    for (int i=0; i<h; ++i)
+    {
+        for (int j=0; j<w; ++j)
+        {
+            glm::vec3 v1=verts[j+i*w].position;
+            float R = glm::length(v1-point);
+            if (R < 100.0)
+            {
+                avgh.first+=HeightData[i][j]; // Add heights
+                ++avgh.second; // Count heights
+
+                std::pair<int,int> wkidx; // Build element
+                wkidx.first=i; // Element index
+                wkidx.second=j; // Element index
+
+                idx.push_back(wkidx); // Save pair
+
+                dists.push_back(R);
+            }
+        }
+        //std::cout << " "<< std::endl;
+    }
+
+    int avgHeight = std::round(avgh.first/(float)avgh.second);
+    for (auto&& el : idx)
+    {
+        //std::cout << "Working!!\n";
+        int cY = HeightData[el.first][el.second];
+        float scale=(avgHeight-cY)*0.05;
+
+        HeightData[el.first][el.second]=std::round(cY+scale);
+    }
+
+    //std::cout << "|-------------------------------|"<< std::endl;
     //#pragma omp barrier
 };

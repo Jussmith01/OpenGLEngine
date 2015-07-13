@@ -431,15 +431,20 @@ public:
 
     void lowerTerrain(InputStruct &input,RTSCamera &camera)
     {
-        modifyElevation(0,input,camera);
+        modifyElevation(0,1.0f,input,camera);
     };
 
     void raiseTerrain(InputStruct &input,RTSCamera &camera)
     {
-        modifyElevation(1,input,camera);
+        modifyElevation(1,1.0f,input,camera);
     };
 
-    void modifyElevation(int func,InputStruct &input,RTSCamera &camera);
+    void levelTerrain(InputStruct &input,RTSCamera &camera)
+    {
+        modifyElevation(2,1.0f,input,camera);
+    };
+
+    void modifyElevation(int func,float eff,InputStruct &input,RTSCamera &camera);
 
 private:
     //**************************
@@ -474,6 +479,9 @@ private:
     void SetRelativeHeightUniform();
 
     // Modify the height data
-    void ModifyHeightData(glm::vec3 point,int updown);
+    void ModifyHeightData(glm::vec3 point,int updown,float eff);
+
+    // Level the height data
+    void LevelHeightData(glm::vec3 point,float eff);
 };
 #endif

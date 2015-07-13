@@ -351,6 +351,11 @@ void TerrainGeneratorWrapper::UpdateEvents(InputStruct &input)
                 {
                     terrainGen.raiseTerrain(input,camera);
                 }
+
+                if (tstbCall==3)
+                {
+                    terrainGen.levelTerrain(input,camera);
+                }
             }
 
             if (tstbCall==0)

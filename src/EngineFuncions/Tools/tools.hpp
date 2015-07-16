@@ -30,6 +30,9 @@ inline extern std::string numberToString(T number)
     return ss.str();
 };
 
+
+// YOU NEED A BETTER SOLUTION TO THE appendStrings OVERLOAD BELOW!!!
+// Figure something out! Perhaps a + and += operator overload of some sort
 template<typename T1,typename T2>
 inline extern std::string appendStrings(T1 s1,T2 s2)
 {

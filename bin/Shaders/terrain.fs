@@ -96,40 +96,41 @@ vec4 HeightTexturing()
   // Normalized height
   float verty=(Position.y+x)/(x*2.0f);
 
+  // Texture based on hight of verty
   if (verty <= Range1)
   {
-    outColor = texture2D(textures.lowlandMap, TexCoord);
+    outColor = texture(textures.lowlandMap,TexCoord);
   }
-else if (verty <= Range2)
+  else if (verty <= Range2)
   {
     float transition = smoothstep(Range1,Range2,verty);
-    outColor+=texture2D(textures.lowlandMap, TexCoord) * (1.0-transition);
-    outColor+=texture2D(textures.mediumlandMap, TexCoord) * transition;
+    outColor+=texture(textures.lowlandMap, TexCoord) * (1.0-transition);
+    outColor+=texture(textures.mediumlandMap, TexCoord) * transition;
   }
   else if (verty <= Range3)
   {
-    outColor = texture2D(textures.mediumlandMap, TexCoord);
+    outColor = texture(textures.mediumlandMap,TexCoord);
   }
   else if (verty <= Range4)
   {
     float transition = smoothstep(Range3,Range4,verty);
-    outColor+=texture2D(textures.mediumlandMap, TexCoord) * (1.0-transition);
-    outColor+=texture2D(textures.highlandMap, TexCoord) * transition;
+    outColor+=texture(textures.mediumlandMap,TexCoord) * (1.0-transition);
+    outColor+=texture(textures.highlandMap,TexCoord) * transition;
   }
   else
   {
-    outColor = texture2D(textures.highlandMap, TexCoord);
+    outColor = texture(textures.highlandMap,TexCoord);
   }
 
   float dNorm=dot(vec3(0.0f,1.0f,0.0f),Normal);
   if(dNorm<=0.85)
   {
-    outColor = texture2D(textures.cliffMap, TexCoord);
+    outColor = texture(textures.cliffMap,TexCoord);
   }
   else if (dNorm<=0.9)
   {
     float transition = smoothstep(0.85,0.9,dNorm);
-    outColor = mix(texture2D(textures.cliffMap, TexCoord),outColor,transition);
+    outColor = mix(texture(textures.cliffMap,TexCoord),outColor,transition);
   }
 
   return outColor;

@@ -37,7 +37,6 @@
 			<Add option="-std=c++11" />
 			<Add option="-Wall" />
 			<Add option="-fopenmp -Wno-comment" />
-			<Add option="-D__NO_INLINE__" />
 			<Add directory="include" />
 			<Add directory="include/freetype2" />
 		</Compiler>

@@ -92,10 +92,11 @@ void SettingsMenuState::HandleEvents(Engine* game)
             input.SetKeyFalse(GLFW_KEY_BACKSPACE);
         }
 
-        // 2 is returned if exit with reloading is requested
+        // Restart Required
         if (stay==2)
         {
-            game->ChangeState( MainMenuState::Instance() );
+            //game->ChangeState( MainMenuState::Instance() );
+            game->Quit();
         }
     }
 

@@ -115,7 +115,7 @@ void Properties::set_properties()
     //Calculate DPmm
     DPmm = sqrt(WinWidth * WinHeight)/sqrt(MonWidth * MonHeight);
     //FontSize = 0.0002f * (float)pow(DPmm,2) + 0.15f;
-    FontSize = 0.06f * (float)DPmm;
+    FontSize = 0.09f * (float)DPmm;
     //FontSize = 0.2f;
     //FontSize = 0.000000075f * (float)(WinWidth * WinHeight);
     ImgLength = (float)sqrt(DPmm);

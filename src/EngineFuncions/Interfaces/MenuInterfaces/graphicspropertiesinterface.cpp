@@ -41,8 +41,8 @@ void GraphicsPropertiesInterface::InitGPI(Engine* game,ISoundEngine* audioengine
     drpbox[1].Init("DropBoxes/dropbox1","solid",0.57,0.4,0.25,0.02,1.0,game->props,audioengine,datamsaa);
 
     // Apply Interface
-    appInterface.Init("Are You Sure?","Apply","Cancel",game,audioengine);
-    appInterface.SetTimeout(10.0,0);
+    appInterface.Init("Restart Required.","Quit","Cancel",game,audioengine);
+    appInterface.SetTimeout(15.0,0);
 
     // Load Set Properties from props class.
     PropertiesLoad();

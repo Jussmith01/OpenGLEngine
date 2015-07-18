@@ -1,5 +1,5 @@
-#ifndef SAVETERRAINTOOLBOX_C
-#define SAVETERRAINTOOLBOX_C
+#ifndef SAVETOOLBOX_C
+#define SAVETOOLBOX_C
 
 #include "../../../Headers/headerscpp.h"
 #include "../../../Headers/headersogl.h"
@@ -15,9 +15,9 @@ using namespace irrklang;
 //#pragma comment(lib, "irrKlang.lib") // link with irrKlang.dll
 
 //*****************************************//
-//	     Terrain Creation Toolbox	       //
+//	            Save Toolbox	           //
 //*****************************************//
-class SaveTerrainToolbox
+class SaveToolbox
 {
     // Variables
     std::string sound;
@@ -43,7 +43,7 @@ class SaveTerrainToolbox
 
 public:
     // Initialize Button Class
-    void Init(float posx, float posy,Properties* props,ISoundEngine* audioengine);
+    void Init(std::string buttontext,float posx, float posy,Properties* props,ISoundEngine* audioengine);
 
     // Cleanup function for destruction
     void Cleanup();

@@ -94,6 +94,15 @@ public:
     /*---------------------------
           Class Functionality
     ---------------------------*/
+    // Export the terrain
+    /*
+    The exported file is used by the game
+    engine and cannot be reloaded into the
+    editor. If you want to re-edit terrian
+    later use the save function from
+    the TerrainGeneration class.
+    */
+    void ExportTerrain(std::string filename);
     // Draw call with load check
     void DrawCall();
     // Cleanup the class

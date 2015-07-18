@@ -1,15 +1,15 @@
-#include "saveterraintoolbox.h"
+#include "savetoolbox.h"
 
 //************************************
 // Drop Box Initilization Function
 //************************************
 /*
-Initialize the menu dropbox box class.
+Initialize the save toolbox class.
 
 PARAMETERS:
 
 */
-void SaveTerrainToolbox::Init(float posx, float posy,Properties *props,ISoundEngine* audioengine)
+void SaveToolbox::Init(std::string buttontext,float posx, float posy,Properties *props,ISoundEngine* audioengine)
 {
     this->props=props;
     this->audioengine=audioengine;
@@ -33,7 +33,7 @@ void SaveTerrainToolbox::Init(float posx, float posy,Properties *props,ISoundEng
 
     // Setup the buttons
     buttons.Init("Buttons/testbutton","solid","../Fonts/FreeSans.ttf",0.5,*props,audioengine);
-    buttons.DefineNewButton("Modify",x+0.12f,y+0.05f,false);
+    buttons.DefineNewButton(buttontext,x+0.12f,y+0.05f,false);
     buttons.DefineNewButton("Cancel",x+0.12f,y-0.05f,true);
 };
 
@@ -44,12 +44,12 @@ void SaveTerrainToolbox::Init(float posx, float posy,Properties *props,ISoundEng
 This function carries out all draw calls to draw
 the buttons to the screen.
 */
-void SaveTerrainToolbox::DrawToolBox()
+void SaveToolbox::DrawToolBox()
 {
     // Draw
     frame.DrawBoxPos(x,y);
 
-    text.RenderTextCentered("Save Filename: ",1,x-0.07,1,y+0.03,1.0f,glm::vec3(1.0f));
+    text.RenderTextCentered("Insert Filename: ",1,x-0.07,1,y+0.03,1.0f,glm::vec3(1.0f));
     insertbox.DrawInsBox();
 
     buttons.DrawButtons();
@@ -61,7 +61,7 @@ void SaveTerrainToolbox::DrawToolBox()
 /*
 Cleanup after finished using the buttons
 */
-void SaveTerrainToolbox::Cleanup()
+void SaveToolbox::Cleanup()
 {
     frame.Cleanup();
     insertbox.Cleanup();
@@ -76,7 +76,7 @@ void SaveTerrainToolbox::Cleanup()
 /*
 
 */
-int SaveTerrainToolbox::UpdateEvents(InputStruct &input)
+int SaveToolbox::UpdateEvents(InputStruct &input)
 {
     double xmp,ymp;
     input.ReturnMousePos(xmp,ymp);
@@ -118,7 +118,7 @@ This function checks if the mouse, at x,y coords,
 is over the function, then sets that button
 active if it is.
 */
-bool SaveTerrainToolbox::CheckMouseOver(float xmp,float ymp)
+bool SaveToolbox::CheckMouseOver(float xmp,float ymp)
 {
     // Check X over
     bool xchk=false;
@@ -154,7 +154,7 @@ bool SaveTerrainToolbox::CheckMouseOver(float xmp,float ymp)
 //************************************
 /*
 */
-std::string SaveTerrainToolbox::GetFileName()
+std::string SaveToolbox::GetFileName()
 {
     std::stringstream ss;
     ss << insertbox.FetchDataString() << ".td";

@@ -12,7 +12,7 @@
 #include "../Tools/screenwriter.h"
 #include "../Tools/ToolBoxs/terraincreationtoolbox.h"
 #include "../Tools/ToolBoxs/terrainsculptingtoolbox.h"
-#include "../Tools/ToolBoxs/saveterraintoolbox.h"
+#include "../Tools/ToolBoxs/savetoolbox.h"
 #include "TerrainGenerator/terrainGenerator.h"
 
 //******************************************//
@@ -58,7 +58,10 @@ class TerrainGeneratorWrapper
     TerrainSculptingToolbox tstoolbox;
 
     // Save Terrain Toolbox
-    SaveTerrainToolbox sttoolbox;
+    SaveToolbox sttoolbox;
+
+    // Export Terrain Toolbox
+    SaveToolbox ettoolbox;
 
     // Terrain Generator Class
     TerrainGeneration terrainGen;

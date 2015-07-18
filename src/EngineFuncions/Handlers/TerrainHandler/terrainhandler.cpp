@@ -310,3 +310,66 @@ int TerrainHandler::GetNumberVerts()
 
     return rtnval;
 };
+
+//**************************
+//    Export the Terrain
+//**************************
+void TerrainHandler::ExportTerrain(std::string filename)
+{
+    std::ofstream savefile;
+    savefile.open(filename.c_str());
+
+    savefile << "L1Tex=" << TextureFiles[0] << std::endl;
+    savefile << "L2Tex=" << TextureFiles[1] << std::endl;
+    savefile << "L3Tex=" << TextureFiles[2] << std::endl;
+    savefile << "L4Tex=" << TextureFiles[3] << std::endl;
+
+    savefile << "Shdr=" << ShaderFiles << std::endl;
+
+    savefile << "mKa=" << materials.Ka.x << "," << materials.Ka.y << "," << materials.Ka.z << std::endl;
+    savefile << "mKd=" << materials.Kd.x << "," << materials.Kd.y << "," << materials.Kd.z << std::endl;
+    savefile << "mKs=" << materials.Ks.x << "," << materials.Ks.y << "," << materials.Ks.z << std::endl;
+    savefile << "mSh=" << materials.shine << std::endl;
+
+    savefile << "rHx=" << relativeHeight.x << std::endl;
+    savefile << "rHy=" << relativeHeight.y << std::endl;
+    savefile << "rHz=" << relativeHeight.z << std::endl;
+    savefile << "rHw=" << relativeHeight.w << std::endl;
+
+    // Save Indicies
+    int Nmesh=meshVerts.size();
+    int Nvert=meshVerts[0].size();
+    int Nidxs=idxs[0].size();
+
+    savefile << "Nmesh=" << Nmesh << std::endl;
+    savefile << "Nidx=" << Nvert << std::endl;
+
+    savefile << "$BEGIN_IDXS" << std::endl;
+    for (int i=0;i<Nmesh;++i)
+    {
+        savefile << "$MESH_" << i << std::endl;
+        for (int j=0;j<Nidxs;)
+        {
+            savefile << " " << idxs[i][j] << " " <<idxs[i][j+1] << " " << idxs[i][j+2] << std::endl;
+            j+=3;
+        }
+    }
+    savefile << "$END_IDXS" << std::endl;
+
+    savefile << "Nvert=" << Nvert << std::endl;
+
+    savefile << "$BEGIN_VERTS" << std::endl;
+    for (int i=0;i<Nmesh;++i)
+    {
+        savefile << "$MESH_" << i << std::endl;
+        for (int j=0;j<Nvert;++j)
+        {
+            savefile << " " << meshVerts[i][j].position.x << " " << meshVerts[i][j].position.y << " " << meshVerts[i][j].position.z << std::endl;
+            savefile << " " << meshVerts[i][j].normal.x << " " << meshVerts[i][j].normal.y << " " << meshVerts[i][j].normal.z << std::endl;
+            savefile << " " << meshVerts[i][j].texture.x << " " << meshVerts[i][j].texture.y << std::endl;
+        }
+    }
+    savefile << "$END_VERTS" << std::endl;
+
+    savefile.close();
+};

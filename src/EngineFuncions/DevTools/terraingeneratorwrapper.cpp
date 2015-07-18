@@ -47,8 +47,11 @@ void TerrainGeneratorWrapper::Init (Engine *game)
     //***********************
     //  Save Terrain Toolbox
     //***********************
-    // Initialize the Terrain Creation Toolbox
-    sttoolbox.Init(0.0f,0.0f,&game->props,game->audioengine);
+    // Initialize the Save terrain toolbox
+    sttoolbox.Init("Save",0.0f,0.0f,&game->props,game->audioengine);
+
+    // Initialize the Save terrain toolbox
+    ettoolbox.Init("Export",0.0f,0.0f,&game->props,game->audioengine);
 
     //**************************
     //Terrain Sculpting Toolbox
@@ -149,7 +152,19 @@ void TerrainGeneratorWrapper::UpdateEvents(InputStruct &input)
         //*******************************
         if (selID.option==2)
         {
-            selID.reset();
+            int ettbCall=sttoolbox.UpdateEvents(input);
+            if(ettbCall==0)
+            {
+                //*****************************
+                //    SAVE TERRAIN FUNCTIONS
+                //*****************************
+                std::string fn=ettoolbox.GetFileName();
+            }
+
+            if(ettbCall==1)
+            {
+                selID.reset();
+            }
         }
     }
 

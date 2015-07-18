@@ -212,7 +212,7 @@ void TerrainGeneratorWrapper::UpdateEvents(InputStruct &input)
                 TerrainCreationData tcdata=tctoolbox.FetchTerrainCreationData();
                 terrainGen.SaveCreationData(tcdata);
                 terrainGen.GenerateTerrain();
-                terrainGen.SetInitalTerrainOnGPU();
+                terrainGen.SetTerrainOnGPU();
             }
 
             if(tctbCall==1)
@@ -249,8 +249,8 @@ void TerrainGeneratorWrapper::UpdateEvents(InputStruct &input)
             //*****************
             // Register Shader
             //*****************
-            camera.RegisterShaderWithCameraDataUBO(terrainGen.shader);
-            skylight.RegisterShader(terrainGen.shader);
+            camera.RegisterShaderWithCameraDataUBO(terrainGen.AccessShader());
+            skylight.RegisterShader(terrainGen.AccessShader());
 
             selID.reset();
         }
@@ -276,8 +276,8 @@ void TerrainGeneratorWrapper::UpdateEvents(InputStruct &input)
             //*****************
             // Register Shader
             //*****************
-            camera.RegisterShaderWithCameraDataUBO(terrainGen.shader);
-            skylight.RegisterShader(terrainGen.shader);
+            camera.RegisterShaderWithCameraDataUBO(terrainGen.AccessShader());
+            skylight.RegisterShader(terrainGen.AccessShader());
 
             selID.reset();
         }
@@ -487,9 +487,9 @@ void TerrainGeneratorWrapper::Draw()
     // Draw mesh numbers
     if(numbermesh)
     {
-        for (int i=0; i<(int)terrainGen.positions.size(); ++i)
+        for (int i=0; i<(int)terrainGen.AccessPositions().size(); ++i)
         {
-            glm::vec2 mpos=terrainGen.positions[i];
+            glm::vec2 mpos=terrainGen.AccessPositions()[i];
             float dp=glm::dot(glm::normalize(glm::vec3(mpos.x,0.0f,mpos.y)-camera.cameraPos),glm::normalize(camera.cameraDir));
 
             if (dp > 0)

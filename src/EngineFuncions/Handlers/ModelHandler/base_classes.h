@@ -25,7 +25,6 @@ struct VertexwTang
         glm::vec3 bitangent;//Stores vertex positions
 };
 
-
 struct Material
 {
         GLfloat shine;// Shine factor

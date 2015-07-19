@@ -217,65 +217,6 @@ int TerrainGeneration::AverageHeights(int i,int j, std::vector< std::vector<int>
 };
 
 //*********************************************
-//            Setup Mesh on GPU
-//*********************************************
-/*
-Average the heights, this helps smooth the terrain
-after generation.
-*/
-void TerrainGeneration::setupMeshRegular()
-{
-    Console::cPrint("Setting Up Terrain Mesh");
-    //std::cout << "Setting Up Terrain Mesh" << std::endl;
-    // Create buffers/arrays
-    for (int i=0; i<Nsd; ++i)
-    {
-        ogltools::BufferHandler tmpBuff;
-        tmpBuff.GenBuffers(meshVerts[i],idxs[i]);
-        buffers.push_back(tmpBuff);
-    }
-};
-
-
-//*********************************************
-//         Draws the Mesh (Singular)
-//*********************************************
-/*
-Draw the mesh to the color buffer.
-*/
-void TerrainGeneration::Draw()
-{
-    // Use Shader
-    shader.Use();
-
-    // Bind Textures
-    texture[0].useTexture(shader,0);
-    texture[1].useTexture(shader,1);
-    texture[2].useTexture(shader,2);
-    texture[3].useTexture(shader,3);
-
-    // Set Materials
-    setMaterialUniform();
-
-    // Set Relative Height
-    SetRelativeHeightUniform();
-
-    // Create buffers/arrays
-    for (int i=0; i<(int)buffers.size(); ++i)
-    {
-        // Set Position
-        GLuint modelLoc = glGetUniformLocation(shader.Program, "modelMat");
-
-        glm::mat4 model2;
-        model2=glm::translate(model2,glm::vec3(0.0f,0.0f,0.0f));
-        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model2));
-
-        // Draw mesh
-        buffers[i].DrawVerts();
-    }
-};
-
-//*********************************************
 //              Setup Verticies
 //*********************************************
 /*
@@ -287,7 +228,6 @@ void TerrainGeneration::SetupVerts()
     int h = terrainSize;
     int w = terrainSize;
     int sd = pow(4,subdiv);
-    Nsd=sd;
 
     Console::cPrint("Allocating Verts Memory...");
     verts.resize(w*h);
@@ -304,17 +244,17 @@ void TerrainGeneration::SetupVerts()
 
     Console::cPrint("Calculating Indicies...");
 
-    if (!idxs.empty())
+    if (!AccessIdxs().empty())
     {
-        idxs.clear();
+        AccessIdxs().clear();
     }
 
-    if (!positions.empty())
+    if (!AccessPositions().empty())
     {
-        positions.clear();
+        AccessPositions().clear();
     }
 
-    positions.resize(sd);
+    AccessPositions().resize(sd);
 
     int N=(h/sqrt(sd))+1; // Length of each mesh
     Console::cPrint(tools::appendStrings(" Width of Mesh: ",N));
@@ -322,17 +262,17 @@ void TerrainGeneration::SetupVerts()
     long long int memreq=(N-1)*(N-1)*6;
     Console::cPrint(tools::appendStrings(" Idx. Mem. Req.: ",(sd*memreq)/(1024*1024),"MB"));
 
-    idxs.resize(sd);
+    AccessIdxs().resize(sd);
     for (int i=0; i<sd; ++i)
     {
-        idxs[i].resize(memreq);
+        AccessIdxs()[i].resize(memreq);
     }
 
     Console::cPrint(" Allocating Mesh Verts Memory...");
-    meshVerts.resize(sd);
+    AccessMeshVerts().resize(sd);
     for (int i=0; i<sd; ++i)
     {
-        meshVerts[i].resize(N*N);
+        AccessMeshVerts()[i].resize(N*N);
     }
 
     Console::cPrint(" Indexing Mesh Verts...");
@@ -359,13 +299,13 @@ void TerrainGeneration::SetupVerts()
                     //std::cout << " QUAD: {" << idx1 << "," << idx3 << "," << idx2 << "}"
                     //                << ",{" << idx2 << "," << idx3 << "," << idx4 << "}\n";
 
-                    idxs[sdIdx][it+0]=idx1;
-                    idxs[sdIdx][it+1]=idx3;
-                    idxs[sdIdx][it+2]=idx2;
+                    AccessIdxs()[sdIdx][it+0]=idx1;
+                    AccessIdxs()[sdIdx][it+1]=idx3;
+                    AccessIdxs()[sdIdx][it+2]=idx2;
 
-                    idxs[sdIdx][it+3]=idx2;
-                    idxs[sdIdx][it+4]=idx3;
-                    idxs[sdIdx][it+5]=idx4;
+                    AccessIdxs()[sdIdx][it+3]=idx2;
+                    AccessIdxs()[sdIdx][it+4]=idx3;
+                    AccessIdxs()[sdIdx][it+5]=idx4;
 
                     it+=6;
                 }
@@ -381,7 +321,7 @@ void TerrainGeneration::SetupVerts()
                     int jc=j+(N-1)*n;
                     int idx1=jc+ic*h;
                     //std::cout << " VERT: {" << idx1 << ""<< Nidx << "}\n";
-                    meshVerts[sdIdx][Nidx]=verts[idx1];
+                    AccessMeshVerts()[sdIdx][Nidx]=verts[idx1];
                 }
             }
 
@@ -392,7 +332,7 @@ void TerrainGeneration::SetupVerts()
             double x=n*dx+dx/2.0-(fw/2.0);
             double y=m*dx+dx/2.0-(fw/2.0);
 
-            positions[sdIdx]=glm::vec2(x,y);
+            AccessPositions()[sdIdx]=glm::vec2(x,y);
 
             //std::cout << "DISTANCE(" << sdIdx << "): {" << positions.back().x << "," << positions.back().y << "}" << std::endl;
         }
@@ -555,9 +495,9 @@ void TerrainGeneration::RecalculateVerticies()
     // Calculate the shift of the mesh (Used to shift 0,0 to center)
     float shift=(float)sizeScale*(h-1)/2.0f;
 
-    float midpoint=(lowShift+relativeHeight.x)/2.0f;
+    float midpoint=(lowShift+GetRelHeight().x)/2.0f;
 
-    relativeHeight.x=heightMult*(relativeHeight.x-midpoint);
+    (*AccessRelHeight()).x=heightMult*(GetRelHeight().x-midpoint);
 
     float sScale = sizeScale;
     float hMult = heightMult;
@@ -591,7 +531,7 @@ void TerrainGeneration::RecalculateMaxMinHeights()
     int h = terrainSize;
     int w = terrainSize;
 
-    relativeHeight.x=0.0f;
+    (*AccessRelHeight()).x=0.0f;
     lowShift=1.0E30;
 
     for (int i=0; i<h; ++i)
@@ -600,9 +540,9 @@ void TerrainGeneration::RecalculateMaxMinHeights()
         {
             float Height = HeightData[i][j];
 
-            if (Height>relativeHeight.x)
+            if (Height>GetRelHeight().x)
             {
-                relativeHeight.x=Height;
+                (*AccessRelHeight()).x=Height;
                 highShift=Height;
             }
 
@@ -612,20 +552,6 @@ void TerrainGeneration::RecalculateMaxMinHeights()
             }
         }
     }
-};
-
-//*********************************************
-//              Setup Materials
-//*********************************************
-/*
-Setup Materials
-*/
-void TerrainGeneration::SetupMaterials(glm::vec3 Ka,glm::vec3 Kd,glm::vec3 Ks,float shininess)
-{
-    materials.Ka = Ka;
-    materials.Kd = Kd;
-    materials.Ks = Ks;
-    materials.shine = shininess;
 };
 
 //*********************************************
@@ -654,43 +580,7 @@ Setup Terrain Parameters
 void TerrainGeneration::SetupTerrainModifyParameters(float heightMult,glm::vec3 relheight)
 {
     this->heightMult=heightMult;
-    this->relativeHeight = glm::vec4(relativeHeight.x,relheight.x,relheight.y,relheight.z);
-};
-
-
-//*********************************************
-//              Set Materials on GPU
-//*********************************************
-/*
-Set Materials on GPU
-*/
-void TerrainGeneration::setMaterialUniform ()
-{
-    GLuint Prog = shader.Program;
-    GLint AmbientLoc = glGetUniformLocation(Prog, "light.ambient");
-    GLint DiffuseLoc = glGetUniformLocation(Prog, "light.diffuse");
-    GLint SpecularLoc = glGetUniformLocation(Prog, "light.specular");
-    GLint ShineLoc = glGetUniformLocation(Prog, "light.shininess");
-
-    //cout << "Ambient [" << materials.Ka.x << "," << materials.Ka.y << "," << materials.Ka.z << "]\n";
-
-    glUniform3f(AmbientLoc, materials.Ka.x, materials.Ka.y, materials.Ka.z);
-    glUniform3f(DiffuseLoc, materials.Kd.x, materials.Kd.y, materials.Kd.z);
-    glUniform3f(SpecularLoc, materials.Ks.x, materials.Ks.y, materials.Ks.z);
-    glUniform1f(ShineLoc, materials.shine);
-};
-
-//*********************************************
-//      Set Relative Height Data on GPU
-//*********************************************
-/*
-Set Relative Height Data on GPU.
-*/
-void TerrainGeneration::SetRelativeHeightUniform()
-{
-    GLuint Prog = shader.Program;
-    GLint RelHeightLoc = glGetUniformLocation(Prog, "textures.relativeHeight");
-    glUniform4f(RelHeightLoc,relativeHeight.x,relativeHeight.y,relativeHeight.z,relativeHeight.w);
+    (*AccessRelHeight()) = glm::vec4(GetRelHeight().x,relheight.x,relheight.y,relheight.z);
 };
 
 //*********************************************
@@ -716,7 +606,7 @@ void TerrainGeneration::modifyElevation(int func,float eff,InputStruct &input,RT
     bool found=false;
 
     // Search all meshes for click
-    for(int m=0; m<(int)idxs.size(); ++m)
+    for(int m=0; m<int(AccessIdxs().size()); ++m)
     {
         if (!found)
         {
@@ -725,31 +615,31 @@ void TerrainGeneration::modifyElevation(int func,float eff,InputStruct &input,RT
             glm::vec3 pos = camera.cameraPos;
             glm::vec3 ray = camera.Cursor3DRay;
 
-            glm::vec3 spherecent = glm::vec3(positions[m].x,0.0f,positions[m].y);
+            glm::vec3 spherecent = glm::vec3(AccessPositions()[m].x,0.0f,AccessPositions()[m].y);
 
             // Determine if click occurs within mesh sphere
             if (glmtools::DetermineSphereIntersection(pos,ray,spherecent,sphererad))
             {
                 // If click occurs within mesh sphere, search mesh for clicked triangle
                 #pragma omp parallel for default(shared) firstprivate(m,pos,ray)
-                for(int i=0; i<(int)idxs[m].size()/3; ++i)
+                for(int i=0; i<int(AccessIdxs()[m].size())/3; ++i)
                 {
-                    int idx1 = idxs[m][i*3];
-                    int idx2 = idxs[m][i*3+1];
-                    int idx3 = idxs[m][i*3+2];
+                    int idx1 = AccessIdxs()[m][i*3];
+                    int idx2 = AccessIdxs()[m][i*3+1];
+                    int idx3 = AccessIdxs()[m][i*3+2];
 
-                    glm::vec3 n1 = meshVerts[m][idx1].normal;
-                    glm::vec3 n2 = meshVerts[m][idx2].normal;
-                    glm::vec3 n3 = meshVerts[m][idx3].normal;
+                    glm::vec3 n1 = AccessMeshVerts()[m][idx1].normal;
+                    glm::vec3 n2 = AccessMeshVerts()[m][idx2].normal;
+                    glm::vec3 n3 = AccessMeshVerts()[m][idx3].normal;
 
                     glm::vec3 na = glm::normalize(n1+n2+n3);
 
                     // Determine if the polygon is facing the ray
                     if (glm::dot(-glm::normalize(ray),na) > 0)
                     {
-                        glm::vec3 v1 = meshVerts[m][idx1].position;
-                        glm::vec3 v2 = meshVerts[m][idx2].position;
-                        glm::vec3 v3 = meshVerts[m][idx3].position;
+                        glm::vec3 v1 = AccessMeshVerts()[m][idx1].position;
+                        glm::vec3 v2 = AccessMeshVerts()[m][idx2].position;
+                        glm::vec3 v3 = AccessMeshVerts()[m][idx3].position;
 
                         glm::vec3 baryPostmp;
 

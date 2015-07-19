@@ -72,6 +72,8 @@
 		<Unit filename="src/EngineFuncions/Handlers/ModelHandler/mesh.h" />
 		<Unit filename="src/EngineFuncions/Handlers/ModelHandler/model.cpp" />
 		<Unit filename="src/EngineFuncions/Handlers/ModelHandler/model.h" />
+		<Unit filename="src/EngineFuncions/Handlers/TerrainHandler/terrainhandler.cpp" />
+		<Unit filename="src/EngineFuncions/Handlers/TerrainHandler/terrainhandler.h" />
 		<Unit filename="src/EngineFuncions/Handlers/resourcemanager.cpp" />
 		<Unit filename="src/EngineFuncions/Handlers/resourcemanager.h" />
 		<Unit filename="src/EngineFuncions/Interfaces/MenuInterfaces/graphicspropertiesinterface.cpp" />
@@ -118,8 +120,8 @@
 		<Unit filename="src/EngineFuncions/Tools/MenuItems/menuicon.h" />
 		<Unit filename="src/EngineFuncions/Tools/ToolBoxs/materialmodificationtoolbox.cpp" />
 		<Unit filename="src/EngineFuncions/Tools/ToolBoxs/materialmodificationtoolbox.h" />
-		<Unit filename="src/EngineFuncions/Tools/ToolBoxs/saveterraintoolbox.cpp" />
-		<Unit filename="src/EngineFuncions/Tools/ToolBoxs/saveterraintoolbox.h" />
+		<Unit filename="src/EngineFuncions/Tools/ToolBoxs/savetoolbox.cpp" />
+		<Unit filename="src/EngineFuncions/Tools/ToolBoxs/savetoolbox.h" />
 		<Unit filename="src/EngineFuncions/Tools/ToolBoxs/terraincreationtoolbox.cpp" />
 		<Unit filename="src/EngineFuncions/Tools/ToolBoxs/terraincreationtoolbox.h" />
 		<Unit filename="src/EngineFuncions/Tools/ToolBoxs/terrainmodificationtoolbox.cpp" />

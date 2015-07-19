@@ -47,8 +47,11 @@ void TerrainGeneratorWrapper::Init (Engine *game)
     //***********************
     //  Save Terrain Toolbox
     //***********************
-    // Initialize the Terrain Creation Toolbox
-    sttoolbox.Init(0.0f,0.0f,&game->props,game->audioengine);
+    // Initialize the Save terrain toolbox
+    sttoolbox.Init("Save",0.0f,0.0f,&game->props,game->audioengine);
+
+    // Initialize the Save terrain toolbox
+    ettoolbox.Init("Export",0.0f,0.0f,&game->props,game->audioengine);
 
     //**************************
     //Terrain Sculpting Toolbox
@@ -136,6 +139,8 @@ void TerrainGeneratorWrapper::UpdateEvents(InputStruct &input)
                 //    SAVE TERRAIN FUNCTIONS
                 //*****************************
                 std::string fn=sttoolbox.GetFileName();
+
+                selID.reset();
             }
 
             if(sttbCall==1)
@@ -149,7 +154,20 @@ void TerrainGeneratorWrapper::UpdateEvents(InputStruct &input)
         //*******************************
         if (selID.option==2)
         {
-            selID.reset();
+            int ettbCall=ettoolbox.UpdateEvents(input);
+            if(ettbCall==0)
+            {
+                //*****************************
+                //    SAVE TERRAIN FUNCTIONS
+                //*****************************
+                terrainGen.ExportTerrain(ettoolbox.GetFileName());
+                selID.reset();
+            }
+
+            if(ettbCall==1)
+            {
+                selID.reset();
+            }
         }
     }
 
@@ -212,7 +230,7 @@ void TerrainGeneratorWrapper::UpdateEvents(InputStruct &input)
                 TerrainCreationData tcdata=tctoolbox.FetchTerrainCreationData();
                 terrainGen.SaveCreationData(tcdata);
                 terrainGen.GenerateTerrain();
-                terrainGen.SetInitalTerrainOnGPU();
+                terrainGen.SetTerrainOnGPU();
             }
 
             if(tctbCall==1)
@@ -249,8 +267,8 @@ void TerrainGeneratorWrapper::UpdateEvents(InputStruct &input)
             //*****************
             // Register Shader
             //*****************
-            camera.RegisterShaderWithCameraDataUBO(terrainGen.shader);
-            skylight.RegisterShader(terrainGen.shader);
+            camera.RegisterShaderWithCameraDataUBO(terrainGen.AccessShader());
+            skylight.RegisterShader(terrainGen.AccessShader());
 
             selID.reset();
         }
@@ -276,8 +294,8 @@ void TerrainGeneratorWrapper::UpdateEvents(InputStruct &input)
             //*****************
             // Register Shader
             //*****************
-            camera.RegisterShaderWithCameraDataUBO(terrainGen.shader);
-            skylight.RegisterShader(terrainGen.shader);
+            camera.RegisterShaderWithCameraDataUBO(terrainGen.AccessShader());
+            skylight.RegisterShader(terrainGen.AccessShader());
 
             selID.reset();
         }
@@ -401,7 +419,7 @@ void TerrainGeneratorWrapper::ToolBoxDraw()
             // Save Menu
             if(selID.option==2)
             {
-
+                ettoolbox.DrawToolBox();
             }
         }
 
@@ -475,9 +493,7 @@ void TerrainGeneratorWrapper::Draw()
 
     // Draw Terrain Object
     if (wireframe)
-    {
         glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
-    }
 
     terrainGen.DrawCall();
 
@@ -487,9 +503,9 @@ void TerrainGeneratorWrapper::Draw()
     // Draw mesh numbers
     if(numbermesh)
     {
-        for (int i=0; i<(int)terrainGen.positions.size(); ++i)
+        for (int i=0; i<(int)terrainGen.AccessPositions().size(); ++i)
         {
-            glm::vec2 mpos=terrainGen.positions[i];
+            glm::vec2 mpos=terrainGen.AccessPositions()[i];
             float dp=glm::dot(glm::normalize(glm::vec3(mpos.x,0.0f,mpos.y)-camera.cameraPos),glm::normalize(camera.cameraDir));
 
             if (dp > 0)
@@ -539,6 +555,7 @@ void TerrainGeneratorWrapper::Cleanup()
     tmtoolbox.Cleanup();
     mmtoolbox.Cleanup();
     sttoolbox.Cleanup();
+    ettoolbox.Cleanup();
     tstoolbox.Cleanup();
 
     // Cleanup bars

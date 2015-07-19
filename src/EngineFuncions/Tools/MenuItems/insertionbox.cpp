@@ -195,7 +195,7 @@ void InsertionBox::SetNumericalValues(InputStruct &input)
     char val[]={'0','1','2','3','4','5','6','7','8','9'};
     for (int i=48;i<58;++i)
     {
-        if(kh.CheckKeyState(input.GetKey(i),i))
+        if(kh.CheckKeyState(input.GetKeyAndReset(i),i))
         {
             data.push_back(val[i-48]);
         }
@@ -203,19 +203,19 @@ void InsertionBox::SetNumericalValues(InputStruct &input)
 
     for (int i=320;i<330;++i)
     {
-        if(kh.CheckKeyState(input.GetKey(i),i))
+        if(kh.CheckKeyState(input.GetKeyAndReset(i),i))
         {
             data.push_back(val[i-320]);
         }
     }
 
-    if(kh.CheckKeyState(input.GetKey(45),45) || kh.CheckKeyState(input.GetKey(333),333))
+    if(kh.CheckKeyState(input.GetKeyAndReset(45),45) || kh.CheckKeyState(input.GetKeyAndReset(333),333))
     {
         char val[]="-";
         data.push_back(val[0]);
     }
 
-    if(kh.CheckKeyState(input.GetKey(46),46) || kh.CheckKeyState(input.GetKey(330),330))
+    if(kh.CheckKeyState(input.GetKeyAndReset(46),46) || kh.CheckKeyState(input.GetKeyAndReset(330),330))
     {
         char val[]=".";
         data.push_back(val[0]);
@@ -231,7 +231,7 @@ Set only number type values
 void InsertionBox::SetValues(InputStruct &input)
 {
     // Setup Caps
-    if (kh.CheckKeyState(input.GetKey(GLFW_KEY_CAPS_LOCK),GLFW_KEY_CAPS_LOCK))
+    if (kh.CheckKeyState(input.GetKeyAndReset(GLFW_KEY_CAPS_LOCK),GLFW_KEY_CAPS_LOCK))
     {
         if (!Caps)
         {
@@ -242,7 +242,7 @@ void InsertionBox::SetValues(InputStruct &input)
     }
 
     //Setup Shift
-    if (input.GetKey(GLFW_KEY_LEFT_SHIFT))
+    if (input.GetKeyAndReset(GLFW_KEY_LEFT_SHIFT))
     {
         Shift=true;
     } else {
@@ -265,7 +265,7 @@ void InsertionBox::SetValues(InputStruct &input)
 
     for (int i=65;i<91;++i)
     {
-        if(kh.CheckKeyState(input.GetKey(i),i))
+        if(kh.CheckKeyState(input.GetKeyAndReset(i),i))
         {
             if(Caps || Shift)
             {
@@ -279,7 +279,7 @@ void InsertionBox::SetValues(InputStruct &input)
     char val[]={'0','1','2','3','4','5','6','7','8','9'};
     for (int i=48;i<58;++i)
     {
-        if(kh.CheckKeyState(input.GetKey(i),i))
+        if(kh.CheckKeyState(input.GetKeyAndReset(i),i))
         {
             data.push_back(val[i-48]);
         }
@@ -287,13 +287,13 @@ void InsertionBox::SetValues(InputStruct &input)
 
     for (int i=320;i<330;++i)
     {
-        if(kh.CheckKeyState(input.GetKey(i),i))
+        if(kh.CheckKeyState(input.GetKeyAndReset(i),i))
         {
             data.push_back(val[i-320]);
         }
     }
 
-    if(kh.CheckKeyState(input.GetKey(45),45) || kh.CheckKeyState(input.GetKey(333),333))
+    if(kh.CheckKeyState(input.GetKeyAndReset(45),45) || kh.CheckKeyState(input.GetKeyAndReset(333),333))
     {
         if(Caps || Shift)
         {
@@ -305,7 +305,7 @@ void InsertionBox::SetValues(InputStruct &input)
         }
     }
 
-    if(kh.CheckKeyState(input.GetKey(46),46) || kh.CheckKeyState(input.GetKey(330),330))
+    if(kh.CheckKeyState(input.GetKeyAndReset(46),46) || kh.CheckKeyState(input.GetKeyAndReset(330),330))
     {
         char val[]=".";
         data.push_back(val[0]);

@@ -78,11 +78,11 @@ protected:
     TerrainGeneratorState() {};
 
 private:
+
     //******************************
     //    Event Call Back Handling
     //******************************
-
-    //Functions
+    //Virtual Functions from State class
     void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
     void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
     void mouse_pos_callback(GLFWwindow* window, double xpos, double ypos);

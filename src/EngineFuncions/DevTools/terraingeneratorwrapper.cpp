@@ -139,6 +139,8 @@ void TerrainGeneratorWrapper::UpdateEvents(InputStruct &input)
                 //    SAVE TERRAIN FUNCTIONS
                 //*****************************
                 std::string fn=sttoolbox.GetFileName();
+
+                selID.reset();
             }
 
             if(sttbCall==1)
@@ -152,13 +154,14 @@ void TerrainGeneratorWrapper::UpdateEvents(InputStruct &input)
         //*******************************
         if (selID.option==2)
         {
-            int ettbCall=sttoolbox.UpdateEvents(input);
+            int ettbCall=ettoolbox.UpdateEvents(input);
             if(ettbCall==0)
             {
                 //*****************************
                 //    SAVE TERRAIN FUNCTIONS
                 //*****************************
-                std::string fn=ettoolbox.GetFileName();
+                terrainGen.ExportTerrain(ettoolbox.GetFileName());
+                selID.reset();
             }
 
             if(ettbCall==1)
@@ -416,7 +419,7 @@ void TerrainGeneratorWrapper::ToolBoxDraw()
             // Save Menu
             if(selID.option==2)
             {
-
+                ettoolbox.DrawToolBox();
             }
         }
 
@@ -490,9 +493,7 @@ void TerrainGeneratorWrapper::Draw()
 
     // Draw Terrain Object
     if (wireframe)
-    {
         glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
-    }
 
     terrainGen.DrawCall();
 
@@ -554,6 +555,7 @@ void TerrainGeneratorWrapper::Cleanup()
     tmtoolbox.Cleanup();
     mmtoolbox.Cleanup();
     sttoolbox.Cleanup();
+    ettoolbox.Cleanup();
     tstoolbox.Cleanup();
 
     // Cleanup bars

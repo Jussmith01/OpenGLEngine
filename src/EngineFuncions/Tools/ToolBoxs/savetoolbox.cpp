@@ -101,7 +101,7 @@ int SaveToolbox::UpdateEvents(InputStruct &input)
         buttons.SetActiveButton(0);
     }
 
-    if (bpress==1)
+    if (bpress==1 || input.GetKeyAndReset(GLFW_KEY_ESCAPE))
     {
         rtn=1;
         buttons.SetActiveButton(1);
@@ -157,6 +157,6 @@ bool SaveToolbox::CheckMouseOver(float xmp,float ymp)
 std::string SaveToolbox::GetFileName()
 {
     std::stringstream ss;
-    ss << insertbox.FetchDataString() << ".td";
+    ss << insertbox.FetchDataString();
     return ss.str();
 };

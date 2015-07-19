@@ -316,8 +316,11 @@ int TerrainHandler::GetNumberVerts()
 //**************************
 void TerrainHandler::ExportTerrain(std::string filename)
 {
+    std::stringstream ss;
+    ss << "../Data/Terrain/" << filename << ".ter";
+
     std::ofstream savefile;
-    savefile.open(filename.c_str());
+    savefile.open(ss.str().c_str());
 
     savefile << "L1Tex=" << TextureFiles[0] << std::endl;
     savefile << "L2Tex=" << TextureFiles[1] << std::endl;

@@ -24,6 +24,11 @@ class Console
     static std::vector<std::string> cbuffer; // Console buffer
     static bool consoleActive;
 
+    //------------------
+    //  Class Variables
+    //------------------
+    double memsize;
+
     //------------------------------
     //Private Member Class Functions
     //------------------------------
@@ -46,6 +51,9 @@ public:
 
     // Cleanup
     void Clear(void);
+
+    // Get Class Memory Usage
+    void SetMemoryUsage(void);
 
     //------------------------------
     //Static Public Member Functions

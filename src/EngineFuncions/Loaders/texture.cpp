@@ -30,6 +30,18 @@ void Texture::LoadTextureDataToCPU()
     }
 };
 
+void Texture::ProduceMemoryUsage()
+{
+    // Width * Height * Bytes * Mipmap scaling
+    memsize = w*h*4.0*1.3333333/(1024.0*1024.0);
+};
+
+double Texture::MemSize()
+{
+    // Width * Height * Bytes * Mipmap scaling
+    return memsize;
+};
+
 void Texture::LoadTextureDataToGPU()
 {
     //Texture 1 Define
@@ -54,7 +66,9 @@ void Texture::LoadTextureDataToGPU()
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-        Console::cPrint(tools::appendStrings("Binding Texture: ",filename," to Address: ",this->TextureID));
+        ProduceMemoryUsage();
+
+        Console::cPrint(tools::appendStrings("Binding Texture: ",filename," to Address: ",this->TextureID," Memory: ",MemSize()));
         //std::cout << "Binding Texture: " << filename << " to Address: " << this->TextureID << "\n";
         glBindTexture(GL_TEXTURE_2D, 0);
     }

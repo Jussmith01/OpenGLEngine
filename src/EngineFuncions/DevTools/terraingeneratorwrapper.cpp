@@ -106,6 +106,9 @@ Updates all events for the wrapper class
 */
 void TerrainGeneratorWrapper::UpdateEvents(InputStruct &input)
 {
+    glm::ivec3 vt;
+    terrainGen.GetMeshVertIDatPos(camera.GetvPolPos().x,camera.GetvPolPos().z,vt);
+
     //*******************
     // Default Bar State
     //*******************

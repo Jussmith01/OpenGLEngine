@@ -12,7 +12,6 @@
 //**************************
 class Texture
 {
-public:
     // Our program variables
     GLuint TextureID;
     std::string uniform;
@@ -23,22 +22,23 @@ public:
     bool GPUload;
 
 
-    //Uniform Types
+    //Image Variables
     int w,h;
     unsigned char *image;
+    double memsize;
 
+    public:
     // Constructor reads and builds our shader -- First NDiff filenames are diffuse, last NSpec
     Texture ()
     {
         GPUload=false;
         CPUload=false;
+        memsize=0;
     };
 
-    Texture (std::string file,std::string uniform)
+    Texture (std::string file,std::string uniform) : Texture()
     {
         Setup(file,uniform);
-        GPUload=false;
-        CPUload=false;
     };
 
     ~Texture () {}
@@ -56,6 +56,10 @@ public:
     void TextureCleanup();
 
     void useTexture (Shader &shader, GLint texIdx);
+
+    void ProduceMemoryUsage();
+
+    double MemSize();
 };
 
 #endif // TEXTURELOADER_H

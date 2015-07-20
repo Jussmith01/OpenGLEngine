@@ -9,6 +9,7 @@
 #include "../../Tools/tools.hpp"
 #include "../../Tools/ogltools.hpp"
 #include "../../Tools/glmtools.hpp"
+#include "../../Tools/micro_timer.h"
 
 class TerrainHandler
 {
@@ -43,11 +44,23 @@ class TerrainHandler
     /* Height used to determine landscape texturing */
     glm::vec4 relativeHeight;
 
+    /* Mesh subdivision information */
+    int Nsub; // Edge length of terrain in number meshes
+    int Elen; // Edge length in verts of each mesh
+    double Elenf; // Edge length in distance
+    float MaxL; // Maximum Edge Length from center of terrain
+    float Vdist; // Distance between vertices
+
     /*---------------------------
     Internal Class Functionality
     ---------------------------*/
     //Main Draw
     void Draw();
+
+    //**********
+    //   Timer
+    //**********
+    //microTimer optTimer;
 
 public:
     /*---------------------------
@@ -79,7 +92,7 @@ public:
     // Get the GPU shader data bool
     bool GetGPUShdr() {return GPUShdrSet;};
     // Get the relative height data
-    glm::vec4* AccessRelHeight() {return &relativeHeight;};
+    glm::vec4& AccessRelHeight() {return relativeHeight;};
     // Get the relative height data
     glm::vec4 GetRelHeight() {return relativeHeight;};
     // Get the materials data
@@ -90,6 +103,8 @@ public:
     void SetTexFiles(std::string f1,std::string f2,std::string f3,std::string f4);
     // Set the material values
     void SetupMaterials(glm::vec3 Ka,glm::vec3 Kd,glm::vec3 Ks,float shininess);
+    // Set the mesh subdivision information
+    void SetupMeshSubInfo(int Nsub,int Elen,float Vdist);
 
     /*---------------------------
           Class Functionality
@@ -111,6 +126,8 @@ public:
     long int GetGPUMemoryReqs();
     // Return the number of verts in all meshes
     int GetNumberVerts();
+    // Return mesh of x,z coordinates
+    int GetMeshVertIDatPos(double x, double z,glm::ivec3 &vt);
 
     /*---------------------------
      Loading/Unloading Functions

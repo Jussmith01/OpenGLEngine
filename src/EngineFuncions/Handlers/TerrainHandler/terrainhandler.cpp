@@ -180,6 +180,20 @@ void TerrainHandler::SetTerrainOnGPU()
 };
 
 //*********************************************
+//              Setup Tex Files
+//*********************************************
+/*
+Setup Tex Files
+*/
+void TerrainHandler::SetTexFiles(std::string f1,std::string f2,std::string f3,std::string f4)
+{
+    TextureFiles[0]=f1;
+    TextureFiles[1]=f2;
+    TextureFiles[2]=f3;
+    TextureFiles[3]=f4;
+};
+
+//*********************************************
 //              Setup Materials
 //*********************************************
 /*
@@ -197,17 +211,20 @@ void TerrainHandler::SetupMaterials(glm::vec3 Ka,glm::vec3 Kd,glm::vec3 Ks,float
 };
 
 //*********************************************
-//              Setup Tex Files
+//     Setup Mesh Subdivision Information
 //*********************************************
 /*
-Setup Tex Files
+
 */
-void TerrainHandler::SetTexFiles(std::string f1,std::string f2,std::string f3,std::string f4)
+void TerrainHandler::SetupMeshSubInfo(int Nsub,int Elen,float Vdist)
 {
-    TextureFiles[0]=f1;
-    TextureFiles[1]=f2;
-    TextureFiles[2]=f3;
-    TextureFiles[3]=f4;
+    this->Nsub = Nsub;
+    this->Elen = Elen;
+    this->Vdist = Vdist;
+
+    //Compute some required variables
+    this->Elenf = 1.0/((Elen-1)*double(Vdist)); // Edge length of a mesh
+    this->MaxL = Nsub/(float)2;
 };
 
 //*********************************************
@@ -293,6 +310,9 @@ long int TerrainHandler::GetGPUMemoryReqs()
         rtnval /= (1024*1024);
     }
 
+    for (int i=0;i<4;++i)
+        rtnval += texture[i].MemSize();
+
     return rtnval;
 };
 
@@ -309,6 +329,63 @@ int TerrainHandler::GetNumberVerts()
     }
 
     return rtnval;
+};
+
+//******************************************
+//  Get the Mesh ID at a given x,z Position
+//******************************************
+int TerrainHandler::GetMeshVertIDatPos(double x, double z,glm::ivec3 &vt)
+{
+    //optTimer.start_point();
+    double xtrav = x*Elenf; //A normalized mesh coordinate which numbers out the meshes
+    double ztrav = z*Elenf;
+
+    if ( fabs(xtrav)>MaxL || fabs(ztrav)>MaxL )
+    {
+        return -1;
+    } else {
+        xtrav += MaxL; // Shift coords back to original (+ only) mesh coords
+        ztrav += MaxL;
+
+        int Nx = floor(xtrav);
+        int Nz = floor(ztrav);
+
+        int MID = Nx+Nsub*Nz; // Mesh ID
+
+        double xRem = xtrav - Nx;
+        double zRem = ztrav - Nz;
+
+        int Em1 = (Elen-1);
+
+        int row = int(floor(Em1*xRem));
+        int col = int(floor(Em1*zRem));
+
+        int ielem = row+col*Elen;
+
+        xRem = Em1*xRem - double(row);
+        zRem = Em1*zRem - double(col);
+
+        // Determine which triangle we are searching for
+        if (xRem+zRem > 1.0)
+        {
+            vt.x = ielem+1;
+            vt.y = ielem+Elen;
+            vt.z = ielem+Elen+1;
+            //Console::cPrint(tools::appendStrings(" SECOND: ",xRem + zRem," Tri: ",verts[0],",",verts[1],",",verts[2]));
+        } else {
+            vt.x = ielem;
+            vt.y = ielem+1;
+            vt.z = ielem+Elen;
+            //Console::cPrint(tools::appendStrings(" FIRST: ",xRem + zRem," Tri: ",verts[0],",",verts[1],",",verts[2]));
+        }
+
+        //Console::cPrint(tools::appendStrings(" MeshID: ",MID," Tri: ",verts[0],",",verts[1],",",verts[2]));
+
+        //optTimer.end_point();
+        //Console::cPrint(optTimer.get_generic_print_string("modifyElevation "));
+
+        return MID;
+    }
 };
 
 //**************************

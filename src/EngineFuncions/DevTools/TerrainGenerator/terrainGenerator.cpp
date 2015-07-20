@@ -259,6 +259,8 @@ void TerrainGeneration::SetupVerts()
     int N=(h/sqrt(sd))+1; // Length of each mesh
     Console::cPrint(tools::appendStrings(" Width of Mesh: ",N));
 
+    SetupMeshSubInfo(sqrt(sd),N,sizeScale);
+
     long long int memreq=(N-1)*(N-1)*6;
     Console::cPrint(tools::appendStrings(" Idx. Mem. Req.: ",(sd*memreq)/(1024*1024),"MB"));
 
@@ -497,7 +499,7 @@ void TerrainGeneration::RecalculateVerticies()
 
     float midpoint=(lowShift+GetRelHeight().x)/2.0f;
 
-    (*AccessRelHeight()).x=heightMult*(GetRelHeight().x-midpoint);
+    AccessRelHeight().x=heightMult*(GetRelHeight().x-midpoint);
 
     float sScale = sizeScale;
     float hMult = heightMult;
@@ -531,7 +533,7 @@ void TerrainGeneration::RecalculateMaxMinHeights()
     int h = terrainSize;
     int w = terrainSize;
 
-    (*AccessRelHeight()).x=0.0f;
+    AccessRelHeight().x=0.0f;
     lowShift=1.0E30;
 
     for (int i=0; i<h; ++i)
@@ -542,7 +544,7 @@ void TerrainGeneration::RecalculateMaxMinHeights()
 
             if (Height>GetRelHeight().x)
             {
-                (*AccessRelHeight()).x=Height;
+                AccessRelHeight().x=Height;
                 highShift=Height;
             }
 
@@ -580,7 +582,7 @@ Setup Terrain Parameters
 void TerrainGeneration::SetupTerrainModifyParameters(float heightMult,glm::vec3 relheight)
 {
     this->heightMult=heightMult;
-    (*AccessRelHeight()) = glm::vec4(GetRelHeight().x,relheight.x,relheight.y,relheight.z);
+    AccessRelHeight() = glm::vec4(GetRelHeight().x,relheight.x,relheight.y,relheight.z);
 };
 
 //*********************************************
@@ -601,7 +603,7 @@ void TerrainGeneration::modifyElevation(int func,float eff,InputStruct &input,RT
     // Initialize variables to be set
     int mesh=-1;
     int poly=-1;
-    glm::vec3 baryPos;
+    glm::vec3 baryPos(1.0E7);
     glm::vec3 avgPos;
     bool found=false;
 
@@ -646,13 +648,19 @@ void TerrainGeneration::modifyElevation(int func,float eff,InputStruct &input,RT
                         // Determine if searched triangle intersects click ray
                         if (glmtools::DetermineTriangleIntersection(pos,ray,v1,v2,v3,baryPostmp))
                         {
-                            baryPos=baryPostmp;
-                            mesh=m;
-                            poly=i;
+                            #pragma omp critical
+                            {
+                                if (baryPostmp.z < baryPos.z)
+                                {
+                                    baryPos=baryPostmp;
+                                    mesh=m;
+                                    poly=i;
 
-                            avgPos=v1+v2+v3;
-                            avgPos*=(1.0/3.0);
-                            found=true;
+                                    avgPos=v1+v2+v3;
+                                    avgPos*=0.3333333;
+                                    found=true;
+                                }
+                            }
                         }
                     }
                 }
@@ -661,21 +669,26 @@ void TerrainGeneration::modifyElevation(int func,float eff,InputStruct &input,RT
     }
 
     // Modify the height data
-    switch(func)
+    if (found)
     {
-        case 0: {ModifyHeightData(avgPos,0,eff);break;}
-        case 1: {ModifyHeightData(avgPos,1,eff);break;}
-        case 2: {LevelHeightData(avgPos,eff);break;}
+        switch(func)
+        {
+            case 0: {ModifyHeightData(avgPos,0,eff);break;}
+            case 1: {ModifyHeightData(avgPos,1,eff);break;}
+            case 2: {LevelHeightData(avgPos,eff);break;}
+        }
+
+        // Recalculate the data based on height changes
+        RecalculateData();
+        //****************
+        // TESTING THINGSsds
+        //****************
+        Console::cPrint(tools::appendStrings("Intersect Mesh(",mesh,") Polygon(",poly,")"));
+        Console::cPrint(tools::appendStrings("Bary Position [",baryPos.x,",",baryPos.y,",",baryPos.z,"]"));
+    } else {
+        Console::cPrint("No intersection detected!");
     }
 
-    // Recalculate the data based on height changes
-    RecalculateData();
-
-    //****************
-    // TESTING THINGSsds
-    //****************
-    Console::cPrint(tools::appendStrings("Intersect Mesh(",mesh,") Polygon(",poly,")"));
-    Console::cPrint(tools::appendStrings("Bary Position [",baryPos.x,",",baryPos.y,",",baryPos.z,"]"));
 
     generalTimer.end_point(); // End the *TESTING* timer
     Console::cPrint(generalTimer.get_generic_print_string("modifyElevation "));

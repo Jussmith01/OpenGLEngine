@@ -43,12 +43,37 @@ void Console::Draw ()
         for(int i=0; i<N; ++i)
         {
             ctext.RenderTextLeftJustified(cbuffer[N-1-i],-0.95f,-0.95f+i*0.04,1.0f,glm::vec3(1.0f));
-            if (i>=10)
+            if (i>=20)
             {
                 break;
             }
         }
+
+        SetMemoryUsage();
+
+        std::stringstream ss;
+        ss << "Console Memory Usage: " << memsize << "MB";
+
+        ctext.RenderTextLeftJustified(ss.str(),-0.95f,-0.95f+21*0.04,1.0f,glm::vec3(1.0f));
     }
+};
+
+// -----------------------------
+//    Get Console Memory Usage
+// -----------------------------
+/*
+No arguments.
+
+Returns the memory usage of the
+class.
+*/
+void Console::SetMemoryUsage ()
+{
+    long long int bytes = 0;
+    for (auto&& s : cbuffer)
+        bytes += s.capacity();
+
+    memsize = bytes/(1024.0*1024.0);
 };
 
 // ----------------------
@@ -129,14 +154,17 @@ void Console::cPrint(std::string line)
 {
     cbuffer.push_back("> ");
     cbuffer.back().append(line);
+    cbuffer.back().shrink_to_fit();
 };
 
 //Prints a line the the console buffer with blank before
 void Console::cPrint(bool spacef,std::string line)
 {
     cbuffer.push_back(" ");
+    cbuffer.back().shrink_to_fit();
     cbuffer.push_back("> ");
     cbuffer.back().append(line);
+    cbuffer.back().shrink_to_fit();
 };
 
 //Prints a line the the console buffer with blank after
@@ -144,7 +172,9 @@ void Console::cPrint(std::string line,bool spaceb)
 {
     cbuffer.push_back("> ");
     cbuffer.back().append(line);
+    cbuffer.back().shrink_to_fit();
     cbuffer.push_back(" ");
+    cbuffer.back().shrink_to_fit();
 };
 
 //Prints a line the the console buffer with blank before and after
@@ -153,7 +183,9 @@ void Console::cPrint(bool spacef,std::string line,bool spaceb)
     cbuffer.push_back(" ");
     cbuffer.push_back("> ");
     cbuffer.back().append(line);
+    cbuffer.back().shrink_to_fit();
     cbuffer.push_back(" ");
+    cbuffer.back().shrink_to_fit();
 };
 
 //Update input into the console

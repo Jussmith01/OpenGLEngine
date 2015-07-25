@@ -5,7 +5,7 @@ MainMenuState MainMenuState::m_MainMenuState;
 
 void MainMenuState::Init(Engine *game)
 {
-    MainMenuState::stateID = "Main Menu";
+    MainMenuState::stateID = "MainMenu";
 
     swidth=game->props.WinWidth;
     sheight=game->props.WinHeight;

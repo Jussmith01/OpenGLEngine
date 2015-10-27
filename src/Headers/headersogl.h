@@ -18,4 +18,3 @@
 #include <glm/gtx/intersect.hpp>
 
 #endif
-

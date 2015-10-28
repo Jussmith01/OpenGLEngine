@@ -83,6 +83,12 @@
 		<Unit filename="JuMenuAPI/JuMenu.h">
 			<Option target="Shared_JuMenuAPI" />
 		</Unit>
+		<Unit filename="JuMenuAPI/JuMenuDeps.h">
+			<Option target="Shared_JuMenuAPI" />
+		</Unit>
+		<Unit filename="JuMenuAPI/JuMenuErrs.h">
+			<Option target="Shared_JuMenuAPI" />
+		</Unit>
 		<Unit filename="JuMenuAPI/src/boxcolored.cpp">
 			<Option target="Shared_JuMenuAPI" />
 		</Unit>

@@ -1,8 +1,8 @@
 #define GLEW_STATIC
-#ifndef MENUBUTTON_H
-#define MENUBUTTON_H
+#ifndef JUMENUBUTTON_H
+#define JUMENUBUTTON_H
 
-#include "../JuMenu.h"
+#include "../JuMenuDeps.h"
 
 namespace JuMenu {
 
@@ -15,8 +15,7 @@ using namespace irrklang;
 /*
 
 */
-struct Button
-{
+struct Button {
     int state; // Button State
     float x,y; // Button Position
     std::string caption; // Button Text
@@ -24,8 +23,7 @@ struct Button
     // Constuctors
     Button () {}; // Default
 
-    Button (std::string caption,float x, float y) // Overloaded constructor
-    {
+    Button (std::string caption,float x, float y) {
         this->x=x;
         this->y=y;
         this->caption=caption;
@@ -41,34 +39,25 @@ struct Button
     mouse coordinates and lw,lh button
     width and height.
     */
-    bool CheckIfOver(float xmp,float ymp,float lw,float lh)
-    {
+    bool CheckIfOver(float xmp,float ymp,float lw,float lh) {
         // Check X over
         bool xchk=false;
         float xl=x-lw;
         float xr=x+lw;
         if (xmp>=xl && xmp<=xr)
-        {
             xchk=true;
-        }
 
         // Check y over
         bool ychk=false;
         float yb=y-lh;
         float yt=y+lh;
         if (ymp>=yb && ymp<=yt)
-        {
             ychk=true;
-        }
 
         // Check if both are true
         bool Over=false;
         if (xchk && ychk)
-        {
             Over=true;
-        }
-
-        //std::cout << "xleft: " << xl << " xright: " << xr << " xmp: " << xmp << " yb: " << yb << " yt: " << yt << " ymp: " << ymp << std::endl;
 
         // Return Result
         return Over;
@@ -78,8 +67,7 @@ struct Button
 //*****************************************//
 //	           Menu Button Class	       //
 //*****************************************//
-class MenuButtons
-{
+class MenuButtons {
     // Variables
     glm::vec3 colors[3];
     std::string soundactive;

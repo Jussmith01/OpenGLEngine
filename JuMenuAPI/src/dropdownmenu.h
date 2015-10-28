@@ -1,7 +1,7 @@
-#ifndef DROPDOWNMENU_H
-#define DROPDOWNMENU_H
+#ifndef JUDROPDOWNMENU_H
+#define JUDROPDOWNMENU_H
 
-#include "../JuMenu.h"
+#include "../JuMenuDeps.h"
 #include "boxcolored.h"
 
 //*****************************************//

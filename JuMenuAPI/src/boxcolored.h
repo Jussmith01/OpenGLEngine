@@ -1,8 +1,8 @@
 #define GLEW_STATIC
-#ifndef DISPLAYBOX_H
-#define DISPLAYBOX_H
+#ifndef JUDISPLAYBOX_H
+#define JUDISPLAYBOX_H
 
-#include "../JuMenu.h"
+#include "../JuMenuDeps.h"
 
 namespace JuMenu {
 

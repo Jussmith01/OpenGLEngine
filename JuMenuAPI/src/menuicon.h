@@ -1,7 +1,7 @@
-#ifndef MENUICON_H
-#define MENUICON_H
+#ifndef JUMENUICON_H
+#define JUMENUICON_H
 
-#include "../JuMenu.h"
+#include "../JuMenuDeps.h"
 
 namespace JuMenu {
 
@@ -16,8 +16,7 @@ data and functions pertaining to the full
 list of icons which are defined within the
 class.
 */
-struct Icon
-{
+struct Icon {
     bool state; // Icon State, true=active false=inactive
     float x,y; // Icon Position
     std::string iconimage;
@@ -30,8 +29,7 @@ struct Icon
     // Constuctors
     Icon () {}; // Default
 
-    Icon (float x,float y,std::string iconimage,float scale,float swidth,float sheight) // Overloaded constructor
-    {
+    Icon (float x,float y,std::string iconimage,float scale,float swidth,float sheight) {
         this->x=x;
         this->y=y;
         this->state=false;
@@ -50,8 +48,7 @@ struct Icon
         lh=image[0].GetImageHalfHeight();
     };
 
-    void Cleanup()
-    {
+    void Cleanup() {
         image[0].Cleanup();
         image[1].Cleanup();
     };
@@ -65,34 +62,25 @@ struct Icon
     mouse coordinates and lw,lh button
     width and height.
     */
-    bool CheckIfOver(float xmp,float ymp)
-    {
+    bool CheckIfOver(float xmp,float ymp) {
         // Check X over
         bool xchk=false;
         float xl=x-lw;
         float xr=x+lw;
         if (xmp>=xl && xmp<=xr)
-        {
             xchk=true;
-        }
 
         // Check y over
         bool ychk=false;
         float yb=y-lh;
         float yt=y+lh;
         if (ymp>=yb && ymp<=yt)
-        {
             ychk=true;
-        }
 
         // Check if both are true
         bool Over=false;
         if (xchk && ychk)
-        {
             Over=true;
-        }
-
-        //std::cout << "xleft: " << xl << " xright: " << xr << " xmp: " << xmp << " yb: " << yb << " yt: " << yt << " ymp: " << ymp << std::endl;
 
         // Return Result
         return Over;
@@ -102,8 +90,7 @@ struct Icon
 //*****************************************//
 //	           Menu Icons Class  	       //
 //*****************************************//
-class MenuIcons
-{
+class MenuIcons {
     // Variables
     std::vector<Icon> icon;
     float swidth,sheight;

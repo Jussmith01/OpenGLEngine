@@ -1,7 +1,7 @@
-#ifndef INSERTIONBOX_C
-#define INSERTIONBOX_C
+#ifndef JUINSERTIONBOX_C
+#define JUINSERTIONBOX_C
 
-#include "../JuMenu.h"
+#include "../JuMenuDeps.h"
 #include "boxcolored.h"
 
 namespace JuMenu {
@@ -11,8 +11,7 @@ using namespace irrklang;
 //*****************************************//
 //	           Menu Button Class	       //
 //*****************************************//
-class InsertionBox
-{
+class InsertionBox {
     // Variables
     std::string sound;
     std::string data;

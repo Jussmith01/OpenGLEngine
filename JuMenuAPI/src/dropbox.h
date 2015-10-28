@@ -1,8 +1,8 @@
 #define GLEW_STATIC
-#ifndef MENUDROPBOX_H
-#define MENUDROPBOX_H
+#ifndef JUMENUDROPBOX_H
+#define JUMENUDROPBOX_H
 
-#include "../JuMenu.h"
+#include "../JuMenuDeps.h"
 #include "boxcolored.h"
 
 namespace JuMenu {
@@ -36,7 +36,7 @@ class MenuDropBox
 
     // Tools
     ImageDisplay image[2];
-    JuMenu::DisplayBox box[2];
+    DisplayBox box[2];
     ScreenWriter text;
     ISoundEngine* audioengine;
 

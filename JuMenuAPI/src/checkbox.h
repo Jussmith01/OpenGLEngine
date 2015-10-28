@@ -1,8 +1,8 @@
 #define GLEW_STATIC
-#ifndef MENUCHKBOX_H
-#define MENUCHKBOX_H
+#ifndef JUMENUCHKBOX_H
+#define JUMENUCHKBOX_H
 
-#include "../JuMenu.h"
+#include "../JuMenuDeps.h"
 
 namespace JuMenu {
 
@@ -11,8 +11,7 @@ using namespace irrklang;
 //*****************************************//
 //	           Menu Button Class	       //
 //*****************************************//
-class MenuCheckBox
-{
+class MenuCheckBox {
     // Variables
     //glm::vec3 textcolor[2];
     //glm::vec4 bordercolor[2];

@@ -1,7 +1,7 @@
-#ifndef MENUBAR_H
-#define MENUBAR_H
+#ifndef JUMENUBAR_H
+#define JUMENUBAR_H
 
-#include "../JuMenu.h"
+#include "../JuMenuDeps.h"
 #include "dropdownmenu.h"
 
 namespace JuMenu {
@@ -9,8 +9,7 @@ namespace JuMenu {
 //*****************************************//
 // For returning selection state of the Bar//
 //*****************************************//
-struct BarSelection
-{
+struct BarSelection {
     bool isset;
     int menu;
     int option;
@@ -27,8 +26,7 @@ struct BarSelection
 //*****************************************//
 // Used to define a Single Menu on the Bar //
 //*****************************************//
-struct SingleBarMenuItem
-{
+struct SingleBarMenuItem {
     std::string title;
     std::vector<std::string> options;
 };
@@ -36,8 +34,7 @@ struct SingleBarMenuItem
 //*****************************************//
 //	           Menu Bar Class	           //
 //*****************************************//
-class MenuBar
-{
+class MenuBar {
     // Variables
     int NM;//Number of Menus
     std::vector<int> NO; // Number of options per menu

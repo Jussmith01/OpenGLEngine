@@ -50,13 +50,16 @@ void GrafixEngine::Init(std::string enginetitle,int argc,char *argv[])
     Console::cPrint("Loading Properties...");
     props.init();
 
+    unsigned glmajv(4);
+    unsigned glminv(5);
+
     Console::cPrint(tools::appendStrings("Starting GLFW ",glfwGetVersionString()));
-    Console::cPrint("Setting up OpenGL 3.3");
-    std::cout << "Starting GLFW " << glfwGetVersionString() << " context, OpenGL 3.3" << std::endl;
+    Console::cPrint("Setting up OpenGL 4.5");
+    std::cout << "Starting GLFW " << glfwGetVersionString() << " context, OpenGL " << glmajv << "." << glminv << std::endl;
 
     // Set all the required options for GLFW^M
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, glmajv);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, glminv);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
     glfwWindowHint(GLFW_SAMPLES, props.MSAA);
@@ -69,9 +72,9 @@ void GrafixEngine::Init(std::string enginetitle,int argc,char *argv[])
 	switch(props.FullScreen)
 	{
         case 0:
-        {window = glfwCreateWindow(props.WinWidth, props.WinHeight, "GameEngine Test", nullptr, nullptr);break;}
+        {window = glfwCreateWindow(props.WinWidth, props.WinHeight, "OpenGL Engine", nullptr, nullptr);break;}
         case 1:
-        {window = glfwCreateWindow(props.WinWidth, props.WinHeight, "GameEngine Test", glfwGetPrimaryMonitor(), nullptr);break;}
+        {window = glfwCreateWindow(props.WinWidth, props.WinHeight, "OpenGL Engine", glfwGetPrimaryMonitor(), nullptr);break;}
 	}
 
 	if( window == NULL )

@@ -3,20 +3,38 @@ MenuButtons: {
   soundfile=;
   font=;
   scale=;
-
+  x=100;
+  y=100;
+  spread=;
+    
   tbutton1: [
     Caption="";
-    x=100;
-    y=100;
     Active=no;
     Action=;
   ]
   
   tbutton2: [
     Caption="";
-    x=100;
-    y=100;
     Active=no;
     Action=;
   ]
+}
+
+ScreenWriter: {   
+  text1: [
+    Caption="";
+    x=;
+    y=;
+    color=;
+    scale=;
+    fontfile=;
+   ]
+  
+  text2: [
+    Caption="";
+    x=;
+    y=;
+    color=;
+    scale=;
+   ]
 }

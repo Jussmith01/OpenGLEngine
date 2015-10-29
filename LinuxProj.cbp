@@ -38,7 +38,7 @@
 					<Add library="JuMenu" />
 				</Linker>
 			</Target>
-			<Target title="Shared_JuMenuAPI">
+			<Target title="Static_JuMenuAPI">
 				<Option output="lib/linux/JuMenu" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="" />
 				<Option type="2" />
@@ -78,64 +78,64 @@
 			<Add directory="lib/linux/boost" />
 		</Linker>
 		<Unit filename="JuMenuAPI/JuMenu.cpp">
-			<Option target="Shared_JuMenuAPI" />
+			<Option target="Static_JuMenuAPI" />
 		</Unit>
 		<Unit filename="JuMenuAPI/JuMenu.h">
-			<Option target="Shared_JuMenuAPI" />
+			<Option target="Static_JuMenuAPI" />
 		</Unit>
 		<Unit filename="JuMenuAPI/JuMenuDeps.h">
-			<Option target="Shared_JuMenuAPI" />
+			<Option target="Static_JuMenuAPI" />
 		</Unit>
 		<Unit filename="JuMenuAPI/JuMenuErrs.h">
-			<Option target="Shared_JuMenuAPI" />
+			<Option target="Static_JuMenuAPI" />
 		</Unit>
 		<Unit filename="JuMenuAPI/src/boxcolored.cpp">
-			<Option target="Shared_JuMenuAPI" />
+			<Option target="Static_JuMenuAPI" />
 		</Unit>
 		<Unit filename="JuMenuAPI/src/boxcolored.h">
-			<Option target="Shared_JuMenuAPI" />
+			<Option target="Static_JuMenuAPI" />
 		</Unit>
 		<Unit filename="JuMenuAPI/src/checkbox.cpp">
-			<Option target="Shared_JuMenuAPI" />
+			<Option target="Static_JuMenuAPI" />
 		</Unit>
 		<Unit filename="JuMenuAPI/src/checkbox.h">
-			<Option target="Shared_JuMenuAPI" />
+			<Option target="Static_JuMenuAPI" />
 		</Unit>
 		<Unit filename="JuMenuAPI/src/dropbox.cpp">
-			<Option target="Shared_JuMenuAPI" />
+			<Option target="Static_JuMenuAPI" />
 		</Unit>
 		<Unit filename="JuMenuAPI/src/dropbox.h">
-			<Option target="Shared_JuMenuAPI" />
+			<Option target="Static_JuMenuAPI" />
 		</Unit>
 		<Unit filename="JuMenuAPI/src/dropdownmenu.cpp">
-			<Option target="Shared_JuMenuAPI" />
+			<Option target="Static_JuMenuAPI" />
 		</Unit>
 		<Unit filename="JuMenuAPI/src/dropdownmenu.h">
-			<Option target="Shared_JuMenuAPI" />
+			<Option target="Static_JuMenuAPI" />
 		</Unit>
 		<Unit filename="JuMenuAPI/src/insertionbox.cpp">
-			<Option target="Shared_JuMenuAPI" />
+			<Option target="Static_JuMenuAPI" />
 		</Unit>
 		<Unit filename="JuMenuAPI/src/insertionbox.h">
-			<Option target="Shared_JuMenuAPI" />
+			<Option target="Static_JuMenuAPI" />
 		</Unit>
 		<Unit filename="JuMenuAPI/src/menubar.cpp">
-			<Option target="Shared_JuMenuAPI" />
+			<Option target="Static_JuMenuAPI" />
 		</Unit>
 		<Unit filename="JuMenuAPI/src/menubar.h">
-			<Option target="Shared_JuMenuAPI" />
+			<Option target="Static_JuMenuAPI" />
 		</Unit>
 		<Unit filename="JuMenuAPI/src/menubutton.cpp">
-			<Option target="Shared_JuMenuAPI" />
+			<Option target="Static_JuMenuAPI" />
 		</Unit>
 		<Unit filename="JuMenuAPI/src/menubutton.h">
-			<Option target="Shared_JuMenuAPI" />
+			<Option target="Static_JuMenuAPI" />
 		</Unit>
 		<Unit filename="JuMenuAPI/src/menuicon.cpp">
-			<Option target="Shared_JuMenuAPI" />
+			<Option target="Static_JuMenuAPI" />
 		</Unit>
 		<Unit filename="JuMenuAPI/src/menuicon.h">
-			<Option target="Shared_JuMenuAPI" />
+			<Option target="Static_JuMenuAPI" />
 		</Unit>
 		<Unit filename="src/Engine/DevTools/TerrainGenerator/terrainGenerator.cpp">
 			<Option target="Debug" />

@@ -28,37 +28,40 @@ class Menu {
     std::vector<MenuButtons> menubuttons;
     std::vector<MenuIcons> menuicons;
 
+    std::vector<ImageDisplay> images;
+    std::vector<ScreenWriter> texts;
+
     /** Setup Functions Below **/
     /* Set the menu items based on the input file */
-    void m_SetMenuItems(std::string msfile);
+    void m_SetMenuItems( std::string msfile );
 
     /* Script Section Parser */
-    void m_ParseScriptSection(std::string msfile);
+    void m_ParseScriptSection( std::string &sections,std::string &instr );
 
     /** Set Menu Item Functions Below **/
     /* Set MenuDropBox */
-    void m_SetMenuDropBox(std::string dstr);
+    void m_SetMenuDropBox( std::string dstr );
 
     /* Set DisplayBox */
-    void m_SetDisplayBox(std::string dstr);
+    void m_SetDisplayBox( std::string dstr );
 
     /* Set MenuCheckBox */
-    void m_SetMenuCheckBox(std::string dstr);
+    void m_SetMenuCheckBox( std::string dstr );
 
     /* Set DropDownMenu */
-    void m_SetDropDownMenu(std::string dstr);
+    void m_SetDropDownMenu( std::string dstr );
 
     /* Set InsertionBox */
-    void m_SetInsertionBox(std::string dstr);
+    void m_SetInsertionBox( std::string dstr );
 
     /* Set MenuBar */
-    void m_SetMenuBar(std::string dstr);
+    void m_SetMenuBar( std::string dstr );
 
     /* Set MenuButtons */
-    void m_SetMenuButtons(std::string dstr);
+    void m_SetMenuButtons( std::string dstr );
 
     /* Set MenuIcons */
-    void m_SetMenuIcons(std::string dstr);
+    void m_SetMenuIcons( std::string dstr );
 
 public:
     /* Constructors */
@@ -72,7 +75,11 @@ public:
         m_SetMenuItems(msfile);
     };
 
+    void Update ();
 
+    void Draw ();
+
+    void Clear ();
 };
 }
 

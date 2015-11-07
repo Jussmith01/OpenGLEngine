@@ -1,8 +1,11 @@
 #include <iostream>
 #include <fstream>
 
+#include <unordered_map>
 #include "JuMenu.h"
 #include "JuMenuErrs.h"
+
+#include "src/mfftools.h"
 
 /* Set the menu items based on the input file */
 void JuMenu::Menu::m_SetMenuItems( std::string msfile ) {
@@ -16,26 +19,35 @@ void JuMenu::Menu::m_SetMenuItems( std::string msfile ) {
     std::string instr( (std::istreambuf_iterator<char>(filebuffer)), std::istreambuf_iterator<char>() );
     filebuffer.close();
 
-    std::string sections;
-    m_ParseScriptSection( sections,instr );
+    std::unordered_map<std::string,std::string> mItems;
+    fileSplit(instr,mItems);
 
-    std::cout << instr << std::endl;
+    std::cout << " MAP: " << mItems.size() << std::endl;
+
 };
 
+/* Update Menu Items */
 void JuMenu::Menu::Update () {
 
 };
 
+/* Draw Menu Items */
 void JuMenu::Menu::Draw () {
 
 };
 
+/* Clear Menu Items */
 void JuMenu::Menu::Clear () {
 
 };
 
-/* Script Section Parser */
-void JuMenu::Menu::m_ParseScriptSection( std::string &sections,std::string &instr ) {
+/* Set MenuButtons */
+void JuMenu::Menu::m_SetMenuButtons( std::string dstr ) {
+
+};
+
+/* Set MenuIcons */
+void JuMenu::Menu::m_SetMenuIcons( std::string dstr ) {
 
 };
 
@@ -66,15 +78,5 @@ void JuMenu::Menu::m_SetInsertionBox( std::string dstr ) {
 
 /* Set MenuBar */
 void JuMenu::Menu::m_SetMenuBar( std::string dstr ) {
-
-};
-
-/* Set MenuButtons */
-void JuMenu::Menu::m_SetMenuButtons( std::string dstr ) {
-
-};
-
-/* Set MenuIcons */
-void JuMenu::Menu::m_SetMenuIcons( std::string dstr ) {
 
 };

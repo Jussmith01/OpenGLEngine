@@ -137,6 +137,12 @@
 		<Unit filename="JuMenuAPI/src/menuicon.h">
 			<Option target="Static_JuMenuAPI" />
 		</Unit>
+		<Unit filename="JuMenuAPI/src/mfftools.cpp">
+			<Option target="Static_JuMenuAPI" />
+		</Unit>
+		<Unit filename="JuMenuAPI/src/mfftools.h">
+			<Option target="Static_JuMenuAPI" />
+		</Unit>
 		<Unit filename="src/Engine/DevTools/TerrainGenerator/terrainGenerator.cpp">
 			<Option target="Debug" />
 			<Option target="Release" />

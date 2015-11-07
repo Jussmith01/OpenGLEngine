@@ -19,14 +19,16 @@ Class is in charge of loading saved menus
 then displaying them using a GL window.
 */
 class Menu {
+
+    std::vector<MenuButtons> menubuttons; // Setup!
+
+    std::vector<MenuIcons> menuicons;
     std::vector<MenuDropBox> menudropboxes;
     std::vector<DisplayBox> displayboxes;
     std::vector<MenuCheckBox> menucheckboxes;
     std::vector<DropDownMenu> dropdownmenus;
     std::vector<InsertionBox> insertionboxes;
     std::vector<MenuBar> menubars;
-    std::vector<MenuButtons> menubuttons;
-    std::vector<MenuIcons> menuicons;
 
     std::vector<ImageDisplay> images;
     std::vector<ScreenWriter> texts;
@@ -34,9 +36,6 @@ class Menu {
     /** Setup Functions Below **/
     /* Set the menu items based on the input file */
     void m_SetMenuItems( std::string msfile );
-
-    /* Script Section Parser */
-    void m_ParseScriptSection( std::string &sections,std::string &instr );
 
     /** Set Menu Item Functions Below **/
     /* Set MenuDropBox */

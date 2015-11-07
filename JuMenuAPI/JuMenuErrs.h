@@ -3,6 +3,19 @@
 
 #include <iostream>
 
+//________________________________________________________________________//
+//      *************************************************************     //
+//                      Compiler Error Handling
+//      *************************************************************     //
+/* Check for sufficient compiler version */
+#if defined(__GNUC__) || defined(__GNUG__)
+    #if !(__GNUC__ >= 4 && __GNUC_MINOR__ >= 9)
+        #error "Insufficient GNU Compiler Version -- 4.9 or greater required"
+    #endif
+#else
+    #warning "Currently only GNU compilers are supported and tested, but go ahead if you know what you're doing."
+#endif
+
 /*----------------------------------------------
                Throw Exception
     Pass the macro a char string with an error

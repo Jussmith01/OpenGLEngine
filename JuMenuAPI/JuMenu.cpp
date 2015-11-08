@@ -22,10 +22,10 @@ void JuMenu::Menu::m_SetMenuItems( std::string msfile ) {
     string instr( (istreambuf_iterator<char>(filebuffer)), istreambuf_iterator<char>() );
     filebuffer.close();
 
-    //unordered_map<string,string> mItems;
-    //fileSplit(instr,mItems);
+    unordered_map<string,string> mItems;
+    fileSplit(instr,mItems);
 
-    //cout << " MAP: " << mItems.size() << endl;
+    cout << " MAP: " << mItems.size() << endl;
 
 };
 

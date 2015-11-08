@@ -2,11 +2,7 @@
 #include "mfftools.h"
 
 /* Bracket Split
-
-
-PARAMETERS:
-Properties Class
-
+Bracket split class
 */
 void JuMenu::fileSplit(const std::string &dataIn,std::unordered_map<std::string,std::string> &dataOut) {
     using namespace std;

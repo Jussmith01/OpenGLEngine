@@ -9,20 +9,23 @@
 
 /* Set the menu items based on the input file */
 void JuMenu::Menu::m_SetMenuItems( std::string msfile ) {
-    std::ifstream filebuffer(msfile.c_str(), std::ios::in | std::ios::binary);
+    using namespace std;
+
+    ifstream filebuffer(msfile.c_str(), ios::in | ios::binary);
 
     if (!filebuffer) {
-        JmenuThrow(std::string("Cannot open file ") + msfile);
+        cout << "NO FILE!" << endl;
+        JmenuThrow(string("Cannot open file ") + msfile);
     }
 
     // Load entire file into a string on memory
-    std::string instr( (std::istreambuf_iterator<char>(filebuffer)), std::istreambuf_iterator<char>() );
+    string instr( (istreambuf_iterator<char>(filebuffer)), istreambuf_iterator<char>() );
     filebuffer.close();
 
-    std::unordered_map<std::string,std::string> mItems;
-    fileSplit(instr,mItems);
+    //unordered_map<string,string> mItems;
+    //fileSplit(instr,mItems);
 
-    std::cout << " MAP: " << mItems.size() << std::endl;
+    //cout << " MAP: " << mItems.size() << endl;
 
 };
 

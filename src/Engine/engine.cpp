@@ -50,11 +50,11 @@ void GrafixEngine::Init(std::string enginetitle,int argc,char *argv[])
     Console::cPrint("Loading Properties...");
     props.init();
 
-    unsigned glmajv(4);
-    unsigned glminv(5);
+    unsigned glmajv(3);
+    unsigned glminv(3);
 
     Console::cPrint(tools::appendStrings("Starting GLFW ",glfwGetVersionString()));
-    Console::cPrint("Setting up OpenGL 4.5");
+    Console::cPrint("Setting up OpenGL 3.3");
     std::cout << "Starting GLFW " << glfwGetVersionString() << " context, OpenGL " << glmajv << "." << glminv << std::endl;
 
     // Set all the required options for GLFW^M

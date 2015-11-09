@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 
+#include <regex>
 #include <unordered_map>
 #include "JuMenu.h"
 #include "JuMenuErrs.h"
@@ -25,8 +26,15 @@ void JuMenu::Menu::m_SetMenuItems( std::string msfile ) {
     unordered_map<string,string> mItems;
     fileSplit(instr,mItems);
 
-    cout << " MAP: " << mItems.size() << endl;
+    for (auto &&i : mItems) {
+        cout << "TEST: " << i.first << endl;
+        if (i.first.compare("MenuButtons")==0) {
+            cout << "Saving Menu Buttons!" << endl;
 
+        }
+    }
+
+    cout << " MAP: " << mItems.size() << endl;
 };
 
 /* Update Menu Items */

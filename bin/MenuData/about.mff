@@ -1,4 +1,4 @@
-MenuButtons1: {
+MenuButtons: {
   imagefile="solid"
   soundfile="Buttons/testbutton"
   font="../Fonts/FreeSans.ttf"
@@ -6,36 +6,16 @@ MenuButtons1: {
   x=100
   y=100
   spread=50
-    
-  tbutton1: [
-    Caption="Test 1"
-    Active=yes
-    Action=VAR:null
-  ]
-  
-  tbutton2: [
-    Caption="Test 2"
-    Active=no
-    Action=MENU:tmenu.mff
-  ]
-};
 
-MenuButtons2: {
-  imagefile="solid"
-  soundfile="Buttons/testbutton"
-  font="../Fonts/FreeSans.ttf"
-  scale=1.0
-  x=100
-  y=100
-  spread=50
-    
-  tbutton1: [
+  tbutton: [
+    Ident="Testb1"
     Caption="Test 1"
     Active=yes
     Action=VAR:null
   ]
-  
-  tbutton2: [
+
+  tbutton: [
+    Ident="Testb2"
     Caption="Test 2"
     Active=no
     Action=MENU:tmenu.mff

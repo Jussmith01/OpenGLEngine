@@ -9,6 +9,10 @@ namespace JuMenu {
 /* file Split */
 void fileSplit(const std::string &dataIn,std::unordered_map<std::string,std::string> &dataOut);
 
+/* Equals delimit */
+void fileSplit(const std::string &dataIn,std::unordered_map<std::string,std::string> &dataOut);
+
+
 };
 
 

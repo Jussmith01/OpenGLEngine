@@ -15,7 +15,7 @@
 				<Compiler>
 					<Add option="-std=c++11" />
 					<Add option="-g" />
-					<Add directory="JuMenuAPI" />
+					<Add directory="JuMenu" />
 				</Compiler>
 				<Linker>
 					<Add library="JuMenu" />
@@ -31,21 +31,37 @@
 					<Add option="-O3" />
 					<Add option="-std=c++11" />
 					<Add option="-fno-strict-aliasing" />
-					<Add directory="JuMenuAPI" />
+					<Add directory="JuMenu" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
 					<Add library="JuMenu" />
 				</Linker>
 			</Target>
-			<Target title="Static_JuMenuAPI">
+			<Target title="Debug_Stat_JuMenuAPI">
 				<Option output="lib/linux/JuMenu" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="" />
 				<Option type="2" />
 				<Option compiler="gcc" />
 				<Option createDefFile="1" />
 				<Compiler>
+					<Add option="-std=c++11" />
+					<Add option="-pg" />
 					<Add option="-fPIC" />
+				</Compiler>
+				<Linker>
+					<Add option="-pg" />
+				</Linker>
+			</Target>
+			<Target title="Release_Stat_JuMenuAPI">
+				<Option output="lib/linux/JuMenu" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-O3" />
+					<Add option="-std=c++11" />
 				</Compiler>
 			</Target>
 		</Build>
@@ -77,71 +93,93 @@
 			<Add directory="lib/linux" />
 			<Add directory="lib/linux/boost" />
 		</Linker>
-		<Unit filename="JuMenuAPI/JuMenu.cpp">
-			<Option target="Static_JuMenuAPI" />
+		<Unit filename="JuMenu/JuMenu.cpp">
+			<Option target="Debug_Stat_JuMenuAPI" />
+			<Option target="Release_Stat_JuMenuAPI" />
 		</Unit>
-		<Unit filename="JuMenuAPI/JuMenu.h">
-			<Option target="Static_JuMenuAPI" />
+		<Unit filename="JuMenu/JuMenu.h">
+			<Option target="Debug_Stat_JuMenuAPI" />
+			<Option target="Release_Stat_JuMenuAPI" />
 		</Unit>
-		<Unit filename="JuMenuAPI/JuMenuDeps.h">
-			<Option target="Static_JuMenuAPI" />
+		<Unit filename="JuMenu/JuMenuDeps.h">
+			<Option target="Debug_Stat_JuMenuAPI" />
+			<Option target="Release_Stat_JuMenuAPI" />
 		</Unit>
-		<Unit filename="JuMenuAPI/JuMenuErrs.h">
-			<Option target="Static_JuMenuAPI" />
+		<Unit filename="JuMenu/JuMenuErrs.h">
+			<Option target="Debug_Stat_JuMenuAPI" />
+			<Option target="Release_Stat_JuMenuAPI" />
 		</Unit>
-		<Unit filename="JuMenuAPI/src/boxcolored.cpp">
-			<Option target="Static_JuMenuAPI" />
+		<Unit filename="JuMenu/src/boxcolored.cpp">
+			<Option target="Debug_Stat_JuMenuAPI" />
+			<Option target="Release_Stat_JuMenuAPI" />
 		</Unit>
-		<Unit filename="JuMenuAPI/src/boxcolored.h">
-			<Option target="Static_JuMenuAPI" />
+		<Unit filename="JuMenu/src/boxcolored.h">
+			<Option target="Debug_Stat_JuMenuAPI" />
+			<Option target="Release_Stat_JuMenuAPI" />
 		</Unit>
-		<Unit filename="JuMenuAPI/src/checkbox.cpp">
-			<Option target="Static_JuMenuAPI" />
+		<Unit filename="JuMenu/src/checkbox.cpp">
+			<Option target="Debug_Stat_JuMenuAPI" />
+			<Option target="Release_Stat_JuMenuAPI" />
 		</Unit>
-		<Unit filename="JuMenuAPI/src/checkbox.h">
-			<Option target="Static_JuMenuAPI" />
+		<Unit filename="JuMenu/src/checkbox.h">
+			<Option target="Debug_Stat_JuMenuAPI" />
+			<Option target="Release_Stat_JuMenuAPI" />
 		</Unit>
-		<Unit filename="JuMenuAPI/src/dropbox.cpp">
-			<Option target="Static_JuMenuAPI" />
+		<Unit filename="JuMenu/src/dropbox.cpp">
+			<Option target="Debug_Stat_JuMenuAPI" />
+			<Option target="Release_Stat_JuMenuAPI" />
 		</Unit>
-		<Unit filename="JuMenuAPI/src/dropbox.h">
-			<Option target="Static_JuMenuAPI" />
+		<Unit filename="JuMenu/src/dropbox.h">
+			<Option target="Debug_Stat_JuMenuAPI" />
+			<Option target="Release_Stat_JuMenuAPI" />
 		</Unit>
-		<Unit filename="JuMenuAPI/src/dropdownmenu.cpp">
-			<Option target="Static_JuMenuAPI" />
+		<Unit filename="JuMenu/src/dropdownmenu.cpp">
+			<Option target="Debug_Stat_JuMenuAPI" />
+			<Option target="Release_Stat_JuMenuAPI" />
 		</Unit>
-		<Unit filename="JuMenuAPI/src/dropdownmenu.h">
-			<Option target="Static_JuMenuAPI" />
+		<Unit filename="JuMenu/src/dropdownmenu.h">
+			<Option target="Debug_Stat_JuMenuAPI" />
+			<Option target="Release_Stat_JuMenuAPI" />
 		</Unit>
-		<Unit filename="JuMenuAPI/src/insertionbox.cpp">
-			<Option target="Static_JuMenuAPI" />
+		<Unit filename="JuMenu/src/insertionbox.cpp">
+			<Option target="Debug_Stat_JuMenuAPI" />
+			<Option target="Release_Stat_JuMenuAPI" />
 		</Unit>
-		<Unit filename="JuMenuAPI/src/insertionbox.h">
-			<Option target="Static_JuMenuAPI" />
+		<Unit filename="JuMenu/src/insertionbox.h">
+			<Option target="Debug_Stat_JuMenuAPI" />
+			<Option target="Release_Stat_JuMenuAPI" />
 		</Unit>
-		<Unit filename="JuMenuAPI/src/menubar.cpp">
-			<Option target="Static_JuMenuAPI" />
+		<Unit filename="JuMenu/src/menubar.cpp">
+			<Option target="Debug_Stat_JuMenuAPI" />
+			<Option target="Release_Stat_JuMenuAPI" />
 		</Unit>
-		<Unit filename="JuMenuAPI/src/menubar.h">
-			<Option target="Static_JuMenuAPI" />
+		<Unit filename="JuMenu/src/menubar.h">
+			<Option target="Debug_Stat_JuMenuAPI" />
+			<Option target="Release_Stat_JuMenuAPI" />
 		</Unit>
-		<Unit filename="JuMenuAPI/src/menubutton.cpp">
-			<Option target="Static_JuMenuAPI" />
+		<Unit filename="JuMenu/src/menubutton.cpp">
+			<Option target="Debug_Stat_JuMenuAPI" />
+			<Option target="Release_Stat_JuMenuAPI" />
 		</Unit>
-		<Unit filename="JuMenuAPI/src/menubutton.h">
-			<Option target="Static_JuMenuAPI" />
+		<Unit filename="JuMenu/src/menubutton.h">
+			<Option target="Debug_Stat_JuMenuAPI" />
+			<Option target="Release_Stat_JuMenuAPI" />
 		</Unit>
-		<Unit filename="JuMenuAPI/src/menuicon.cpp">
-			<Option target="Static_JuMenuAPI" />
+		<Unit filename="JuMenu/src/menuicon.cpp">
+			<Option target="Debug_Stat_JuMenuAPI" />
+			<Option target="Release_Stat_JuMenuAPI" />
 		</Unit>
-		<Unit filename="JuMenuAPI/src/menuicon.h">
-			<Option target="Static_JuMenuAPI" />
+		<Unit filename="JuMenu/src/menuicon.h">
+			<Option target="Debug_Stat_JuMenuAPI" />
+			<Option target="Release_Stat_JuMenuAPI" />
 		</Unit>
-		<Unit filename="JuMenuAPI/src/mfftools.cpp">
-			<Option target="Static_JuMenuAPI" />
+		<Unit filename="JuMenu/src/mfftools.cpp">
+			<Option target="Debug_Stat_JuMenuAPI" />
+			<Option target="Release_Stat_JuMenuAPI" />
 		</Unit>
-		<Unit filename="JuMenuAPI/src/mfftools.h">
-			<Option target="Static_JuMenuAPI" />
+		<Unit filename="JuMenu/src/mfftools.h">
+			<Option target="Debug_Stat_JuMenuAPI" />
+			<Option target="Release_Stat_JuMenuAPI" />
 		</Unit>
 		<Unit filename="src/Engine/DevTools/TerrainGenerator/terrainGenerator.cpp">
 			<Option target="Debug" />

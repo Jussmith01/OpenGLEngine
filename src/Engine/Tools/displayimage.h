@@ -5,23 +5,32 @@
 #include "../Loaders/shader.h"
 #include "tools.hpp"
 
-class ImageDisplay
-{
+class ImageDisplay {
+
+    /* Class State */
+    bool is_ready;
+
+    /* GL Vars */
     GLuint TextureID;
     Shader shader;
     GLuint VBO, VAO, EBO;
 
+    /* Image Properties */
     float swidth,sheight;
     float aspect;
     float lw,lh;
     int w,h;
 
 public:
-    void Init (std::string file,float xscale,float yscale,float swidth,float sheight)
-    {
+
+    /* Default Constructor */
+    ImageDisplay () : is_ready(false) {};
+
+    /* Inititalizer */
+    void Init (std::string file,float xscale,float yscale,float swidth,float sheight) {
+
         this->swidth=swidth;
         this->sheight=sheight;
-
         this->aspect=sheight/swidth;
 
         //Load Image to the GPU
@@ -34,13 +43,15 @@ public:
 
         //Setup the display polygon
         SetupPolygon(xscale,yscale);
+
+        //
+        is_ready = true;
     };
 
-    void LoadImage (std::string file)
-    {
+    /* Load Images */
+    void LoadImage (std::string file) {
         unsigned char *image = SOIL_load_image(file.c_str(),&w,&h,0,SOIL_LOAD_RGBA);
-        if (image == NULL)
-        {
+        if (image == NULL) {
             std::cout << "ERROR: Image failed to load: " << file.c_str() << "\n";
         }
 
@@ -63,8 +74,7 @@ public:
         glBindTexture(GL_TEXTURE_2D, 0);
     };
 
-    void SetupPolygon (float xscale,float yscale)
-    {
+    void SetupPolygon (float xscale,float yscale) {
         float monitorcorrection=(h/(float)w)*(1/aspect);
         float yp = yscale*monitorcorrection;
 
@@ -73,16 +83,14 @@ public:
         lh=yp;
 
         // Set up vertex data (and buffer(s)) and attribute pointers
-        GLfloat vertices[] =
-        {
+        GLfloat vertices[] = {
             // Positions              // Texture Coords
             xscale,  yp,   1.0f, 1.0f, // Top Right
             xscale, -yp,   1.0f, 0.0f, // Bottom Right
             -xscale, -yp,   0.0f, 0.0f, // Bottom Left
             -xscale,  yp,   0.0f, 1.0f  // Top Left
         };
-        GLuint indices[] =    // Note that we start from 0!
-        {
+        GLuint indices[] = {  // Note that we start from 0!
             0, 3, 1, // First Triangle
             1, 3, 2  // Second Triangle
         };
@@ -110,8 +118,7 @@ public:
         glBindVertexArray(0); // Unbind VAO
     };
 
-    void DrawImage ()
-    {
+    void DrawImage () {
         // Bind Textures using texture units
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, TextureID);
@@ -127,8 +134,7 @@ public:
         glBindVertexArray(0);
     };
 
-    void DrawImagePos (float x,float y)
-    {
+    void DrawImagePos (float x,float y) {
         // Bind Textures using texture units
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, TextureID);
@@ -148,8 +154,28 @@ public:
         glBindVertexArray(0);
     };
 
-    void Cleanup ()
-    {
+    void DrawImagePosScale (float x,float y,float scale) {
+        // Bind Textures using texture units
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, TextureID);
+        glUniform1i(glGetUniformLocation(shader.Program, "Texture"), 0);
+
+        // Activate shader
+        shader.Use();
+
+        //Set Position
+        //std::cout << "LOCTESTx: " << xconv << " LOCTESTy: " << yconv << std::endl;
+        glUniform1f(glGetUniformLocation(shader.Program, "xpos"),x);
+        glUniform1f(glGetUniformLocation(shader.Program, "ypos"),y);
+
+        // Draw container
+        glBindVertexArray(VAO);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glBindVertexArray(0);
+    };
+
+    void Cleanup () {
+        is_ready = false;
         glDeleteVertexArrays(1, &VAO);
         glDeleteBuffers(1, &VBO);
         glDeleteBuffers(1, &EBO);
@@ -157,13 +183,11 @@ public:
         shader.Cleanup();
     }
 
-    float GetImageHalfLength()
-    {
+    float GetImageHalfLength() {
         return lw;
     };
 
-    float GetImageHalfHeight()
-    {
+    float GetImageHalfHeight() {
         return lh;
     };
 };

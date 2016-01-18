@@ -36,7 +36,7 @@ void AboutMenuState::Init(GrafixEngine *game) {
     audioengine = game->audioengine;
 
     // Setup Menus Class
-    menu.SetupMenus("../MenuData/about.mff");
+    menu.Init("../MenuData/about.mff",&game->props,game->audioengine);
 
     // Setup Buttons
     buttons.Init("Buttons/testbutton","solid","../Fonts/FreeSans.ttf",1.0,game->props,audioengine);

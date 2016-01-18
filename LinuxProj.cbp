@@ -109,75 +109,43 @@
 			<Option target="Debug_Stat_JuMenuAPI" />
 			<Option target="Release_Stat_JuMenuAPI" />
 		</Unit>
-		<Unit filename="JuMenu/src/boxcolored.cpp">
+		<Unit filename="JuMenu/JuMenuResourceManager.cpp">
 			<Option target="Debug_Stat_JuMenuAPI" />
 			<Option target="Release_Stat_JuMenuAPI" />
 		</Unit>
-		<Unit filename="JuMenu/src/boxcolored.h">
+		<Unit filename="JuMenu/JuMenuResourceManager.h">
 			<Option target="Debug_Stat_JuMenuAPI" />
 			<Option target="Release_Stat_JuMenuAPI" />
 		</Unit>
-		<Unit filename="JuMenu/src/checkbox.cpp">
+		<Unit filename="JuMenu/menuitems/menubutton.cpp">
 			<Option target="Debug_Stat_JuMenuAPI" />
 			<Option target="Release_Stat_JuMenuAPI" />
 		</Unit>
-		<Unit filename="JuMenu/src/checkbox.h">
+		<Unit filename="JuMenu/menuitems/menubutton.h">
 			<Option target="Debug_Stat_JuMenuAPI" />
 			<Option target="Release_Stat_JuMenuAPI" />
 		</Unit>
-		<Unit filename="JuMenu/src/dropbox.cpp">
+		<Unit filename="JuMenu/menuitems/mfftools.cpp">
 			<Option target="Debug_Stat_JuMenuAPI" />
 			<Option target="Release_Stat_JuMenuAPI" />
 		</Unit>
-		<Unit filename="JuMenu/src/dropbox.h">
+		<Unit filename="JuMenu/menuitems/mfftools.h">
 			<Option target="Debug_Stat_JuMenuAPI" />
 			<Option target="Release_Stat_JuMenuAPI" />
 		</Unit>
-		<Unit filename="JuMenu/src/dropdownmenu.cpp">
+		<Unit filename="JuMenu/resources/imageresource.cpp">
 			<Option target="Debug_Stat_JuMenuAPI" />
 			<Option target="Release_Stat_JuMenuAPI" />
 		</Unit>
-		<Unit filename="JuMenu/src/dropdownmenu.h">
+		<Unit filename="JuMenu/resources/imageresource.h">
 			<Option target="Debug_Stat_JuMenuAPI" />
 			<Option target="Release_Stat_JuMenuAPI" />
 		</Unit>
-		<Unit filename="JuMenu/src/insertionbox.cpp">
+		<Unit filename="JuMenu/resources/writerresource.cpp">
 			<Option target="Debug_Stat_JuMenuAPI" />
 			<Option target="Release_Stat_JuMenuAPI" />
 		</Unit>
-		<Unit filename="JuMenu/src/insertionbox.h">
-			<Option target="Debug_Stat_JuMenuAPI" />
-			<Option target="Release_Stat_JuMenuAPI" />
-		</Unit>
-		<Unit filename="JuMenu/src/menubar.cpp">
-			<Option target="Debug_Stat_JuMenuAPI" />
-			<Option target="Release_Stat_JuMenuAPI" />
-		</Unit>
-		<Unit filename="JuMenu/src/menubar.h">
-			<Option target="Debug_Stat_JuMenuAPI" />
-			<Option target="Release_Stat_JuMenuAPI" />
-		</Unit>
-		<Unit filename="JuMenu/src/menubutton.cpp">
-			<Option target="Debug_Stat_JuMenuAPI" />
-			<Option target="Release_Stat_JuMenuAPI" />
-		</Unit>
-		<Unit filename="JuMenu/src/menubutton.h">
-			<Option target="Debug_Stat_JuMenuAPI" />
-			<Option target="Release_Stat_JuMenuAPI" />
-		</Unit>
-		<Unit filename="JuMenu/src/menuicon.cpp">
-			<Option target="Debug_Stat_JuMenuAPI" />
-			<Option target="Release_Stat_JuMenuAPI" />
-		</Unit>
-		<Unit filename="JuMenu/src/menuicon.h">
-			<Option target="Debug_Stat_JuMenuAPI" />
-			<Option target="Release_Stat_JuMenuAPI" />
-		</Unit>
-		<Unit filename="JuMenu/src/mfftools.cpp">
-			<Option target="Debug_Stat_JuMenuAPI" />
-			<Option target="Release_Stat_JuMenuAPI" />
-		</Unit>
-		<Unit filename="JuMenu/src/mfftools.h">
+		<Unit filename="JuMenu/resources/writerresource.h">
 			<Option target="Debug_Stat_JuMenuAPI" />
 			<Option target="Release_Stat_JuMenuAPI" />
 		</Unit>

@@ -40,7 +40,7 @@ public:
     ScreenWriter() {};
 
     // Setup constructor
-    ScreenWriter(std::string font,float swidth,float sheight,float fontresize) {
+    ScreenWriter(std::string font,float swidth,float sheightv,float fontresize) {
         Setup(font,swidth,sheight,fontresize);
     };
 

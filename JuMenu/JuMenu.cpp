@@ -6,20 +6,13 @@
 #include "JuMenu.h"
 #include "JuMenuErrs.h"
 
-#include "src/mfftools.h"
-
-
-/** ****************************
-      Menu Resource Manager
-            Functions
-***************************** **/
-
+#include "menuitems/mfftools.h"
 
 /** ****************************
          Menu Functions
 ***************************** **/
 /* Set the menu items based on the input file */
-void JuMenu::Menu::m_SetMenuItems( std::string msfile,Properties *props,ISoundEngine* audioengine ) {
+void JuMenu::Menu::m_SetMenuItems( std::string msfile ) {
     using namespace std;
 
     ifstream filebuffer(msfile.c_str(), ios::in | ios::binary);
@@ -40,7 +33,7 @@ void JuMenu::Menu::m_SetMenuItems( std::string msfile,Properties *props,ISoundEn
     for (auto &&i : mItems) {
         smatch match;
         if (regex_search(i.first,match,pattern_menubutton)) {
-            mbtn.emplace_back(match.str(1),i.second,props,audioengine);
+            mbtn.emplace_back( match.str(1),i.second,&mrm );
         }
     }
 
@@ -49,7 +42,9 @@ void JuMenu::Menu::m_SetMenuItems( std::string msfile,Properties *props,ISoundEn
 
 /* Update Menu Items */
 void JuMenu::Menu::Update () {
+    //for (auto&& m : mbtn) {
 
+    //}
 };
 
 /* Draw Menu Items */

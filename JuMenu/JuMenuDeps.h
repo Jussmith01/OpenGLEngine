@@ -14,6 +14,25 @@
 namespace JuMenu {
 static float swidth;
 static float sheight;
+
+/* --------------------------------
+          MenuResourceBase
+---------------------------------- */
+class MenuResourceBase {
+    public:
+    MenuResourceBase() {};
+
+    virtual void Init( std::string filename ) = 0;
+    virtual bool is_loaded() = 0;
+
+    virtual void update() = 0;
+    virtual void draw() = 0;
+    virtual void cleanup() = 0;
+
+    // Note: non-virtual destructor is OK here
+    ~MenuResourceBase() {};
+};
+
 }
 
 #endif

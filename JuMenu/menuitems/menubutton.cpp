@@ -39,6 +39,7 @@ void JuMenu::MenuButtons::Init(std::string buttonimage,std::string buttonsound,s
     // Define needed variables
     this->swidth=pmrm->getProps()->WinWidth;
     this->sheight=pmrm->getProps()->WinHeight;
+
     activebutton=-1;
     hoverbutton=-1;
 
@@ -50,16 +51,19 @@ void JuMenu::MenuButtons::Init(std::string buttonimage,std::string buttonsound,s
 
     this->scale = scale;
 
-    this->font = font;
-
     std::stringstream fn1,fn2,fn3; //File names for images
-    fn1 << buttonimage << "_normal.png";
-    fn2 << buttonimage << "_hover.png";
-    fn3 << buttonimage << "_press.png";
+    fn1 << "imageloader:" << buttonimage << "_normal.png";
+    fn2 << "imageloader:" << buttonimage << "_hover.png";
+    fn3 << "imageloader:" << buttonimage << "_press.png";
 
-    imagefiles[0] = fn1.str();
-    imagefiles[1] = fn2.str();
-    imagefiles[2] = fn3.str();
+    image1 = pmrm->requestResource(fn1.str());
+    image2 = pmrm->requestResource(fn2.str());
+    image3 = pmrm->requestResource(fn3.str());
+
+    std::stringstream fnt; //File names for images
+    fnt << "writerresource:" << buttonimage;
+
+    //swrite = mrm->requestResource(fnt.str());
 
     // Setup button images on GPU
     //float is=scale*0.1;
@@ -114,18 +118,34 @@ void JuMenu::MenuButtons::SetFontColors(glm::vec3 normal,glm::vec3 hover,glm::ve
 This function carries out all draw calls to draw
 the buttons to the screen.
 */
-void JuMenu::MenuButtons::DrawButtons() {
+void JuMenu::MenuButtons::draw() {
     for (int i=0; i<(int)button.size(); ++i) {
         // Variables
-        float x=button[i].x;
-        float y=button[i].y;
+        //float x=button[i].x;
+        //float y=button[i].y;
         int bs=button[i].state;
         std::string cap=button[i].caption;
 
         // Draw
         //std::cout << "BUTTON " << i<< "x: " << x << " y: " << y << std::endl;
-        //image[bs].DrawImagePos(x,y);
-        //text.RenderTextCentered(cap,true,x,true,y,1.0,colors[bs]);
+        switch (bs) {
+            case 0: {
+                image1.get()->draw();
+                //text.RenderTextCentered(cap,true,x,true,y,1.0,colors[bs]);
+                break;
+            }
+            case 1: {
+                image1.get()->draw();
+                //text.RenderTextCentered(cap,true,x,true,y,1.0,colors[bs]);
+                break;
+            }
+            case 2: {
+                image1.get()->draw();
+                //text.RenderTextCentered(cap,true,x,true,y,1.0,colors[bs]);
+                break;
+            }
+        }
+
     }
 };
 
@@ -135,7 +155,7 @@ void JuMenu::MenuButtons::DrawButtons() {
 /*
 Cleanup after finished using the buttons
 */
-void JuMenu::MenuButtons::Cleanup() {
+void JuMenu::MenuButtons::cleanup() {
     //image[0].Cleanup();
     //image[1].Cleanup();
     //image[2].Cleanup();
@@ -193,43 +213,44 @@ void JuMenu::MenuButtons::DefineNewButton(std::string ident,std::string caption,
 /*
 
 */
-int JuMenu::MenuButtons::UpdateButtonEvents(InputStruct &input) {
+//int JuMenu::MenuButtons::update(InputStruct &input) {
+void JuMenu::MenuButtons::update() {
     //std::cout << "epress: " <<  epress << " erelease: " <<  erelease << " activebutton: " << activebutton << std::endl;
-    double x,y;
-    input.ReturnMousePos(x,y);
+    //double x,y;
+    //input.ReturnMousePos(x,y);
 
-    bool aup=input.GetKey(GLFW_KEY_UP);
-    bool adown=input.GetKey(GLFW_KEY_DOWN);
+    //bool aup=input.GetKey(GLFW_KEY_UP);
+    //bool adown=input.GetKey(GLFW_KEY_DOWN);
 
-    aup=kh[0].CheckKeyState(aup,GLFW_KEY_UP);
-    adown=kh[1].CheckKeyState(adown,GLFW_KEY_DOWN);
+    //aup=kh[0].CheckKeyState(aup,GLFW_KEY_UP);
+    //adown=kh[1].CheckKeyState(adown,GLFW_KEY_DOWN);
 
     // Find out which button the mouse is over, -1 if none
-    m_checkmouseover(x,y);
-    ArrowChangeActive(aup,adown);
+    //m_checkmouseover(x,y);
+    //ArrowChangeActive(aup,adown);
 
-    bool mpress=input.GetMouseKey(GLFW_MOUSE_BUTTON_LEFT);
-    bool epress=input.GetKey(GLFW_KEY_ENTER);
+    //bool mpress=input.GetMouseKey(GLFW_MOUSE_BUTTON_LEFT);
+    //bool epress=input.GetKey(GLFW_KEY_ENTER);
 
     //Check if press and hold occures and change for a button
-    m_checkpress(mpress,hoverbutton);
-    m_checkpress(epress,activebutton);
+    //m_checkpress(mpress,hoverbutton);
+    //m_checkpress(epress,activebutton);
 
-    mpress=kh[2].CheckKeyState(mpress,GLFW_MOUSE_BUTTON_LEFT);
-    epress=kh[3].CheckKeyState(epress,GLFW_KEY_ENTER);
+    //mpress=kh[2].CheckKeyState(mpress,GLFW_MOUSE_BUTTON_LEFT);
+    //epress=kh[3].CheckKeyState(epress,GLFW_KEY_ENTER);
 
-    int ButtonID=-1;
+    //int ButtonID=-1;
 
     //std::cout << "ab: " << activebutton << " epress: " << epress << std::endl;
     //Tigestd::cout << "hb: " << hoverbutton << " mpress: " << mpress << std::endl;
-    if((activebutton>=0 && epress) || (hoverbutton>=0 && mpress)) {
+    /*if((activebutton>=0 && epress) || (hoverbutton>=0 && mpress)) {
         lastuse=glfwGetTime();
         ISound* snd=pmrm->getAudEng()->play2D(soundpress.c_str(),false,false,true);
         while(!snd->isFinished()) {};
         ButtonID=activebutton;
-    }
+    }*/
 
-    return ButtonID;
+    //return ButtonID;
 };
 
 //*******************************************

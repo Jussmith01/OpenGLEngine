@@ -96,16 +96,15 @@ class MenuButtons {
     float alastuse;
 
     // Set From m_setmenubuttons
-    std::string font;
     std::string orient;
     std::string soundactive;
     std::string soundpress;
-    std::string imagefiles[3];
 
-    // Set from Resource Manager
-    bool reqsat;
-    ImageDisplay* image[3];
-    ScreenWriter* stext;
+    // Provided Resources
+    std::shared_ptr<MenuResourceBase> image1;
+    std::shared_ptr<MenuResourceBase> image2;
+    std::shared_ptr<MenuResourceBase> image3;
+    //std::shared_ptr<MenuResourceBase> swrite;
 
     // Set From Construction
     std::string ident;
@@ -130,7 +129,7 @@ public:
 
     // Constructor
     MenuButtons ( std::string ident,std::string &dstr,MenuResourceManager *pmrm )
-        : reqsat(false),ident(ident),pmrm(pmrm) {
+        : ident(ident),pmrm(pmrm) {
         m_setmenubuttons(dstr);
     };
 
@@ -142,16 +141,17 @@ public:
     void SetFontColors(glm::vec3 normal,glm::vec3 hover,glm::vec3 press);
 
     // Cleanup function for destruction
-    void Cleanup();
+    void cleanup();
 
     // Adds a new button to the class
     void DefineNewButton(std::string ident,std::string caption,std::string action,std::string active);
 
     // Returns ButtonID if button was Pressed and Released while over a Button
-    int UpdateButtonEvents(InputStruct &input);
+    //int update(InputStruct &input);
+    void update(void);
 
     // Draw all buttons to the screen
-    void DrawButtons(void);
+    void draw(void);
 
     // input arrow up or arrow down true to change the active button
     void ArrowChangeActive(bool aup,bool adown);

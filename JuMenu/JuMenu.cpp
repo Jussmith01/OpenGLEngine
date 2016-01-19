@@ -42,17 +42,23 @@ void JuMenu::Menu::m_SetMenuItems( std::string msfile ) {
 
 /* Update Menu Items */
 void JuMenu::Menu::Update () {
-    //for (auto&& m : mbtn) {
+    mrm.manageResources();
 
-    //}
+    for (auto&& m : mbtn) {
+        m.update();
+    }
 };
 
 /* Draw Menu Items */
 void JuMenu::Menu::Draw () {
-
+    for (auto&& m : mbtn) {
+        m.draw();
+    }
 };
 
 /* Clear Menu Items */
 void JuMenu::Menu::Clear () {
-
+    for (auto&& m : mbtn) {
+        m.cleanup();
+    }
 };

@@ -57,7 +57,7 @@ void JuMenu::Menu::Draw () {
 };
 
 /* Clear Menu Items */
-void JuMenu::Menu::Clear () {
+void JuMenu::Menu::Cleanup () {
     for (auto&& m : mbtn) {
         m.cleanup();
     }

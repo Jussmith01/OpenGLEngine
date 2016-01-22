@@ -7,7 +7,6 @@
 #include "JuMenuErrs.h"
 #include "JuMenuResourceManager.h"
 
-
 /** ****************************
       Menu Resource Manager
             Functions
@@ -49,7 +48,7 @@ void JuMenu::MenuResourceManager::manageResources () {
     while ( !add_resourcestack.empty() ) {
         it = umap.find(add_resourcestack.back());
         add_resourcestack.pop_back();
-        std::thread (thr_loader,(*it).second,(*it).first.substr((*it).first.find_first_of(":")+1)).detach();
+        std::thread (MenuResourceManager::thr_loader,(*it).second,(*it).first.substr((*it).first.find_first_of(":")+1)).detach();
     }
 
     for ( auto i(umap.begin()); i != umap.end(); ++i ) {

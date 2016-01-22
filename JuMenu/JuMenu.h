@@ -42,7 +42,7 @@ public:
 
     void Draw ();
 
-    void Clear ();
+    void Cleanup ();
 };
 }
 

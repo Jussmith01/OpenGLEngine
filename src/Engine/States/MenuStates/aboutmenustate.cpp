@@ -53,6 +53,7 @@ void AboutMenuState::Init(GrafixEngine *game) {
 };
 
 void AboutMenuState::Cleanup() {
+    menu.Cleanup();
     cursor.Cleanup (); // Cleanup Cursor
     buttons.Cleanup(); // Cleanup button
     SW.Cleanup(); // Cleanup screen writer
@@ -70,6 +71,8 @@ void AboutMenuState::HandleEvents(GrafixEngine* game) {
     glfwPollEvents();
 
     Console::Update(kh.CheckKeyState(input.GetKey(GLFW_KEY_F12),GLFW_KEY_F12));
+
+    menu.Update();
 
     // Update the button events
     int bID=buttons.UpdateButtonEvents(input);
@@ -98,6 +101,8 @@ void AboutMenuState::Draw(GrafixEngine* game)
     SW.RenderTextCentered("Press Esc to Exit",1,0.0,1,-0.9,1,glm::vec3(1.0));
 
     buttons.DrawButtons();
+
+    menu.Draw();
 
     cursor.DrawImagePos(input.mx,input.my);
 

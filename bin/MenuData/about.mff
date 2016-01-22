@@ -1,7 +1,7 @@
 MenuButtons(mb1): {
   parameters: [
-  imagefile=solid
-  soundfile=Buttons/testbutton
+  imagefile=Buttons/testbutton
+  soundfile=solid
   font=../Fonts/FreeSans.ttf
   scale=1.0
   x=100

@@ -32,7 +32,6 @@ class MenuResourceBase {
     // Note: non-virtual destructor is OK here
     ~MenuResourceBase() {};
 };
-
 }
 
 #endif

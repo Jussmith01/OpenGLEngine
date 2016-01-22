@@ -18,18 +18,6 @@
 namespace JuMenu {
 
 /* --------------------------------
-          thr() Function
----------------------------------- */
-void thr_loader(std::shared_ptr<MenuResourceBase> p,std::string filename) {
-    // shared use_count is incremented
-    {
-        //static std::mutex load_mutex;
-        //std::lock_guard<std::mutex> lk(load_mutex);
-        p.get()->Init(filename);
-    }
-};
-
-/* --------------------------------
              Aliases
 ---------------------------------- */
 typedef std::unordered_map< std::string,std::shared_ptr<MenuResourceBase> > resource_umap;
@@ -52,6 +40,13 @@ class MenuResourceManager {
     resource_umap umap;
     std::vector<std::string> add_resourcestack;
     std::vector<std::string> rmv_resourcestack;
+
+    static void thr_loader(std::shared_ptr<MenuResourceBase> p,std::string filename) {
+        // shared use_count is incremented
+        //static std::mutex load_mutex;
+        //std::lock_guard<std::mutex> lk(load_mutex);
+        p.get()->Init(filename);
+    };
 
 public:
     /* Constructor */
@@ -92,8 +87,12 @@ public:
     };
 
     /* Class Access */
-    const Properties*   getProps()  {return props;      };
-    ISoundEngine*       getAudEng() {return audioengine;};
+    const Properties*   getProps()  {
+        return props;
+    };
+    ISoundEngine*       getAudEng() {
+        return audioengine;
+    };
 };
 };
 

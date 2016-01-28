@@ -11,6 +11,16 @@
 /** ****************************
          Menu Functions
 ***************************** **/
+/* Initializer */
+void JuMenu::Menu::Init (std::string msfile,Properties *props,ISoundEngine* audioengine) {
+    swidth = props->WinWidth;
+    sheight = props->WinHeight;
+
+    mrm.Init(props,audioengine);
+
+    m_SetMenuItems(msfile);
+};
+
 /* Set the menu items based on the input file */
 void JuMenu::Menu::m_SetMenuItems( std::string msfile ) {
     using namespace std;

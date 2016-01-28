@@ -5,6 +5,17 @@
 //************************************
 // Menu Button Initilization Function
 //************************************
+/*       Constructor
+
+
+*/
+JuMenu::MenuButtons::MenuButtons ( std::string ident,std::string &dstr,MenuResourceManager *pmrm )
+    : ident(ident),pmrm(pmrm) {
+    m_setmenubuttons(dstr);
+};
+
+
+
 /*
 Initialize the menu button class.
 
@@ -35,7 +46,7 @@ If NULL, no sound is produced.
 5 and 6) the screen width and height.
 */
 void JuMenu::MenuButtons::Init(std::string buttonimage,std::string buttonsound,std::string font,
-               float scale,float x, float y,float spread,std::string orient) {
+                               float scale,float x, float y,float spread,std::string orient) {
     // Define needed variables
     this->swidth=pmrm->getProps()->WinWidth;
     this->sheight=pmrm->getProps()->WinHeight;
@@ -129,21 +140,21 @@ void JuMenu::MenuButtons::draw() {
         // Draw
         //std::cout << "BUTTON " << i<< "x: " << x << " y: " << y << std::endl;
         switch (bs) {
-            case 0: {
-                image1.get()->draw();
-                //text.RenderTextCentered(cap,true,x,true,y,1.0,colors[bs]);
-                break;
-            }
-            case 1: {
-                image1.get()->draw();
-                //text.RenderTextCentered(cap,true,x,true,y,1.0,colors[bs]);
-                break;
-            }
-            case 2: {
-                image1.get()->draw();
-                //text.RenderTextCentered(cap,true,x,true,y,1.0,colors[bs]);
-                break;
-            }
+        case 0: {
+            image1.get()->draw();
+            //text.RenderTextCentered(cap,true,x,true,y,1.0,colors[bs]);
+            break;
+        }
+        case 1: {
+            image1.get()->draw();
+            //text.RenderTextCentered(cap,true,x,true,y,1.0,colors[bs]);
+            break;
+        }
+        case 2: {
+            image1.get()->draw();
+            //text.RenderTextCentered(cap,true,x,true,y,1.0,colors[bs]);
+            break;
+        }
         }
 
     }

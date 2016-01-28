@@ -26,7 +26,8 @@ std::shared_ptr<JuMenu::MenuResourceBase> JuMenu::MenuResourceManager::requestRe
         if        ( type == std::string("screenwriter") ) {
             //umap.emplace(ident,std::make_shared<ScreenWriter>());
         } else if ( type == std::string("imageloader") ) {
-            umap.emplace(ident,std::make_shared<ImageLoader >());
+            std::cout << "LOAD IMAGE: " << ident << std::endl;
+            umap.emplace(ident,std::make_shared<ImageLoader>());
         }
 
         add_resourcestack.push_back(ident);
@@ -48,7 +49,8 @@ void JuMenu::MenuResourceManager::manageResources () {
     while ( !add_resourcestack.empty() ) {
         it = umap.find(add_resourcestack.back());
         add_resourcestack.pop_back();
-        std::thread (MenuResourceManager::thr_loader,(*it).second,(*it).first.substr((*it).first.find_first_of(":")+1)).detach();
+        (*it).second->Init( (*it).first.substr((*it).first.find_first_of(":")+1) );
+        //std::thread (MenuResourceManager::thr_loader,(*it).second,(*it).first.substr((*it).first.find_first_of(":")+1)).detach();
     }
 
     for ( auto i(umap.begin()); i != umap.end(); ++i ) {

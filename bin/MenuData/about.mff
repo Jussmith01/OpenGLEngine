@@ -4,8 +4,8 @@ MenuButtons(mb1): {
   soundfile=solid
   font=../Fonts/FreeSans.ttf
   scale=1.0
-  x=100
-  y=100
+  x=1000
+  y=1000
   spread=50
   orient=down
   ]

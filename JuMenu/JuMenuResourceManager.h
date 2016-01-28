@@ -90,6 +90,7 @@ public:
     const Properties*   getProps()  {
         return props;
     };
+
     ISoundEngine*       getAudEng() {
         return audioengine;
     };

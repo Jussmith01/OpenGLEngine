@@ -39,6 +39,8 @@ public:
     };
 
     GLFWwindow* window;
+    GLFWwindow* resource_context;
+
     ISoundEngine* audioengine;
     Properties props;
     FlagHandler flaghandler;

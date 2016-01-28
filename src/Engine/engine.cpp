@@ -64,10 +64,6 @@ void GrafixEngine::Init(std::string enginetitle,int argc,char *argv[])
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
     glfwWindowHint(GLFW_SAMPLES, props.MSAA);
 
-
-    // Create a GLFWwindow object that we can use for GLFW's functions^M
-    //window = glfwCreateWindow(props.WinWidth, props.WinHeight, "OpenGLEngine", nullptr, nullptr);
-
 	//Initialize Window
 	switch(props.FullScreen)
 	{
@@ -83,6 +79,9 @@ void GrafixEngine::Init(std::string enginetitle,int argc,char *argv[])
         fprintf( stderr, "Failed to open GLFW window.\n" );
         glfwTerminate();
     }
+
+    glfwWindowHint(GLFW_VISIBLE, GL_FALSE);
+    //offscreen_context1 = glfwCreateWindow(1, 1, "", nullptr, nullptr);
 
     glfwMakeContextCurrent(window);
     //glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);

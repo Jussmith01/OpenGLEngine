@@ -130,14 +130,21 @@ public:
 
     void draw () {
         if (loaded_state) {
-            // Bind Textures using texture units
+            std::cout << "DRAW!" << std::endl;
+
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, TextureID);
             glUniform1i(glGetUniformLocation(shader.Program, "Texture"), 0);
 
-
             // Activate shader
             shader.Use();
+
+            //Set Position
+            float x = 1000;
+            float y = 1000;
+            //std::cout << "LOCTESTx: " << xconv << " LOCTESTy: " << yconv << std::endl;
+            glUniform1f(glGetUniformLocation(shader.Program, "xpos"),x);
+            glUniform1f(glGetUniformLocation(shader.Program, "ypos"),y);
 
             // Draw container
             glBindVertexArray(VAO);
@@ -147,7 +154,9 @@ public:
     };
 
     /* Update the class */
-    void update() {/*Does nothing*/};
+    void update() {
+        /*Does nothing*/
+    };
 
     /* Checks if it is loaded */
     bool is_loaded() {

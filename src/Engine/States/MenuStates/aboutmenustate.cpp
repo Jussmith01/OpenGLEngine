@@ -36,6 +36,7 @@ void AboutMenuState::Init(GrafixEngine *game) {
     audioengine = game->audioengine;
 
     // Setup Menus Class
+
     menu.Init("../MenuData/about.mff",&game->props,game->audioengine);
 
     // Setup Buttons
@@ -106,7 +107,7 @@ void AboutMenuState::Draw(GrafixEngine* game)
 
     cursor.DrawImagePos(input.mx,input.my);
 
-    // Swap the screen buffers
+    // Swap the frame buffers
     //glfwSwapBuffers(game->window);
     //glFlush();
 };

@@ -128,10 +128,7 @@ class MenuButtons {
 public:
 
     // Constructor
-    MenuButtons ( std::string ident,std::string &dstr,MenuResourceManager *pmrm )
-        : ident(ident),pmrm(pmrm) {
-        m_setmenubuttons(dstr);
-    };
+    MenuButtons ( std::string ident,std::string &dstr,MenuResourceManager *pmrm );
 
     // Initialize Button Class
     void Init( std::string buttonimage,std::string buttonsound,std::string font,

@@ -124,7 +124,6 @@ public:
         glBindTexture(GL_TEXTURE_2D, TextureID);
         glUniform1i(glGetUniformLocation(shader.Program, "Texture"), 0);
 
-
         // Activate shader
         shader.Use();
 

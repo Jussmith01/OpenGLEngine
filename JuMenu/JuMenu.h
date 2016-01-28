@@ -28,20 +28,16 @@ class Menu {
     void m_SetMenuItems( std::string msfile );
 
 public:
-    /* Constructors */
-    void Init (std::string msfile,Properties *props,ISoundEngine* audioengine) {
-        swidth = props->WinWidth;
-        sheight = props->WinHeight;
+    /* Initializer */
+    void Init (std::string msfile,Properties *props,ISoundEngine* audioengine);
 
-        mrm.Init(props,audioengine);
-
-        m_SetMenuItems(msfile);
-    };
-
+    /* Update */
     void Update ();
 
+    /* Draw */
     void Draw ();
 
+    /* Cleanup */
     void Cleanup ();
 };
 }

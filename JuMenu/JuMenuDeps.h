@@ -27,6 +27,7 @@ class MenuResourceBase {
 
     virtual void update() = 0;
     virtual void draw() = 0;
+    //virtual void drawPos(float x,float y) = 0;
     virtual void cleanup() = 0;
 
     // Note: non-virtual destructor is OK here
